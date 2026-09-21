@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can mpv Play, Pause, and Seek Animated GIF Files? - mpv</title>
+    <meta name="description" content="The mpv media player fully supports the playback of animated GIF files, complete with real-time pause and seeking capabilities. Because mpv relies on FFmpeg for demuxing and decoding, it treats animated GIFs as standard video streams. This enables users">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/can-mpv-play-pause-and-seek-animated-gif-files">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can mpv Play, Pause, and Seek Animated GIF Files? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/can-mpv-play-pause-and-seek-animated-gif-files" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player fully supports the playback of animated GIF files, complete with real-time pause and seeking capabilities. Because mpv relies on FFmpeg for demuxing and decoding, it treats animated GIFs as standard video streams. This enables users" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="can-mpv-play-pause-and-seek-animated-gif-files">Can mpv Play,
+Pause, and Seek Animated GIF Files?</h1>
+<p>The mpv media player fully supports the playback of animated GIF
+files, complete with real-time pause and seeking capabilities. Because
+mpv relies on FFmpeg for demuxing and decoding, it treats animated GIFs
+as standard video streams. This enables users to utilize all standard
+playback controls, frame navigation, and video filters on GIF files just
+as they would with conventional formats like MP4 or MKV.</p>
+<h3 id="gif-playback-and-controls-in-mpv">GIF Playback and Controls in
+mpv</h3>
+<p>When an animated GIF is opened in mpv, the player decodes the
+sequence of images into individual video frames. This architecture
+allows for seamless interaction through the following features:</p>
+<ul>
+<li><strong>Pausing and Resuming:</strong> Pressing the
+<code>Space</code> key instantly pauses the GIF on the current frame.
+Pressing it again resumes normal playback.</li>
+<li><strong>Precise Seeking:</strong> Users can seek forward or backward
+using the standard arrow keys (typically 5 seconds by default) or
+perform precise frame stepping. Pressing <code>.</code> advances the GIF
+by a single frame, while <code>,</code> steps backward by a single
+frame, which is ideal for inspecting fast-moving animations.</li>
+<li><strong>Playback Speed Control:</strong> Standard playback speed
+shortcuts (<code>[</code> to decrease speed, <code>]</code> to increase
+speed, and <code>Backspace</code> to reset) work on animated GIFs,
+allowing for slow-motion playback.</li>
+<li><strong>Automatic Looping:</strong> Animated GIFs loop indefinitely
+by default if the file contains loop metadata. You can also enforce
+continuous looping via the command line or configuration file using the
+<code>--loop-file=inf</code> option.</li>
+</ul>
+<h3 id="technical-performance">Technical Performance</h3>
+<p>Unlike web browsers or basic image viewers that load every
+uncompressed frame into RAM simultaneously, mpv streams and decodes GIF
+frames efficiently through FFmpeg's <code>gif</code> decoder. While
+seeking backward in extremely long or poorly encoded GIFs may
+occasionally require the decoder to parse preceding frames to
+reconstruct the state, mpv handles navigation smoothly for the vast
+majority of GIF files.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

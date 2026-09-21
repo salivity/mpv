@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where is the mpv Config File Path on Windows? - mpv</title>
+    <meta name="description" content="When installing the highly customizable mpv media player on Windows, many users quickly discover that it does not automatically create a configuration file during installation. To customize your playback experience, you must manually create an mpv.conf f">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/where-is-the-mpv-config-file-path-on-windows">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Where is the mpv Config File Path on Windows? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/where-is-the-mpv-config-file-path-on-windows" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When installing the highly customizable mpv media player on Windows, many users quickly discover that it does not automatically create a configuration file during installation. To customize your playback experience, you must manually create an mpv.conf f" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="where-is-the-mpv-config-file-path-on-windows">Where is the mpv
+Config File Path on Windows?</h1>
+<p>When installing the highly customizable mpv media player on Windows,
+many users quickly discover that it does not automatically create a
+configuration file during installation. To customize your playback
+experience, you must manually create an <code>mpv.conf</code> file and
+place it in the correct directory. This article provides a quick
+overview of the default paths where mpv searches for its configuration
+settings on Windows, how to access them, and how to set up your initial
+configuration file.</p>
+<hr />
+<h3 id="default-configuration-file-paths">Default Configuration File
+Paths</h3>
+<p>Depending on how you installed mpv and how you prefer to manage your
+software, the player looks for its configuration file in two primary
+locations:</p>
+<ul>
+<li><strong>The Global User Directory (Recommended):</strong>
+<code>C:\Users\&lt;YourUsername&gt;\AppData\Roaming\mpv\</code> This is
+the standard location for most modern Windows installations. Replacing
+<code>&lt;YourUsername&gt;</code> with your actual Windows account name
+will lead you to the folder where mpv expects to find
+<code>mpv.conf</code>.</li>
+<li><strong>The Portable Directory (Local):</strong>
+<code>C:\path\to\your\mpv\folder\mpv\</code> If you downloaded a
+portable build of mpv and extracted it to a custom folder (e.g.,
+<code>C:\Tools\mpv</code>), you can create a folder named
+<code>mpv</code> directly inside that directory. If mpv detects an
+<code>mpv.conf</code> file here, it will run in portable mode and ignore
+the global <code>AppData</code> folder entirely.</li>
+</ul>
+<h3 id="how-to-find-the-appdata-folder-quickly">How to Find the AppData
+Folder Quickly</h3>
+<p>Because the <code>AppData</code> folder is hidden by default in
+Windows File Explorer, navigating to it manually can be tricky. The
+fastest way to access the default configuration path is by using the
+Windows Run command:</p>
+<ol type="1">
+<li>Press <code>Windows Key + R</code> on your keyboard to open the Run
+dialog box.</li>
+<li>Type <code>%APPDATA%\mpv</code> into the field.</li>
+<li>Click <strong>OK</strong> or press <strong>Enter</strong>.</li>
+</ol>
+<p>If a folder does not exist at that location, Windows will display an
+error. In that case, you can simply run <code>%APPDATA%</code>, press
+Enter, and then manually create a new folder named <code>mpv</code>
+inside the directory that opens.</p>
+<h3 id="creating-your-first-mpvconf-file">Creating Your First mpv.conf
+File</h3>
+<p>Once you are inside the correct folder, you can easily create your
+configuration file using any standard text editor:</p>
+<ol type="1">
+<li>Right-click inside the <code>mpv</code> folder, select
+<strong>New</strong>, and then choose <strong>Text
+Document</strong>.</li>
+<li>Name the file <code>mpv.conf</code>. Ensure that you remove the
+<code>.txt</code> extension from the end of the filename (you may need
+to enable "File name extensions" in the Windows File Explorer "View"
+menu to see this).</li>
+<li>Open the <code>mpv.conf</code> file in Notepad or another code
+editor to begin adding your custom hardware acceleration, subtitle
+preferences, and video quality settings.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply a 3D LUT in mpv for Color Correction - mpv</title>
+    <meta name="description" content="Applying a custom 3D Look-Up Table (LUT) in mpv allows users to achieve precise display calibration, correct color spaces, or implement cinematic color grading during video playback. This guide details how to configure mpv to load standard .cube files us">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/apply-a-3-d-lut-in-mpv-for-color-correction">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Apply a 3D LUT in mpv for Color Correction - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/apply-a-3-d-lut-in-mpv-for-color-correction" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Applying a custom 3D Look-Up Table (LUT) in mpv allows users to achieve precise display calibration, correct color spaces, or implement cinematic color grading during video playback. This guide details how to configure mpv to load standard .cube files us" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="apply-a-3d-lut-in-mpv-for-color-correction">Apply a 3D LUT in
+mpv for Color Correction</h1>
+<p>Applying a custom 3D Look-Up Table (LUT) in mpv allows users to
+achieve precise display calibration, correct color spaces, or implement
+cinematic color grading during video playback. This guide details how to
+configure mpv to load standard <code>.cube</code> files using
+configuration files, select a compatible video output driver, and
+optionally set up keyboard shortcuts to toggle the LUT on and off during
+playback.</p>
+<h3 id="1-prepare-your-3d-lut">1. Prepare Your 3D LUT</h3>
+<p>mpv natively supports standard Adobe 3D LUT files using the
+<code>.cube</code> extension. Ensure your calibration or creative LUT is
+exported in this format. For convenience, place the <code>.cube</code>
+file inside your mpv configuration folder:</p>
+<ul>
+<li><strong>Linux/macOS:</strong> <code>~/.config/mpv/</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\</code></li>
+</ul>
+<h3 id="2-enable-a-compatible-video-output">2. Enable a Compatible Video
+Output</h3>
+<p>3D LUT processing requires mpv's GPU-accelerated video output
+drivers. Open your <code>mpv.conf</code> file in a text editor and
+specify <code>gpu</code> or <code>gpu-next</code> as your video output
+(VO):</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">auto</span></span></code></pre></div>
+<p><code>gpu-next</code> is recommended for newer mpv builds, but
+<code>vo=gpu</code> also supports LUT processing.</p>
+<h3 id="3-load-the-lut-automatically">3. Load the LUT Automatically</h3>
+<p>To load the 3D LUT automatically every time mpv starts, add the
+<code>lut</code> option to your <code>mpv.conf</code> file followed by
+the path to your <code>.cube</code> file:</p>
+<p><strong>Linux / macOS:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">lut</span><span class="ot">=</span><span class="st">&quot;~/.config/mpv/calibration.cube&quot;</span></span></code></pre></div>
+<p><strong>Windows:</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">lut</span><span class="ot">=</span><span class="st">&quot;C:/Users/Username/AppData/Roaming/mpv/calibration.cube&quot;</span></span></code></pre></div>
+<p><em>Note: On Windows, use forward slashes (<code>/</code>) in the
+file path to avoid escape-character errors.</em></p>
+<h3 id="4-toggle-the-lut-with-a-hotkey-optional">4. Toggle the LUT with
+a Hotkey (Optional)</h3>
+<p>If you prefer to switch the LUT on and off during playback rather
+than forcing it permanently, map a toggle key in your
+<code>input.conf</code> file instead of (or in addition to) setting it
+in <code>mpv.conf</code>:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">b cycle-values lut &quot;C:/path/to/your/lut.cube&quot; &quot;&quot;</span></span></code></pre></div>
+<p>Pressing the <code>b</code> key during playback will alternate
+between loading your specified LUT and setting the parameter to an empty
+string, effectively toggling the color correction on and off.</p>
+<h3 id="5-verify-the-application">5. Verify the Application</h3>
+<p>Launch any video file with mpv via the terminal or command
+prompt:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> video.mp4</span></code></pre></div>
+<p>You can confirm the LUT is active by pressing <code>Shift + I</code>
+to open mpv's on-screen statistics display, where active shaders and GPU
+processing filters are listed.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is the mpv target-peak option in HDR mapping? - mpv</title>
+    <meta name="description" content="The target-peak option in the mpv media player is a critical setting used during HDR (High Dynamic Range) to SDR (Standard Dynamic Range) tone mapping, determining the brightness level the video player targets when compressing high-luminance highlights.">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/what-is-the-mpv-target-peak-option-in-hdr-mapping">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What is the mpv target-peak option in HDR mapping? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/what-is-the-mpv-target-peak-option-in-hdr-mapping" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The target-peak option in the mpv media player is a critical setting used during HDR (High Dynamic Range) to SDR (Standard Dynamic Range) tone mapping, determining the brightness level the video player targets when compressing high-luminance highlights." />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-is-the-mpv-target-peak-option-in-hdr-mapping">What is the
+mpv target-peak option in HDR mapping?</h1>
+<p>The <code>target-peak</code> option in the mpv media player is a
+critical setting used during HDR (High Dynamic Range) to SDR (Standard
+Dynamic Range) tone mapping, determining the brightness level the video
+player targets when compressing high-luminance highlights. When playing
+HDR content on a display that does not support the full brightness range
+of the video file, tone mapping adapts the video to fit the screen's
+capabilities. By adjusting <code>target-peak</code>, users can manually
+control the balance between preserving bright details and maintaining
+the overall brightness of the scene, preventing the washed-out or overly
+dark images that often occur during automatic conversion.</p>
+<h2 id="understanding-hdr-tone-mapping-in-mpv">Understanding HDR Tone
+Mapping in mpv</h2>
+<p>HDR content often features peak brightness levels reaching <span
+class="math inline">\(1000\text{ nits}\)</span> or even <span
+class="math inline">\(4000\text{ nits}\)</span>. However, standard
+computer monitors and older televisions typically max out between <span
+class="math inline">\(250\text{ nits}\)</span> and <span
+class="math inline">\(400\text{ nits}\)</span>. When mpv plays an HDR
+video on an SDR display, it must compress the dynamic range so the
+display can handle it without clipping the highlights into pure,
+detail-less white. This process is called tone mapping.</p>
+<p>By default, mpv attempts to automatically detect the display's
+capabilities and the video's metadata to perform this conversion.
+However, automatic detection is not always accurate, which is where the
+<code>target-peak</code> option becomes essential for manual
+override.</p>
+<h2 id="how-the-target-peak-option-works">How the Target-Peak Option
+Works</h2>
+<p>The <code>target-peak</code> option allows you to explicitly define
+the maximum brightness (in nits) that the tone-mapping algorithm should
+target. It essentially tells mpv, "Treat my display as if its maximum
+brightness capability is exactly this value."</p>
+<p>The setting alters the playback behavior based on how you configure
+it:</p>
+<ul>
+<li><strong>Setting a Higher Target-Peak:</strong> If you set
+<code>target-peak</code> to a higher value (e.g., <span
+class="math inline">\(500\text{ nits}\)</span> or more), mpv assumes the
+display can handle brighter highlights. As a result, the algorithm
+compresses the mid-tones more heavily to leave room for high-brightness
+details. This preserves specular highlights (like sunlight glinting off
+metal or explosions) but makes the overall image look darker.</li>
+<li><strong>Setting a Lower Target-Peak:</strong> If you set
+<code>target-peak</code> to a lower value (e.g., <span
+class="math inline">\(200\text{ to }300\text{ nits}\)</span>), mpv
+assumes the display has limited brightness capability. The overall image
+will appear brighter and closer to standard SDR levels, but the
+brightest highlights may clip, losing texture and detail in very bright
+areas.</li>
+</ul>
+<h2 id="when-should-you-adjust-target-peak">When Should You Adjust
+Target-Peak?</h2>
+<p>Modifying <code>target-peak</code> is highly beneficial when you are
+unhappy with mpv's automatic HDR-to-SDR conversion. You should consider
+manually adjusting it in the following scenarios:</p>
+<ul>
+<li><strong>Viewing in a Dark Room:</strong> If you watch movies in a
+dark environment, you can afford a higher <code>target-peak</code>
+value. The overall image will be darker, but your eyes will adapt,
+allowing you to enjoy the rich highlight details without losing
+perceived contrast.</li>
+<li><strong>Viewing in a Bright Room:</strong> In a well-lit room, a
+dark image is difficult to see. Lowering the <code>target-peak</code>
+value raises the average picture level (APL), making the movie watchable
+even with ambient glare, despite some loss in highlight fidelity.</li>
+<li><strong>Mismatched Mastering Metadata:</strong> Some HDR videos
+contain incorrect or missing mastering metadata (like MaxCLL or
+MaxFALL). Manually setting <code>target-peak</code> bypasses the broken
+metadata, forcing mpv to render the video consistently.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

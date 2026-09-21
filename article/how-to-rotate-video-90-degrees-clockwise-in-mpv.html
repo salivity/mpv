@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Rotate Video 90 Degrees Clockwise in mpv? - mpv</title>
+    <meta name="description" content="Rotating a video during playback in the mpv media player can be done instantly using a simple keyboard shortcut or by applying a video filter via the command line. This guide covers the built-in hotkey for 90-degree rotation, how to use cycle commands fo">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-rotate-video-90-degrees-clockwise-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Rotate Video 90 Degrees Clockwise in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-rotate-video-90-degrees-clockwise-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Rotating a video during playback in the mpv media player can be done instantly using a simple keyboard shortcut or by applying a video filter via the command line. This guide covers the built-in hotkey for 90-degree rotation, how to use cycle commands fo" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-rotate-video-90-degrees-clockwise-in-mpv">How to Rotate
+Video 90 Degrees Clockwise in mpv?</h1>
+<p>Rotating a video during playback in the mpv media player can be done
+instantly using a simple keyboard shortcut or by applying a video filter
+via the command line. This guide covers the built-in hotkey for
+90-degree rotation, how to use cycle commands for seamless switching,
+and how to set a permanent or default rotation using the configuration
+file.</p>
+<h3 id="the-quick-keyboard-shortcut">The Quick Keyboard Shortcut</h3>
+<p>By default, mpv includes a built-in cycle command mapped to video
+rotation. While playing a video, you can rotate it 90 degrees clockwise
+by pressing the following key combination on your keyboard:</p>
+<ul>
+<li>**<code>Alt</code> + <code>LEFT**</code> (Press the Alt key and the
+Left Arrow key simultaneously)</li>
+<li>**<code>Alt</code> + <code>RIGHT**</code> (Press the Alt key and the
+Right Arrow key simultaneously)</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> In many default mpv installations,
+<code>Alt</code> + <code>LEFT</code> rotates the video 90 degrees
+counter-clockwise, while <code>Alt</code> + <code>RIGHT</code> rotates
+it 90 degrees clockwise. If these do not work, your specific version or
+configuration might require the manual command line or input binding
+methods detailed below.</p>
+</blockquote>
+<h3 id="using-the-command-line-interface">Using the Command Line
+Interface</h3>
+<p>If you prefer to launch mpv from the terminal with the video already
+rotated 90 degrees clockwise, you can use the video filter
+(<code>--vf</code>) option. Open your terminal and run the following
+command:</p>
+<p><code>mpv --vf=rotate=90 input_video.mp4</code></p>
+<p>For other rotation angles, you can adjust the numerical value:</p>
+<ul>
+<li><strong>90 degrees clockwise:</strong>
+<code>--vf=rotate=90</code></li>
+<li><strong>180 degrees (upside down):</strong>
+<code>--vf=rotate=180</code></li>
+<li><strong>270 degrees clockwise (or 90 counter-clockwise):</strong>
+<code>--vf=rotate=270</code></li>
+</ul>
+<h3 id="adding-a-custom-hotkey-to-inputconf">Adding a Custom Hotkey to
+input.conf</h3>
+<p>To map the 90-degree clockwise rotation to a specific single key (for
+example, the <code>R</code> key), you can edit your
+<code>input.conf</code> file.</p>
+<ol type="1">
+<li>Locate your mpv configuration directory (usually
+<code>~/.config/mpv/</code> on Linux/macOS or
+<code>%APPDATA%/mpv/</code> on Windows).</li>
+<li>Open or create the <code>input.conf</code> file.</li>
+<li>Add the following line to the file:</li>
+</ol>
+<p><code>R cycle-values video-rotate "90" "180" "270" "0"</code></p>
+<p>Saving this configuration allows you to press <code>R</code> during
+playback to cycle the video orientation clockwise by 90 degrees with
+each press until it returns to normal.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Take a Resolution Screenshot in mpv? - mpv</title>
+    <meta name="description" content="Taking a screenshot of a video in mpv at its original, unscaled resolution—ignoring any window resizing or player-applied scaling filters—is a straightforward process that relies on built-in keyboard shortcuts and configuration settings. By default,">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-take-a-resolution-screenshot-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Take a Resolution Screenshot in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-take-a-resolution-screenshot-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Taking a screenshot of a video in mpv at its original, unscaled resolution—ignoring any window resizing or player-applied scaling filters—is a straightforward process that relies on built-in keyboard shortcuts and configuration settings. By default," />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-take-a-resolution-screenshot-in-mpv">How to Take a
+Resolution Screenshot in mpv?</h1>
+<p>Taking a screenshot of a video in mpv at its original, unscaled
+resolution—ignoring any window resizing or player-applied scaling
+filters—is a straightforward process that relies on built-in keyboard
+shortcuts and configuration settings. By default, mpv is designed to
+capture the video at its native source dimensions, but understanding how
+to utilize the correct capture modes, configure output file formats, and
+specify target directories ensures you get the highest quality image
+every time. This guide covers the precise commands and configurations
+needed to achieve perfect source-resolution captures.</p>
+<hr />
+<h3 id="the-default-high-resolution-shortcut">The Default
+High-Resolution Shortcut</h3>
+<p>The quickest way to grab a screenshot at the video's original
+resolution is by using mpv's native key bindings.</p>
+<ul>
+<li>**Press <code>s**</code> on your keyboard.</li>
+</ul>
+<p>This command takes a screenshot of the current frame at the
+<strong>video's original source resolution</strong>, completely
+bypassing any scaling applied by your monitor or the player window. It
+also includes the subtitles if they are currently being rendered on the
+screen.</p>
+<h3 id="capturing-without-subtitles">Capturing Without Subtitles</h3>
+<p>If you want a completely clean image of the video frame without any
+subtitle text or On-Screen Display (OSD) elements, you need to use a
+variation of the shortcut:</p>
+<ul>
+<li><strong>Press <code>S</code> (Shift + s)</strong> on your
+keyboard.</li>
+</ul>
+<p>This command flags the player to strip away all overlays, giving you
+the raw, unscaled video frame exactly as it exists in the source
+file.</p>
+<h3 id="advanced-configuration-for-maximum-quality">Advanced
+Configuration for Maximum Quality</h3>
+<p>To ensure your screenshots are saved in a lossless format and
+organized into a specific folder, you can modify your
+<code>mpv.conf</code> file. Add the following lines to customize your
+screenshot behavior:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the folder where screenshots will be saved</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">screenshot-directory</span><span class="ot">=</span><span class="st">&quot;~/Pictures/mpv_screenshots&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the output format to PNG for lossless quality (Default is JPG)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">screenshot-format</span><span class="ot">=</span><span class="st">png</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Customize the template for file names (includes video title and timestamp)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">screenshot-template</span><span class="ot">=</span><span class="st">&quot;%F - [%P] - %n&quot;</span></span></code></pre></div>
+<h3 id="summary-of-screenshot-modes">Summary of Screenshot Modes</h3>
+<p>Depending on your exact needs, mpv offers three distinct internal
+commands that can be mapped in your <code>input.conf</code> file:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Key Binding</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>screenshot</code></td>
+<td><code>s</code></td>
+<td>Original resolution with subtitles/OSD.</td>
+</tr>
+<tr>
+<td><code>screenshot video</code></td>
+<td><code>S</code></td>
+<td>Original resolution <strong>without</strong> subtitles/OSD.</td>
+</tr>
+<tr>
+<td><code>screenshot window</code></td>
+<td><em>None</em></td>
+<td>Captures the exact scaled window (includes timeline/UI).</td>
+</tr>
+</tbody>
+</table></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

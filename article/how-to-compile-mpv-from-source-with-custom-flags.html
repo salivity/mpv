@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Compile mpv from Source with Custom Flags? - mpv</title>
+    <meta name="description" content="Compiling the mpv media player from source code allows users to optimize performance, strip out unnecessary features, and link custom dependency flags for a tailored multimedia experience. While the process requires handling build tools like Meson and Ni">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-compile-mpv-from-source-with-custom-flags">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Compile mpv from Source with Custom Flags? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-compile-mpv-from-source-with-custom-flags" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Compiling the mpv media player from source code allows users to optimize performance, strip out unnecessary features, and link custom dependency flags for a tailored multimedia experience. While the process requires handling build tools like Meson and Ni" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-compile-mpv-from-source-with-custom-flags">How to Compile
+mpv from Source with Custom Flags?</h1>
+<p>Compiling the <strong>mpv media player</strong> from source code
+allows users to optimize performance, strip out unnecessary features,
+and link custom dependency flags for a tailored multimedia experience.
+While the process requires handling build tools like Meson and Ninja,
+managing external libraries, and passing specific configuration
+variables, it provides unparalleled control over the software's final
+binary. This guide covers the essential steps, environment setup, and
+flag customization techniques needed to successfully build a
+personalized version of mpv.</p>
+<h2 id="prerequisites-and-build-environment">Prerequisites and Build
+Environment</h2>
+<p>Before compilation can begin, a robust build environment containing
+the necessary compilers and build systems must be established. Modern
+versions of mpv rely heavily on <strong>Meson</strong> as the build
+configuration system and <strong>Ninja</strong> as the backend build
+tool.</p>
+<h3 id="essential-build-tools">Essential Build Tools</h3>
+<p>Depending on your operating system, you will need to install the core
+toolchain. For Debian/Ubuntu-based systems, this typically includes:</p>
+<ul>
+<li><code>build-essential</code> (gcc, g++, make)</li>
+<li><code>meson</code> and <code>ninja-build</code></li>
+<li><code>git</code> (to clone the repository)</li>
+<li><code>pkg-config</code> (critical for locating custom
+dependencies)</li>
+</ul>
+<h2 id="managing-custom-dependency-flags">Managing Custom Dependency
+Flags</h2>
+<p>The primary method for passing custom dependency flags to mpv during
+compilation is through the <strong>Meson configuration phase</strong>.
+Meson uses options to explicitly enable, disable, or redirect
+dependencies to custom paths.</p>
+<h3 id="using-meson-options">Using Meson Options</h3>
+<p>Instead of traditional <code>./configure --with-feature</code> flags,
+mpv utilizes Meson options. You can view all available configurable
+options by running <code>meson configure</code> inside your build
+directory.</p>
+<p>Common customization approaches include:</p>
+<ul>
+<li><strong>Disabling Unused Features:</strong> If you do not require a
+specific framework (like Lua scripting or rubberband audio stretching),
+you can explicitly disable them to keep the binary lightweight.</li>
+<li><strong>Enforcing System vs. Subproject Libraries:</strong> You can
+force Meson to look for your custom-compiled dependencies rather than
+system defaults using environment variables.</li>
+</ul>
+<h3 id="leveraging-environment-variables">Leveraging Environment
+Variables</h3>
+<p>To point the compiler to dependencies installed in non-standard
+directories (e.g., a custom FFmpeg build located in
+<code>/opt/ffmpeg</code>), you must leverage environment variables
+before running the build command.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Example Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>PKG_CONFIG_PATH</code></strong></td>
+<td>Directs Meson to the custom <code>.pc</code> files of your
+dependencies.</td>
+<td><code>export PKG_CONFIG_PATH="/opt/ffmpeg/lib/pkgconfig:$PKG_CONFIG_PATH"</code></td>
+</tr>
+<tr>
+<td>**<code>CFLAGS</code> / <code>CXXFLAGS**</code></td>
+<td>Passes custom optimization or header path flags to the
+compiler.</td>
+<td><code>export CFLAGS="-O3 -march=native"</code></td>
+</tr>
+<tr>
+<td><strong><code>LDFLAGS</code></strong></td>
+<td>Passes custom linker flags to ensure the binary links to the correct
+libraries.</td>
+<td><code>export LDFLAGS="-L/opt/ffmpeg/lib"</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="step-by-step-compilation-workflow">Step-by-Step Compilation
+Workflow</h2>
+<p>Once your environment variables and custom dependencies are aligned,
+the build process follows a standard three-step workflow.</p>
+<h3 id="1-clone-the-source-repository">1. Clone the Source
+Repository</h3>
+<p>Grab the latest stable or development source code directly from the
+official repository:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/mpv-player/mpv.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> mpv</span></code></pre></div>
+<h3 id="2-configure-the-build-room">2. Configure the Build Room</h3>
+<p>Create a separate build directory and initialize it with Meson,
+passing your custom feature flags. For example, to enable a custom
+Vulkan path while disabling the build-in libass provider, you might
+structure your configuration like this:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">meson</span> setup build <span class="at">--buildtype</span><span class="op">=</span>release <span class="at">-Dvaapi</span><span class="op">=</span>enabled <span class="at">-Djavascript</span><span class="op">=</span>disabled</span></code></pre></div>
+<h3 id="3-compile-and-install">3. Compile and Install</h3>
+<p>With the configuration successfully generated, use Ninja to compile
+the source code and install the final binary to your system.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ninja</span> <span class="at">-C</span> build</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ninja <span class="at">-C</span> build install</span></code></pre></div>
+<p>By properly isolating your custom library paths via
+<code>PKG_CONFIG_PATH</code> and utilizing Meson’s explicit feature
+toggles, you can successfully build a highly specialized version of mpv
+tailored precisely to your system's hardware and software
+requirements.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

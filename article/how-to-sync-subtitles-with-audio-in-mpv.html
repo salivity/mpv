@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Sync Subtitles with Audio in mpv? - mpv</title>
+    <meta name="description" content="Achieving perfect synchronization between subtitles and audio in the mpv media player is a straightforward process that can be done entirely via quick keyboard shortcuts or precise configuration settings. Whether your subtitle file is lagging behind or a">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-sync-subtitles-with-audio-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Sync Subtitles with Audio in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-sync-subtitles-with-audio-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Achieving perfect synchronization between subtitles and audio in the mpv media player is a straightforward process that can be done entirely via quick keyboard shortcuts or precise configuration settings. Whether your subtitle file is lagging behind or a" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-sync-subtitles-with-audio-in-mpv">How to Sync Subtitles
+with Audio in mpv?</h1>
+<p>Achieving perfect synchronization between subtitles and audio in the
+mpv media player is a straightforward process that can be done entirely
+via quick keyboard shortcuts or precise configuration settings. Whether
+your subtitle file is lagging behind or appearing too early, mpv allows
+you to shift the text timing on the fly in 100-millisecond increments.
+This guide covers the essential hotkeys for real-time adjustments and
+explains how to make permanent or ultra-precise timing changes so you
+can enjoy a seamless viewing experience.</p>
+<h2 id="essential-keyboard-shortcuts-for-real-time-sync">Essential
+Keyboard Shortcuts for Real-Time Sync</h2>
+<p>The fastest way to fix out-of-sync subtitles while a video is playing
+is by using mpv's built-in hotkeys. These keys shift the subtitle timing
+forward or backward relative to the audio track.</p>
+<ul>
+<li><strong>Delay Subtitles (Shift Text Backward):</strong> Press the
+<strong><code>z</code></strong> key. This delays the subtitles by 100
+milliseconds (<span class="math inline">\(0.1\)</span> seconds) per
+press, which is useful if the text is appearing before the actor
+speaks.</li>
+<li><strong>Advance Subtitles (Shift Text Forward):</strong> Press the
+<strong><code>x</code></strong> key. This moves the subtitles ahead by
+100 milliseconds per press, which is ideal if the text is appearing
+after the audio has already played.</li>
+</ul>
+<p>Whenever you press these keys, an On-Screen Display (OSD) message
+will appear in the top-left corner of the video window, showing the
+total current delay (e.g., <code>Sub delay: 200ms</code> or
+<code>Sub delay: -300ms</code>).</p>
+<h2 id="exact-subtitle-adjustments-via-command-line">Exact Subtitle
+Adjustments via Command Line</h2>
+<p>If you already know the exact time discrepancy before opening your
+media file, you can launch mpv from your terminal or command prompt with
+a specific delay parameter.</p>
+<p>Use the <code>--sub-delay</code> option followed by the desired time
+offset in seconds:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--sub-delay</span><span class="op">=</span>2.5 video.mpk</span></code></pre></div>
+<ul>
+<li>A <strong>positive value</strong> (e.g., <code>2.5</code>) delays
+the subtitles by 2.5 seconds.</li>
+<li>A <strong>negative value</strong> (e.g., <code>-1.5</code>) advances
+the subtitles by 1.5 seconds.</li>
+</ul>
+<h2 id="making-subtitle-adjustments-permanent">Making Subtitle
+Adjustments Permanent</h2>
+<p>If you find that you consistently need to adjust subtitles for a
+specific file, or if you want a default delay applied to all videos, you
+can modify mpv's configuration file (<code>mpv.conf</code>).</p>
+<ol type="1">
+<li>Locate your <code>mpv.conf</code> file (typically found in
+<code>~/.config/mpv/</code> on Linux/macOS or
+<code>%APPDATA%\mpv\</code> on Windows).</li>
+<li>Open the file in a text editor.</li>
+<li>Add the following line to set a permanent default delay (replace
+<code>0.5</code> with your preferred number of seconds):</li>
+</ol>
+<pre class="text"><code>sub-delay=0.5
+</code></pre>
+<p>For files where the timing drifts progressively over time rather than
+staying at a constant delay, you may need to adjust the subtitle frame
+rate instead. This can be toggled in real-time by pressing
+<strong><code>Ctrl+[</code></strong> and
+<strong><code>Ctrl+]</code></strong> to scale the subtitle speed up or
+down.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

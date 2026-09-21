@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Does mpv Handle Corrupted Media Files? - mpv</title>
+    <meta name="description" content="When mpv encounters a corrupted media file, its default behavior is to aggressively attempt playback by skipping damaged frames, ignoring non-fatal stream errors, and relying on its robust FFmpeg backend to decode as much data as possible. Instead of imm">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-does-mpv-handle-corrupted-media-files">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Does mpv Handle Corrupted Media Files? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-does-mpv-handle-corrupted-media-files" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When mpv encounters a corrupted media file, its default behavior is to aggressively attempt playback by skipping damaged frames, ignoring non-fatal stream errors, and relying on its robust FFmpeg backend to decode as much data as possible. Instead of imm" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-does-mpv-handle-corrupted-media-files">How Does mpv Handle
+Corrupted Media Files?</h1>
+<p>When mpv encounters a corrupted media file, its default behavior is
+to aggressively attempt playback by skipping damaged frames, ignoring
+non-fatal stream errors, and relying on its robust FFmpeg backend to
+decode as much data as possible. Instead of immediately crashing or
+throwing a blocking error dialog, mpv logs the corruption to the
+terminal and tries to maintain synchronization between the audio and
+video tracks. If the file is completely unreadable or the container
+headers are destroyed, mpv will gracefully terminate the playback
+session and output a failure message to the console.</p>
+<h2 id="the-role-of-ffmpeg-demuxing-and-decoding">The Role of FFmpeg
+Demuxing and Decoding</h2>
+<p>Because mpv uses <strong>FFmpeg</strong> libavcodec and libavformat
+under the hood, it inherits highly resilient decoding capabilities. When
+a file contains bad sectors or missing packets:</p>
+<ul>
+<li><strong>Frame Dropping:</strong> If a video frame is corrupted, mpv
+drops it and immediately attempts to decode the next valid keyframe
+(I-frame). This often manifests visually as brief pixelation,
+macroblocking, or a momentary freeze.</li>
+<li><strong>Audio-Video Synchronization:</strong> If audio packets are
+missing, mpv will often mute the audio momentarily or stretch/drop
+frames to ensure the video track does not desynchronize from the
+timeline.</li>
+<li><strong>Error Logging:</strong> mpv floods the terminal output with
+warning messages (typically in yellow or red text) indicating packet
+mismatches, decoding errors, or concealment attempts, allowing users to
+see exactly where the corruption lies.</li>
+</ul>
+<h2 id="terminal-output-and-error-codes">Terminal Output and Error
+Codes</h2>
+<p>When running mpv from the command line, you will see real-time
+feedback regarding the file's integrity. If the corruption is minor,
+playback continues despite the warnings. However, if the file is
+severely broken, mpv will halt and return specific exit codes:</p>
+<ul>
+<li><strong>Fatal Errors:</strong> If the container format (e.g., MKV,
+MP4) is so corrupted that the player cannot parse the tracks or
+metadata, mpv stops immediately and outputs
+<code>Error selecting/initializing video filter</code> or
+<code>No video or audio streams found</code>.</li>
+<li><strong>Exit Status:</strong> A completely unplayable file typically
+results in a non-zero exit status, signaling to external scripts or
+front-ends that the media initialization failed.</li>
+</ul>
+<h2 id="customizing-the-default-behavior">Customizing the Default
+Behavior</h2>
+<p>If you want to alter how mpv reacts to corrupted files, you can
+modify its behavior using specific command-line flags or by adding them
+to your <code>mpv.conf</code> file:</p>
+<h3 id="halting-on-errors">Halting on Errors</h3>
+<p>If you prefer mpv to stop playing immediately when an error is
+detected rather than trying to power through it, you can use:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--stop-on-playback-errors=yes</span></span></code></pre></div>
+<h3 id="adjusting-demuxer-cache">Adjusting Demuxer Cache</h3>
+<p>For files with corrupted indices or timestamps, increasing the
+demuxer cache can sometimes help mpv bridge the gap during playback:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--demuxer-max-bytes=500MiB</span></span></code></pre></div></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

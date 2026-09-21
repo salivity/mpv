@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use Custom GLSL Shaders in mpv? - mpv</title>
+    <meta name="description" content="Using custom GLSL shaders like Anime4K, Ravu, or FSRCNNX in the mpv media player is entirely possible and highly effective for upscaling and sharpening video content. This overview details how to install and configure these external shaders, enabling fea">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-use-custom-glsl-shaders-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Use Custom GLSL Shaders in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-use-custom-glsl-shaders-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Using custom GLSL shaders like Anime4K, Ravu, or FSRCNNX in the mpv media player is entirely possible and highly effective for upscaling and sharpening video content. This overview details how to install and configure these external shaders, enabling fea" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-use-custom-glsl-shaders-in-mpv">How to Use Custom GLSL
+Shaders in mpv?</h1>
+<p>Using custom GLSL shaders like Anime4K, Ravu, or FSRCNNX in the mpv
+media player is entirely possible and highly effective for upscaling and
+sharpening video content. This overview details how to install and
+configure these external shaders, enabling features like high-quality
+real-time anime upscaling or advanced neural network scaling. By
+modifying your configuration files, you can seamlessly activate, chain,
+or hotkey these custom shaders to maximize your display's visual
+potential.</p>
+<h2 id="prerequisites-and-compatibility">Prerequisites and
+Compatibility</h2>
+<p>To use external GLSL shaders, your version of mpv must be compiled
+with GPU video output support. You will need a compatible graphics
+processing unit (GPU) because advanced algorithms like Anime4K and Ravu
+rely heavily on real-time hardware rendering.</p>
+<p>Before loading external shaders, ensure that your main configuration
+file utilizes high-quality processing defaults.</p>
+<h2 id="step-by-step-shader-installation">Step-by-Step Shader
+Installation</h2>
+<h3 id="1-locate-or-create-the-shaders-directory">1. Locate or Create
+the Shaders Directory</h3>
+<p>You must place the downloaded <code>.glsl</code> shader files into a
+designated subfolder within your primary mpv configuration
+directory.</p>
+<ul>
+<li><strong>Windows:</strong> Navigate to <code>%APPDATA%/mpv/</code>
+and create a folder named <code>shaders</code>.</li>
+<li><strong>macOS and Linux:</strong> Open your terminal and create the
+directory by running: <code>mkdir -p ~/.config/mpv/shaders/</code></li>
+</ul>
+<h3 id="2-download-and-extract-the-shaders">2. Download and Extract the
+Shaders</h3>
+<p>Download the desired shader files from their official repository
+releases (such as the GitHub pages for Anime4K or Ravu). Move the
+extracted <code>.glsl</code> files directly into the newly created
+<code>shaders</code> directory.</p>
+<h3 id="3-edit-the-configuration-file-mpvconf">3. Edit the Configuration
+File (<code>mpv.conf</code>)</h3>
+<p>To make mpv load a shader automatically every time you open a video,
+add the <code>glsl-shader</code> or <code>glsl-shaders</code> property
+to your <code>mpv.conf</code> file located in the root of your mpv
+folder.</p>
+<p>Use the <code>~~/</code> shortcut to tell mpv to look inside its own
+configuration directory.</p>
+<pre class="text"><code># Enable high-quality rendering profile
+profile=gpu-hq
+
+# Load a single shader (e.g., Ravu)
+glsl-shader=&quot;~~/shaders/ravu-lite-r4.glsl&quot;
+
+# Alternatively, load multiple shaders separated by colons (Linux/macOS) or semicolons (Windows)
+# glsl-shaders=&quot;~~/shaders/Anime4K_Clamp_Highlights.glsl:~~/shaders/Anime4K_Restore_CNN_M.glsl&quot;
+</code></pre>
+<h2 id="assigning-hotkeys-for-on-the-fly-toggling">Assigning Hotkeys for
+On-the-Fly Toggling</h2>
+<p>Instead of forcing a shader to run universally, you can create manual
+keyboard shortcuts to turn shaders on or off mid-playback. Create a text
+file named <code>input.conf</code> in your main mpv folder and use the
+<code>change-list glsl-shaders</code> command.</p>
+<pre class="text"><code># Press CTRL+1 to enable an Anime4K upscaling chain
+CTRL+1 no-osd change-list glsl-shaders set &quot;~~/shaders/Anime4K_Clamp_Highlights.glsl:~~/shaders/Anime4K_Restore_CNN_M.glsl:~~/shaders/Anime4K_Upscale_CNN_x2_M.glsl&quot;
+
+# Press CTRL+2 to enable Ravu
+CTRL+2 no-osd change-list glsl-shaders set &quot;~~/shaders/ravu-lite-r4.glsl&quot;
+
+# Press CTRL+0 to clear all active GLSL shaders
+CTRL+0 no-osd change-list glsl-shaders clr &quot;&quot;
+</code></pre>
+<h2 id="performance-and-selection-tips">Performance and Selection
+Tips</h2>
+<p>Different shaders place varying loads on your system
+architecture:</p>
+<table>
+<thead>
+<tr>
+<th>Shader Family</th>
+<th>Primary Target</th>
+<th>Performance Impact</th>
+<th>Best Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Anime4K</strong></td>
+<td>Animation / Line Art</td>
+<td>Low to Moderate (Scale dependent)</td>
+<td>Enhancing edge crispness and removing compression artifacts in
+anime.</td>
+</tr>
+<tr>
+<td><strong>Ravu</strong></td>
+<td>General Scaling</td>
+<td>Moderate</td>
+<td>High-quality, balanced neural network upscaling for mixed
+content.</td>
+</tr>
+<tr>
+<td><strong>FSRCNNX</strong></td>
+<td>Fidelity / Realism</td>
+<td>High</td>
+<td>Purist upscale setups aiming for pixel-accurate reconstruction.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Keep an eye on system performance when experimenting with these
+tools. If you notice dropped frames during playback, hit the
+<code>I</code> key to bring up mpv's internal statistics overlay and
+check if your GPU is struggling to keep up with the shader passes.</p>
+</blockquote></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

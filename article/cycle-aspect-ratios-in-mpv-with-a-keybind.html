@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cycle Aspect Ratios in mpv With a Keybind - mpv</title>
+    <meta name="description" content="This guide explains how to configure the mpv media player to cycle through custom aspect ratios—specifically 16:9, 4:3, and 21:9—using a single keyboard shortcut. By adding a single line to mpv's key-binding configuration file, you can easily toggle">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/cycle-aspect-ratios-in-mpv-with-a-keybind">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cycle Aspect Ratios in mpv With a Keybind - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/cycle-aspect-ratios-in-mpv-with-a-keybind" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This guide explains how to configure the mpv media player to cycle through custom aspect ratios—specifically 16:9, 4:3, and 21:9—using a single keyboard shortcut. By adding a single line to mpv's key-binding configuration file, you can easily toggle" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="cycle-aspect-ratios-in-mpv-with-a-keybind">Cycle Aspect Ratios
+in mpv With a Keybind</h1>
+<p>This guide explains how to configure the mpv media player to cycle
+through custom aspect ratios—specifically 16:9, 4:3, and 21:9—using a
+single keyboard shortcut. By adding a single line to mpv's key-binding
+configuration file, you can easily toggle video dimensions on the fly
+without navigating complex menus.</p>
+<h3 id="1-locate-or-create-the-inputconf-file">1. Locate or Create the
+<code>input.conf</code> File</h3>
+<p>mpv handles custom keybindings through a configuration file named
+<code>input.conf</code>. Depending on your operating system, this file
+is located in the following directory:</p>
+<ul>
+<li><strong>Linux / macOS:</strong>
+<code>~/.config/mpv/input.conf</code></li>
+<li><strong>Windows (standard install):</strong>
+<code>%APPDATA%\mpv\input.conf</code> (typically
+<code>C:\Users\&lt;Username&gt;\AppData\Roaming\mpv\input.conf</code>)</li>
+<li><strong>Windows (portable install):</strong> In the
+<code>portable_config</code> directory inside the folder where
+<code>mpv.exe</code> is located.</li>
+</ul>
+<p>If the <code>mpv</code> folder or the <code>input.conf</code> file
+does not exist, create them manually using any standard plain text
+editor.</p>
+<h3 id="2-add-the-aspect-ratio-cycle-command">2. Add the Aspect Ratio
+Cycle Command</h3>
+<p>Open <code>input.conf</code> in a text editor and add the following
+line:</p>
+<pre class="text"><code>A cycle-values video-aspect-override &quot;16:9&quot; &quot;4:3&quot; &quot;21:9&quot; &quot;-1&quot;</code></pre>
+<h3 id="3-how-the-command-works">3. How the Command Works</h3>
+<ul>
+<li><strong><code>A</code></strong>: The keyboard key assigned to the
+action. In this example, it is bound to <code>Shift + a</code> (capital
+A). You can replace this with any available key, such as
+<code>Ctrl+a</code> or <code>F8</code>.</li>
+<li><strong><code>cycle-values</code></strong>: The mpv command that
+iterates sequentially through a list of values each time the assigned
+key is pressed.</li>
+<li><strong><code>video-aspect-override</code></strong>: The internal
+property that forces a specific aspect ratio onto the playing
+video.</li>
+<li><strong><code>"16:9" "4:3" "21:9"</code></strong>: The custom ratios
+that the player will cycle through.</li>
+<li><strong><code>"-1"</code></strong>: Resets the aspect ratio back to
+the video's original/native ratio. This ensures you can return to the
+default setting without restarting playback.</li>
+</ul>
+<h3 id="4-save-and-test">4. Save and Test</h3>
+<p>Save the <code>input.conf</code> file and restart mpv (or load a new
+video). Press your mapped key while the video is playing to verify that
+it smoothly cycles through 16:9, 4:3, 21:9, and back to original.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

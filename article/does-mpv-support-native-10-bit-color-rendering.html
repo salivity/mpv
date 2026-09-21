@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Does mpv Support Native 10-Bit Color Rendering? - mpv</title>
+    <meta name="description" content="The open-source media player mpv fully supports rendering 10-bit color depth natively across compatible operating systems, hardware, and display pipelines. By utilizing modern video output backends such as Direct3D 11, Vulkan, and OpenGL, mpv avoids trun">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/does-mpv-support-native-10-bit-color-rendering">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Does mpv Support Native 10-Bit Color Rendering? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/does-mpv-support-native-10-bit-color-rendering" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The open-source media player mpv fully supports rendering 10-bit color depth natively across compatible operating systems, hardware, and display pipelines. By utilizing modern video output backends such as Direct3D 11, Vulkan, and OpenGL, mpv avoids trun" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="does-mpv-support-native-10-bit-color-rendering">Does mpv Support
+Native 10-Bit Color Rendering?</h1>
+<p>The open-source media player mpv fully supports rendering 10-bit
+color depth natively across compatible operating systems, hardware, and
+display pipelines. By utilizing modern video output backends such as
+Direct3D 11, Vulkan, and OpenGL, mpv avoids truncating high-bit-depth
+video down to 8-bit, preserving smooth gradients and preventing banding
+artifacts. This article details how mpv handles high-bit-depth playback,
+the hardware and software prerequisites for true 10-bit rendering, and
+the specific configuration settings required on Windows, Linux, and
+macOS.</p>
+<h2 id="internal-processing-and-native-output">Internal Processing and
+Native Output</h2>
+<p>mpv processes all video through a high-precision internal pipeline.
+When decoding 10-bit sources (such as HEVC Main 10 or VP9 Profile 2),
+mpv does not automatically truncate the signal. Instead, its video
+renderers—<code>vo=gpu</code> and the newer
+<code>vo=gpu-next</code>—convert the decoded frames into high-precision
+texture formats (typically 16-bit integer or 32-bit floating-point) for
+color space conversion, scaling, and shader processing.</p>
+<p>Native 10-bit presentation occurs when the final rendering target
+matches the bit depth of the display interface. If the display, graphics
+driver, and operating system all support a 10-bit (or 30-bit RGB)
+framebuffer, mpv can directly present frames in 10-bit formats without
+introducing intermediate 8-bit dithering.</p>
+<h2 id="operating-system-and-driver-support">Operating System and Driver
+Support</h2>
+<p>Achieving native 10-bit output depends heavily on the host operating
+system and graphic backends:</p>
+<ul>
+<li><strong>Windows:</strong> Windows supports 10-bit output natively
+through the Direct3D 11 backend (<code>--gpu-api=d3d11</code>). When
+connected to a 10-bit or HDR-enabled display, mpv automatically requests
+a 10-bit swapchain (typically <code>rgb10_a2</code>). To guarantee
+native 10-bit output, users can explicitly set
+<code>--d3d11-output-format=rgb10_a2</code>.</li>
+<li><strong>Linux:</strong> Under X11, native 10-bit rendering requires
+the X server to be configured with a 30-bit color depth
+(<code>DefaultDepth 30</code> in <code>xorg.conf</code>). Under modern
+Wayland environments, native 10-bit and HDR passthrough depend on
+compositor support, with Vulkan (<code>--gpu-api=vulkan</code>) serving
+as the most reliable API for high-bit-depth surface negotiation.</li>
+<li><strong>macOS:</strong> Modern macOS systems support 10-bit Wide
+Color (P3) buffers natively. mpv can output directly to 10-bit surfaces
+on supported Apple displays using its Cocoa and Metal-adjacent rendering
+pipelines.</li>
+</ul>
+<h2 id="recommended-mpv-configuration-for-10-bit">Recommended mpv
+Configuration for 10-Bit</h2>
+<p>To ensure mpv utilizes 10-bit rendering whenever the hardware allows,
+include the following parameters in your <code>mpv.conf</code> file:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use modern GPU rendering</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Direct3D 11 on Windows, Vulkan on Linux/cross-platform</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">auto</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Enforce 10-bit output format for Direct3D 11 (Windows)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">d3d11-output-format</span><span class="ot">=</span><span class="st">rgb10_a2</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Allow mpv to adjust output format dynamically based on display capabilities</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dt">target-colorspace-hint</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Automatically handle dithering when outputting to displays below source bit-depth</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="dt">dither-depth</span><span class="ot">=</span><span class="st">auto</span></span></code></pre></div>
+<p>Setting <code>dither-depth=auto</code> ensures that if a display or
+graphics driver only negotiates an 8-bit signal, mpv will apply
+high-quality spatial and temporal dithering to prevent color banding,
+maintaining visual quality as close to true 10-bit as possible.</p>
+<h2 id="how-to-verify-10-bit-output">How to Verify 10-Bit Output</h2>
+<p>You can verify that mpv is outputting 10-bit color during playback by
+pressing <code>Shift + I</code> to open the internal statistics overlay,
+then pressing <code>2</code> to view frame and display information.
+Under the <strong>Display</strong> or <strong>Output</strong> sections,
+check the target pixel format. Formats labeled as <code>rgb10_a2</code>,
+<code>bgr10_a2</code>, or any 10-bit/16-bit surface indicate that mpv is
+delivering native 10-bit rendering directly to your display
+pipeline.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

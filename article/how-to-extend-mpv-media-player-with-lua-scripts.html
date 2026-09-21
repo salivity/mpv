@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Extend mpv Media Player with Lua Scripts? - mpv</title>
+    <meta name="description" content="The mpv media player is a highly customizable, open-source command-line player, and one of its most powerful features is its support for Lua scripting. By leveraging Lua, users can automate tasks, create custom user interfaces, manage playlists, and inte">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-extend-mpv-media-player-with-lua-scripts">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Extend mpv Media Player with Lua Scripts? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-extend-mpv-media-player-with-lua-scripts" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player is a highly customizable, open-source command-line player, and one of its most powerful features is its support for Lua scripting. By leveraging Lua, users can automate tasks, create custom user interfaces, manage playlists, and inte" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-extend-mpv-media-player-with-lua-scripts">How to Extend
+mpv Media Player with Lua Scripts?</h1>
+<p>The mpv media player is a highly customizable, open-source
+command-line player, and one of its most powerful features is its
+support for Lua scripting. By leveraging Lua, users can automate tasks,
+create custom user interfaces, manage playlists, and integrate
+third-party tools directly into their playback experience. This article
+provides a quick guide on how to find, install, and write basic Lua
+scripts to unlock the full potential of your mpv media player.</p>
+<h2 id="understanding-mpvs-scripting-architecture">Understanding mpv's
+Scripting Architecture</h2>
+<p>At its core, mpv exposes a comprehensive API (Application Programming
+Interface) to its internal scripting engine. This allows Lua scripts to
+intercept player events, read and modify property values, and bind
+custom functionality to keyboard shortcuts. Because Lua is lightweight
+and fast, these scripts run with minimal overhead, ensuring that your
+media playback remains smooth and responsive.</p>
+<h2 id="how-to-install-existing-mpv-lua-scripts">How to Install Existing
+mpv Lua Scripts</h2>
+<p>You do not need to be a programmer to benefit from Lua scripts, as
+the mpv community has created hundreds of pre-made extensions. To
+install a script, follow these steps:</p>
+<ol type="1">
+<li><strong>Locate your mpv configuration directory:</strong></li>
+</ol>
+<ul>
+<li><strong>Windows:</strong> <code>%%APPDATA%%\mpv\</code> or the
+<code>portable_config</code> folder inside your mpv directory.</li>
+<li><strong>Linux/macOS:</strong> <code>~/.config/mpv/</code></li>
+</ul>
+<ol start="2" type="1">
+<li><strong>Create a scripts folder:</strong> If it does not already
+exist, create a new folder named <code>scripts</code> inside your
+configuration directory.</li>
+<li><strong>Download and drop:</strong> Place any downloaded
+<code>.lua</code> script files directly into this <code>scripts</code>
+folder. mpv will automatically load them the next time it starts.</li>
+</ol>
+<h2 id="writing-your-first-custom-lua-script">Writing Your First Custom
+Lua Script</h2>
+<p>If you want to build your own functionality, creating a basic script
+is remarkably straightforward. Below is an example of a simple Lua
+script that displays a custom message on the screen and prints a log to
+the console when a specific key is pressed.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Define the function to execute</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> display_welcome_message<span class="op">()</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">mp</span><span class="op">.</span>osd_message<span class="op">(</span><span class="st">&quot;Hello from your custom Lua script!&quot;</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span><span class="op">(</span><span class="st">&quot;Welcome message triggered successfully.&quot;</span><span class="op">)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- Bind the function to the &#39;ctrl+g&#39; key combination</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>add_key_binding<span class="op">(</span><span class="st">&quot;ctrl+g&quot;</span><span class="op">,</span> <span class="st">&quot;show-welcome&quot;</span><span class="op">,</span> <span class="va">display_welcome_message</span><span class="op">)</span></span></code></pre></div>
+<h3 id="key-components-of-the-script">Key Components of the Script</h3>
+<ul>
+<li><strong><code>mp.osd_message(text, duration)</code></strong>: This
+function displays On-Screen Display (OSD) text directly over the video
+player window for a specified number of seconds.</li>
+<li><strong><code>print(text)</code></strong>: This outputs text to the
+terminal or command prompt window running mpv, which is highly useful
+for debugging your code.</li>
+<li><strong><code>mp.add_key_binding(key, name, function)</code></strong>:
+This binds a specific keyboard shortcut to your custom Lua function,
+allowing for seamless interactivity.</li>
+</ul>
+<h2 id="popular-use-cases-for-mpv-lua-extensions">Popular Use Cases for
+mpv Lua Extensions</h2>
+<p>The possibilities with Lua scripting are vast. Some of the most
+popular community-driven scripts focus on enhancing the default user
+experience in the following areas:</p>
+<ul>
+<li><strong>Advanced On-Screen Controllers (OSC):</strong> Replacing the
+minimal default player interface with modern, feature-rich graphical
+interfaces.</li>
+<li><strong>Autoload Next File:</strong> Automatically searching the
+current directory and appending the next chronological video or audio
+track to the active playlist.</li>
+<li><strong>Subtitle Managers:</strong> Integrating with online
+databases to automatically fetch, rename, and load subtitles based on
+the currently playing file hash.</li>
+<li><strong>Playback Logging:</strong> Keeping a detailed history of
+everything you watch, which can optionally sync to third-party tracking
+services like Trakt or Last.fm.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

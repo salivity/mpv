@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Active Video and Audio Filters in mpv - mpv</title>
+    <meta name="description" content="This guide explains how to view all currently active video and audio filters applied to playback in the mpv media player. You can inspect your active filter chains in real time using built-in statistics screens, the interactive command console, or by con">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/view-active-video-and-audio-filters-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="View Active Video and Audio Filters in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/view-active-video-and-audio-filters-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This guide explains how to view all currently active video and audio filters applied to playback in the mpv media player. You can inspect your active filter chains in real time using built-in statistics screens, the interactive command console, or by con" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="view-active-video-and-audio-filters-in-mpv">View Active Video
+and Audio Filters in mpv</h1>
+<p>This guide explains how to view all currently active video and audio
+filters applied to playback in the mpv media player. You can inspect
+your active filter chains in real time using built-in statistics
+screens, the interactive command console, or by configuring custom
+On-Screen Display (OSD) keybindings.</p>
+<h3 id="method-1-using-the-built-in-statistics-overlay">Method 1: Using
+the Built-In Statistics Overlay</h3>
+<p>The fastest way to view active filters without modifying
+configuration files is through mpv's built-in stats script.</p>
+<ol type="1">
+<li>While a video is playing, press <strong><code>Shift</code> +
+<code>I</code></strong> (uppercase <code>I</code>) to open the
+persistent stats overlay.</li>
+<li>Press <strong><code>1</code></strong> or
+<strong><code>2</code></strong> on your keyboard to switch between
+pages:
+<ul>
+<li><strong>Page 1</strong> displays general file and decoder details,
+including applied hardware decoding and basic filter information.</li>
+<li><strong>Page 2</strong> displays the full video and audio processing
+pipelines, showing the precise order of active filters (<code>vf</code>
+and <code>af</code>).</li>
+</ul></li>
+<li>Press <strong><code>Shift</code> + <code>I</code></strong> again or
+<strong><code>Escape</code></strong> to close the overlay.</li>
+</ol>
+<h3 id="method-2-inspecting-filters-via-the-interactive-console">Method
+2: Inspecting Filters via the Interactive Console</h3>
+<p>mpv features a built-in terminal console that lets you query active
+player properties instantly.</p>
+<ol type="1">
+<li>Press the grave accent / tilde key (<strong><code>`</code></strong>
+or <strong><code>~</code></strong>) to open the console overlay.</li>
+<li>Type the following command to print the active video filters:
+<pre class="text"><code>print-text ${vf}</code></pre></li>
+<li>Type the following command to print the active audio filters:
+<pre class="text"><code>print-text ${af}</code></pre></li>
+<li>If filters are active, the console will print their names and
+parameters (for example, <code>sub,lavfi=[crop=1920:800:0:140]</code>).
+If no filters are applied, the output will return empty brackets
+<code>[]</code>.</li>
+</ol>
+<h3 id="method-3-adding-custom-osd-keybindings">Method 3: Adding Custom
+OSD Keybindings</h3>
+<p>If you frequently toggle filters and want quick visual confirmation
+on screen, you can map dedicated keys to print the filter chains to the
+OSD.</p>
+<p>Open your <code>input.conf</code> file (located in
+<code>~/.config/mpv/</code> on Linux/macOS or
+<code>%APPDATA%/mpv/</code> on Windows) and add the following lines:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode conf"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display active video and audio filters on the OSD</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">Alt</span><span class="er">+</span><span class="dt">v</span> <span class="dt">show-text</span> <span class="dt">&quot;Video Filters: ${vf}&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Alt</span><span class="er">+</span><span class="dt">a</span> <span class="dt">show-text</span> <span class="dt">&quot;Audio Filters: ${af}&quot;</span></span></code></pre></div>
+<p>Pressing <strong><code>Alt</code> + <code>v</code></strong> will
+display a temporary banner showing the current video filter list, while
+<strong><code>Alt</code> + <code>a</code></strong> will display the
+active audio filter list.</p>
+<h3 id="method-4-terminal-and-ipc-properties">Method 4: Terminal and IPC
+Properties</h3>
+<p>If you run mpv from a command line or control it via an IPC socket,
+you can monitor the properties directly:</p>
+<ul>
+<li><strong>Terminal Verbosity:</strong> Run mpv with increased filter
+logging:
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--msg-level</span><span class="op">=</span>vf=v,af=v filename.mkv</span></code></pre></div></li>
+<li><strong>IPC Socket:</strong> Query the properties <code>vf</code>
+and <code>af</code> over JSON IPC:
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span> <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;get_property&quot;</span><span class="ot">,</span> <span class="st">&quot;vf&quot;</span><span class="ot">]</span> <span class="fu">}</span></span></code></pre></div></li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Contribute Code and Report Bugs to mpv - mpv</title>
+    <meta name="description" content="mpv is an open-source media player developed collaboratively on GitHub, relying on community input to fix issues and expand functionality. This guide provides a straightforward overview of the project's contribution workflows, detailing how to prepare an">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-contribute-code-and-report-bugs-to-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Contribute Code and Report Bugs to mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-contribute-code-and-report-bugs-to-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="mpv is an open-source media player developed collaboratively on GitHub, relying on community input to fix issues and expand functionality. This guide provides a straightforward overview of the project's contribution workflows, detailing how to prepare an" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-contribute-code-and-report-bugs-to-mpv">How to Contribute
+Code and Report Bugs to mpv</h1>
+<p>mpv is an open-source media player developed collaboratively on
+GitHub, relying on community input to fix issues and expand
+functionality. This guide provides a straightforward overview of the
+project's contribution workflows, detailing how to prepare and submit
+actionable bug reports, propose new feature requests, and submit code
+contributions through pull requests.</p>
+<h2 id="reporting-bugs">Reporting Bugs</h2>
+<p>Bug reports for mpv are handled through the project's GitHub issue
+tracker. Follow these steps to ensure your report is actionable:</p>
+<ol type="1">
+<li><strong>Verify the Bug:</strong> Test the issue against the latest
+<code>git master</code> build or the most recent stable release. Bugs
+that have already been fixed in the development branch will be
+closed.</li>
+<li><strong>Search Existing Issues:</strong> Check both open and closed
+issues to ensure the problem has not already been reported or
+resolved.</li>
+<li><strong>Use the Bug Report Template:</strong> When opening a new
+issue, choose the "Bug report" template. Do not delete the pre-filled
+checklist or headers.</li>
+<li><strong>Provide Required Information:</strong>
+<ul>
+<li><strong>mpv Version:</strong> Include the full output of
+<code>mpv --version</code>.</li>
+<li><strong>System Details:</strong> Specify your operating system,
+desktop environment, GPU, and graphics driver version.</li>
+<li><strong>Log File:</strong> Generate and attach a complete log file
+by running <code>mpv --log-file=output.txt [options] [file]</code>. Do
+not truncate the log.</li>
+<li><strong>Reproduction Steps:</strong> Provide clear, minimal steps to
+reproduce the issue. If the bug is specific to a media file, provide a
+short sample or a link to one.</li>
+</ul></li>
+</ol>
+<h2 id="submitting-feature-requests">Submitting Feature Requests</h2>
+<p>Feature requests are also managed via GitHub issues. To request a new
+capability or change:</p>
+<ol type="1">
+<li><strong>Check Prior Discussions:</strong> Search the issue tracker
+to see if the feature was previously requested, implemented under a
+different name, or explicitly rejected by maintainers.</li>
+<li><strong>Use the Feature Request Template:</strong> Fill out the
+issue template detailing the desired functionality.</li>
+<li><strong>Explain the Use Case:</strong> Clearly describe what problem
+the feature solves. Explain why the behavior cannot be achieved using
+mpv's existing configuration options, input commands, or Lua/JavaScript
+scripting interfaces.</li>
+<li><strong>Keep Scope in Mind:</strong> mpv prioritizes minimalism,
+high-quality video output, and scriptability. Features requiring large
+external dependencies or complex graphical interfaces are generally
+declined.</li>
+</ol>
+<h2 id="contributing-code">Contributing Code</h2>
+<p>Code contributions are submitted as Pull Requests (PRs) targeting the
+<code>master</code> branch on GitHub.</p>
+<h3 id="preparation-and-guidelines">Preparation and Guidelines</h3>
+<ul>
+<li><strong>Development Setup:</strong> mpv uses the Meson build system.
+Ensure you can compile the player locally and run tests before making
+changes.</li>
+<li><strong>Code Style:</strong> Adhere strictly to the existing
+codebase conventions (primarily C99). Keep code clean, readable, and
+consistent with the surrounding files.</li>
+<li><strong>Commit Structure:</strong>
+<ul>
+<li>Keep commits atomic; each commit should represent one logical
+change.</li>
+<li>Write clear commit messages following the project's prefix format
+(e.g., <code>ao_pulse: fix buffer underrun handling</code> or
+<code>player: add new property</code>).</li>
+<li>Provide an explanation in the commit body describing <em>why</em>
+the change is necessary, not just <em>what</em> was changed.</li>
+</ul></li>
+</ul>
+<h3 id="submitting-the-pull-request">Submitting the Pull Request</h3>
+<ol type="1">
+<li>Fork the mpv repository and push your changes to a branch on your
+fork.</li>
+<li>Open a Pull Request against the <code>master</code> branch.</li>
+<li>Ensure automated CI checks pass. If tests or builds fail, review the
+logs and push corrections to your branch.</li>
+<li>Address review feedback constructively. Maintainers may ask for code
+refactoring, stylistic changes, or clarification before merging.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

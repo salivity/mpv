@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Customize mpv Keyboard Shortcuts with input.conf? - mpv</title>
+    <meta name="description" content="The mpv media player is highly praised for its minimalist interface and powerful command-line foundations, allowing users to deeply personalize their viewing experience. By utilizing the input.conf configuration file, you can easily remap existing hotkey">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-customize-mpv-keyboard-shortcuts-with-input-conf">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Customize mpv Keyboard Shortcuts with input.conf? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-customize-mpv-keyboard-shortcuts-with-input-conf" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player is highly praised for its minimalist interface and powerful command-line foundations, allowing users to deeply personalize their viewing experience. By utilizing the input.conf configuration file, you can easily remap existing hotkey" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-customize-mpv-keyboard-shortcuts-with-inputconf">How to
+Customize mpv Keyboard Shortcuts with input.conf?</h1>
+<p>The mpv media player is highly praised for its minimalist interface
+and powerful command-line foundations, allowing users to deeply
+personalize their viewing experience. By utilizing the
+<code>input.conf</code> configuration file, you can easily remap
+existing hotkeys, create brand-new shortcuts, and bind complex commands
+to single keystrokes. This guide will walk you through locating your
+configuration directory, creating the file, and writing custom key
+bindings to take full control of your mpv playback.</p>
+<h3 id="locating-or-creating-the-inputconf-file">Locating or Creating
+the input.conf File</h3>
+<p>Before you can add your custom shortcuts, you need to place the
+<code>input.conf</code> file in the correct configuration directory. The
+location varies depending on your operating system:</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>C:\Users\YourUsername\AppData\Roaming\mpv\</code> or inside a
+folder named <code>portable_config</code> in the same directory as your
+<code>mpv.exe</code> if you are using a portable installation.</li>
+<li><strong>macOS:</strong>
+<code>/Users/YourUsername/.config/mpv/</code></li>
+<li><strong>Linux:</strong>
+<code>/home/YourUsername/.config/mpv/</code></li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> If the <code>input.conf</code> file does not
+exist in that folder, simply create a new blank text file, rename it to
+<code>input.conf</code>, and ensure the file extension is
+<code>.conf</code> and not <code>.txt</code>.</p>
+</blockquote>
+<h3 id="syntax-for-customizing-shortcuts">Syntax for Customizing
+Shortcuts</h3>
+<p>The syntax inside <code>input.conf</code> is straightforward. Each
+line represents a single shortcut and follows a strict pattern:
+<strong>Key Command</strong>. You can also use the <code>#</code> symbol
+to add comments for organizing your file.</p>
+<pre class="text"><code># Syntax template:
+[KEY] [COMMAND] [ARGUMENTS]
+</code></pre>
+<h3 id="common-examples-of-custom-key-bindings">Common Examples of
+Custom Key Bindings</h3>
+<p>To give you an idea of how to structure your file, here are some
+popular modifications you can copy and paste directly into your
+<code>input.conf</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Desired Action</th>
+<th>Key to Bind</th>
+<th>Line to Add to input.conf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Skip forward 5 seconds</td>
+<td>Right Arrow</td>
+<td><code>RIGHT seek 5</code></td>
+</tr>
+<tr>
+<td>Skip backward 5 seconds</td>
+<td>Left Arrow</td>
+<td><code>LEFT seek -5</code></td>
+</tr>
+<tr>
+<td>Increase volume by 2%</td>
+<td>Mouse Wheel Up</td>
+<td><code>WHEEL_UP add volume 2</code></td>
+</tr>
+<tr>
+<td>Decrease volume by 2%</td>
+<td>Mouse Wheel Down</td>
+<td><code>WHEEL_DOWN add volume -2</code></td>
+</tr>
+<tr>
+<td>Cycle through subtitle tracks</td>
+<td>'s' Key</td>
+<td><code>s cycle sub</code></td>
+</tr>
+<tr>
+<td>Toggle fullscreen</td>
+<td>Double Click</td>
+<td><code>MBTN_LEFT_DBL cycle fullscreen</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-customization-and-multi-command-adjustments">Advanced
+Customization and Multi-command Adjustments</h3>
+<p>You can also bind keys to specific absolute values or chain commands
+together using the <code>;</code> separator. For instance, if you want a
+key that instantly resets the playback speed back to normal and displays
+a message, you can write:</p>
+<pre class="text"><code>SHAPE speed set 1.0; show-text &quot;Speed reset to normal&quot;
+</code></pre>
+<p>Once you have finished adding your desired shortcuts, save the
+<code>input.conf</code> file and restart mpv. Your new custom keyboard
+shortcuts will immediately take effect.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

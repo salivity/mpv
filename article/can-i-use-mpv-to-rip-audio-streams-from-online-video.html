@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can I use mpv to rip audio streams from online video? - mpv</title>
+    <meta name="description" content="Yes, you can use the versatile command-line media player mpv to extract and save audio streams directly from online videos without downloading the entire video file. By leveraging its integration with yt-dlp (or youtube-dl), mpv can stream the online med">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/can-i-use-mpv-to-rip-audio-streams-from-online-video">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can I use mpv to rip audio streams from online video? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/can-i-use-mpv-to-rip-audio-streams-from-online-video" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Yes, you can use the versatile command-line media player mpv to extract and save audio streams directly from online videos without downloading the entire video file. By leveraging its integration with yt-dlp (or youtube-dl), mpv can stream the online med" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="can-i-use-mpv-to-rip-audio-streams-from-online-video">Can I use
+mpv to rip audio streams from online video?</h1>
+<p>Yes, you can use the versatile command-line media player
+<strong>mpv</strong> to extract and save audio streams directly from
+online videos without downloading the entire video file. By leveraging
+its integration with <code>yt-dlp</code> (or <code>youtube-dl</code>),
+mpv can stream the online media source, isolate the audio track, and
+decode it directly into a local file on your system. This article will
+provide a quick overview of how this process works, the exact commands
+you need to use, and how to select specific audio formats.</p>
+<hr />
+<h3 id="how-to-extract-audio-with-mpv">How to Extract Audio with
+mpv</h3>
+<p>To rip an audio stream, you combine mpv's ability to play network
+URLs with its encoding options (the <code>--o</code> or
+<code>--stream-record</code> flags). Because mpv uses
+<code>yt-dlp</code> under the hood to parse websites, this method works
+for thousands of video hosting platforms.</p>
+<p>The most efficient way to rip the audio stream in its original,
+uncompressed digital format (without re-encoding) is by using the
+following command:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--no-video</span> <span class="at">--stream-record</span><span class="op">=</span>output.ogg <span class="st">&quot;URL_OF_ONLINE_VIDEO&quot;</span></span></code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>--no-video</code>: Tells mpv to ignore the video track
+completely, saving bandwidth and processing power.</li>
+<li><code>--stream-record=output.ogg</code>: Dumps the raw input stream
+directly into a file named <code>output.ogg</code>.</li>
+</ul>
+<h3 id="re-encoding-audio-to-mp3-or-wav">Re-encoding Audio to MP3 or
+WAV</h3>
+<p>If you want to force the audio into a specific format like MP3 or a
+high-quality WAV file, you can use mpv's encoding driver
+(<code>--o</code>). This requires your mpv installation to be compiled
+with libavfilter support (which is standard in most modern
+distributions).</p>
+<p>To convert the online stream directly to an MP3:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="st">&quot;URL_OF_ONLINE_VIDEO&quot;</span> <span class="at">--no-video</span> <span class="at">--o</span><span class="op">=</span>output.mp3</span></code></pre></div>
+<h3 id="selecting-best-audio-quality">Selecting Best Audio Quality</h3>
+<p>By default, mpv will ask <code>yt-dlp</code> to hand over the best
+combined video and audio stream. Since you only want the audio, you can
+optimize the download speed and ensure you get the absolute highest
+quality audio track available by passing format selectors directly to
+the underlying downloader:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--ytdl-format</span><span class="op">=</span>bestaudio <span class="at">--no-video</span> <span class="at">--o</span><span class="op">=</span>highquality.wav <span class="st">&quot;URL_OF_ONLINE_VIDEO&quot;</span></span></code></pre></div>
+<p>Using <code>--ytdl-format=bestaudio</code> instructs the scraper to
+completely bypass the video stream on the server side, ensuring a fast,
+audio-only extraction process directly from the web to your local hard
+drive.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

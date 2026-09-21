@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Does mpv player support RTSP and HTTP streaming? - mpv</title>
+    <meta name="description" content="The mpv media player provides comprehensive, native support for modern network streaming protocols, including RTSP, HTTP, HTTPS, and RTMP. By leveraging its integrated FFmpeg libraries, mpv allows users to stream high-quality audio and video directly fro">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/does-mpv-player-support-rtsp-and-http-streaming">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Does mpv player support RTSP and HTTP streaming? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/does-mpv-player-support-rtsp-and-http-streaming" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player provides comprehensive, native support for modern network streaming protocols, including RTSP, HTTP, HTTPS, and RTMP. By leveraging its integrated FFmpeg libraries, mpv allows users to stream high-quality audio and video directly fro" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="does-mpv-player-support-rtsp-and-http-streaming">Does mpv player
+support RTSP and HTTP streaming?</h1>
+<p>The mpv media player provides comprehensive, native support for
+modern network streaming protocols, including RTSP, HTTP, HTTPS, and
+RTMP. By leveraging its integrated FFmpeg libraries, mpv allows users to
+stream high-quality audio and video directly from remote servers,
+security cameras, and live broadcasting platforms without needing to
+download the media files beforehand. This article explores how mpv
+handles these protocols, the syntax required to initiate a stream, and
+key configuration tips for optimizing playback performance.</p>
+<h2 id="core-protocol-support-and-capabilities">Core Protocol Support
+and Capabilities</h2>
+<p>As a highly versatile command-line media player, mpv treats network
+URLs similarly to local files. Because it is built on top of
+<code>libavformat</code> (part of the FFmpeg suite), it inherits a vast
+array of network protocol implementations.</p>
+<ul>
+<li><strong>HTTP/HTTPS:</strong> Used for streaming direct video links,
+podcasts, and web-based media files. mpv handles adaptive streaming
+formats running over HTTP perfectly, such as HLS (<code>.m3u8</code>)
+and MPEG-DASH (<code>.mpd</code>).</li>
+<li><strong>RTSP (Real-Time Streaming Protocol):</strong> Extensively
+utilized for IP security cameras, CCTV feeds, and professional internal
+broadcast systems.</li>
+<li><strong>RTMP/RTMPS:</strong> Frequently used for live streaming
+infrastructure and older flash-based legacy setups.</li>
+</ul>
+<p>Additionally, mpv seamlessly integrates with <code>yt-dlp</code> (and
+its predecessor <code>youtube-dl</code>). When you pass a standard
+website URL (like a YouTube or Twitch link) to mpv, it automatically
+uses this backend tool to scrape the underlying HTTP or HTTPS media
+stream and play it directly.</p>
+<h2 id="how-to-stream-network-protocols-in-mpv">How to Stream Network
+Protocols in mpv</h2>
+<p>Playing a network stream in mpv is straightforward and typically
+executed via the command line, though the same URLs can be dragged and
+dropped into the mpv graphical user interface.</p>
+<h3 id="streaming-via-httphttps">Streaming via HTTP/HTTPS</h3>
+<p>To play a direct video file hosted on the web, simply pass the URL as
+an argument:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> https://example.com/movies/video.mp4</span></code></pre></div>
+<p>For live HTTP streams like HLS, the command structure remains
+identical:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> https://live.example.com/stream/index.m3u8</span></code></pre></div>
+<h3 id="streaming-via-rtsp">Streaming via RTSP</h3>
+<p>IP cameras and local network feeds utilizing RTSP can be accessed by
+specifying the protocol at the beginning of the address:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> rtsp://1192.168.1.50:554/stream1</span></code></pre></div>
+<p>If your RTSP stream requires authentication, you can embed the
+credentials directly into the URL syntax:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> rtsp://username:password@192.168.1.50:554/stream1</span></code></pre></div>
+<h2 id="performance-optimization-and-buffering">Performance Optimization
+and Buffering</h2>
+<p>Network streams are inherently prone to latency and network jitter.
+Fortunately, mpv offers several built-in options to tweak how it handles
+network caches and protocol behavior.</p>
+<h3 id="adjusting-the-cache">Adjusting the Cache</h3>
+<p>If you experience stuttering or frequent pausing on high-bitrate HTTP
+or RTSP streams, you can force mpv to use a larger buffer.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--cache</span><span class="op">=</span>yes <span class="at">--demuxer-max-bytes</span><span class="op">=</span>150MiB https://example.com/video.mp4</span></code></pre></div>
+<h3 id="low-latency-mode-for-live-feeds">Low-Latency Mode for Live
+Feeds</h3>
+<p>For security cameras running over RTSP, real-time playback is often
+more important than perfect video smoothness. You can minimize playback
+lag by disabling the cache and forcing immediate frame rendering.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--profile</span><span class="op">=</span>low-latency <span class="at">--untimed</span> rtsp://192.168.1.50:554/stream1</span></code></pre></div>
+<h3 id="specifying-rtsp-transport">Specifying RTSP Transport</h3>
+<p>By default, mpv will negotiate the best transport protocol for RTSP,
+but you can explicitly force TCP if you notice packet loss or broken
+frames over UDP connections.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--rtsp-transport</span><span class="op">=</span>tcp rtsp://192.168.1.50:554/stream1</span></code></pre></div></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

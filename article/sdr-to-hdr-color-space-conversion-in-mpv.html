@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDR to HDR Color Space Conversion in mpv - mpv</title>
+    <meta name="description" content="Playing Standard Dynamic Range (SDR) content on a High Dynamic Range (HDR) monitor often leads to washed-out images, incorrect gamma, or oversaturated colors if the conversion is left to the operating system. The most accurate way to handle this in mpv i">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/sdr-to-hdr-color-space-conversion-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SDR to HDR Color Space Conversion in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/sdr-to-hdr-color-space-conversion-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Playing Standard Dynamic Range (SDR) content on a High Dynamic Range (HDR) monitor often leads to washed-out images, incorrect gamma, or oversaturated colors if the conversion is left to the operating system. The most accurate way to handle this in mpv i" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="sdr-to-hdr-color-space-conversion-in-mpv">SDR to HDR Color Space
+Conversion in mpv</h1>
+<p>Playing Standard Dynamic Range (SDR) content on a High Dynamic Range
+(HDR) monitor often leads to washed-out images, incorrect gamma, or
+oversaturated colors if the conversion is left to the operating system.
+The most accurate way to handle this in mpv is to leverage the modern
+<code>gpu-next</code> video output driver alongside proper color space
+signaling. By instructing mpv to manage the color transform from SDR
+(Rec.709/BT.1886) to HDR (BT.2020/PQ), you ensure faithful color
+reproduction and correct black levels without needing to toggle Windows
+or your monitor out of HDR mode.</p>
+<h3 id="1-use-the-modern-render-engine-gpu-next">1. Use the Modern
+Render Engine (<code>gpu-next</code>)</h3>
+<p>The legacy <code>gpu</code> output driver lacks the advanced color
+management pipeline needed for seamless SDR-to-HDR translation. The
+modern <code>gpu-next</code> backend relies on <code>libplacebo</code>,
+which calculates precise colorimetric transformations between different
+color spaces, gamuts, and transfer characteristics.</p>
+<p>Add the following to your <code>mpv.conf</code>:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">d3d11 # Use &#39;vulkan&#39; if preferred or on Linux</span></span></code></pre></div>
+<h3 id="2-enable-native-colorspace-hinting">2. Enable Native Colorspace
+Hinting</h3>
+<p>To prevent double-conversion artifacts caused by the operating
+system, mpv must communicate directly with your graphics pipeline about
+what color space the video is using. Setting
+<code>target-colorspace-hint</code> allows mpv to pass the original or
+converted metadata directly to the display compositor.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">target-colorspace-hint</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<p>When enabled on modern platforms like Windows 11 with HDR active, mpv
+dynamically configures the swapchain to match the content accurately,
+allowing the OS to blend SDR content properly at the system-defined SDR
+reference white level.</p>
+<h3 id="3-choose-between-color-accuracy-and-dynamic-expansion">3. Choose
+Between Color Accuracy and Dynamic Expansion</h3>
+<p>There are two approaches to watching SDR on an HDR panel: pure color
+accuracy (reference playback) or inverse tone mapping (pseudo-HDR).</p>
+<h4 id="method-a-accurate-sdr-confinement-recommended">Method A:
+Accurate SDR Confinement (Recommended)</h4>
+<p>This approach places standard Rec.709 content inside the wider
+BT.2020 container without artificially stretching the highlights or
+saturation. The video displays exactly as the creator intended.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preserves standard gamma and clips non-standard peaks safely</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">gamut-mapping-mode</span><span class="ot">=</span><span class="st">clip</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">tone-mapping</span><span class="ot">=</span><span class="st">clip</span></span></code></pre></div>
+<p>By default, <code>gpu-next</code> targets the monitor's calibrated
+white point. If SDR content appears too dim against the OS interface,
+adjust the brightness using the system's "SDR content brightness" slider
+in your display settings rather than forcing mpv to upscale the
+luminance.</p>
+<h4 id="method-b-inverse-tone-mapping-auto-hdr-effect">Method B: Inverse
+Tone Mapping (Auto-HDR Effect)</h4>
+<p>If you prefer standard dynamic range content to use the full peak
+brightness and expanded contrast of your HDR panel, enable inverse tone
+mapping. This algorithm estimates specular highlights and scales them up
+into HDR territory.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">inverse-tone-mapping</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">tone-mapping</span><span class="ot">=</span><span class="st">spline</span></span></code></pre></div>
+<h3 id="recommended-mpvconf-baseline">Recommended <code>mpv.conf</code>
+Baseline</h3>
+<p>For the cleanest setup that handles both standard SDR media and
+native HDR files automatically without manual switching, use the
+following configuration:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">d3d11</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">target-colorspace-hint</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">dither-depth</span><span class="ot">=</span><span class="dv">10</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">gamut-mapping-mode</span><span class="ot">=</span><span class="st">perceptual</span></span></code></pre></div>
+<p>This configuration ensures that mpv correctly translates the 8-bit
+Rec.709 SDR stream into the 10-bit or 12-bit BT.2020 signaling expected
+by your HDR screen, avoiding banding, color tinting, and gamma
+distortion.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

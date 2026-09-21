@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use mpv IPC Server to Control Playback? - mpv</title>
+    <meta name="description" content="The mpv media player includes a powerful Inter-Process Communication (IPC) server feature that allows external applications or scripts to control playback, modify settings, and retrieve status updates in real-time. By enabling a Unix socket or a Windows">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-use-mpv-ipc-server-to-control-playback">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Use mpv IPC Server to Control Playback? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-use-mpv-ipc-server-to-control-playback" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player includes a powerful Inter-Process Communication (IPC) server feature that allows external applications or scripts to control playback, modify settings, and retrieve status updates in real-time. By enabling a Unix socket or a Windows" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-use-mpv-ipc-server-to-control-playback">How to Use mpv
+IPC Server to Control Playback?</h1>
+<p>The <strong>mpv media player</strong> includes a powerful
+Inter-Process Communication (IPC) server feature that allows external
+applications or scripts to control playback, modify settings, and
+retrieve status updates in real-time. By enabling a Unix socket or a
+Windows named pipe, mpv opens a bidirectional communication channel that
+accepts commands formatted in JSON-IPC. This guide provides a
+step-by-step walkthrough on how to enable the IPC server, format valid
+control commands, and send them using common command-line tools like
+<code>socat</code> or Python scripts.</p>
+<h2 id="step-1-enabling-the-ipc-server-in-mpv">Step 1: Enabling the IPC
+Server in mpv</h2>
+<p>To allow external applications to communicate with mpv, you must
+start the player with the <code>--input-ipc-server</code> flag
+specified. This creates a listener at a designated path.</p>
+<ul>
+<li><strong>On Linux and macOS (Unix Sockets):</strong></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--input-ipc-server</span><span class="op">=</span>/tmp/mpvsocket video.mp4</span></code></pre></div>
+<ul>
+<li><strong>On Windows (Named Pipes):</strong></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode cmd"><code class="sourceCode dosbat"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mpv --input-ipc-server=\\.\pipe\mpvsocket video.mp4</span></code></pre></div>
+<blockquote>
+<p><strong>Tip:</strong> If you want this feature enabled by default
+without typing the flag every time, add
+<code>input-ipc-server=/tmp/mpvsocket</code> (or the Windows equivalent)
+to your <code>mpv.conf</code> configuration file.</p>
+</blockquote>
+<h2 id="step-2-understanding-the-json-ipc-format">Step 2: Understanding
+the JSON-IPC Format</h2>
+<p>mpv listens for commands formatted as JSON objects. Every message
+sent to the server must end with a newline character (<code>\n</code>)
+so the player knows the command is complete.</p>
+<p>The most common structure for a request contains a
+<code>command</code> key paired with an array of arguments:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span> <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;argument1&quot;</span><span class="ot">,</span> <span class="st">&quot;argument2&quot;</span><span class="ot">,</span> <span class="er">...</span><span class="ot">]</span> <span class="fu">}</span></span></code></pre></div>
+<h2 id="step-3-sending-commands-via-the-command-line">Step 3: Sending
+Commands via the Command Line</h2>
+<p>Once mpv is running with the IPC server active, you can interact with
+it using network utilities. The <code>socat</code> utility is the most
+reliable tool for Unix sockets.</p>
+<h3 id="pausing-and-resuming-playback">Pausing and Resuming
+Playback</h3>
+<p>To toggle the pause state, send the <code>cycle</code> command for
+the <code>pause</code> property:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;{ &quot;command&quot;: [&quot;cycle&quot;, &quot;pause&quot;] }&#39;</span> <span class="kw">|</span> <span class="ex">socat</span> <span class="at">-</span> /tmp/mpvsocket</span></code></pre></div>
+<h3 id="adjusting-volume">Adjusting Volume</h3>
+<p>To set the volume to a specific percentage (e.g., 50%):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;{ &quot;command&quot;: [&quot;set_property&quot;, &quot;volume&quot;, 50] }&#39;</span> <span class="kw">|</span> <span class="ex">socat</span> <span class="at">-</span> /tmp/mpvsocket</span></code></pre></div>
+<h3 id="seeking-through-media">Seeking Through Media</h3>
+<p>To skip forward by 10 seconds:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;{ &quot;command&quot;: [&quot;seek&quot;, 10, &quot;relative&quot;] }&#39;</span> <span class="kw">|</span> <span class="ex">socat</span> <span class="at">-</span> /tmp/mpvsocket</span></code></pre></div>
+<h2 id="step-4-controlling-mpv-with-python">Step 4: Controlling mpv with
+Python</h2>
+<p>For integration into larger software projects, programming languages
+like Python can interact with the socket directly using the built-in
+<code>socket</code> library.</p>
+<p>The following script demonstrates how to connect to an existing mpv
+IPC instance on a Unix-based system and pause the video:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> socket</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>socket_path <span class="op">=</span> <span class="st">&quot;/tmp/mpvsocket&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Unix domain socket connection</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>client.<span class="ex">connect</span>(socket_path)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the payload with a trailing newline</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>payload <span class="op">=</span> { <span class="st">&quot;command&quot;</span>: [<span class="st">&quot;set_property&quot;</span>, <span class="st">&quot;pause&quot;</span>, <span class="va">True</span>] }</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> json.dumps(payload) <span class="op">+</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Send the command to mpv</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>client.sendall(message.encode(<span class="st">&#39;utf-8&#39;</span>))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the response from the server</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> client.recv(<span class="dv">1024</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Response:&quot;</span>, response.decode(<span class="st">&#39;utf-8&#39;</span>))</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>client.close()</span></code></pre></div>
+<h2 id="step-5-observing-properties-and-events">Step 5: Observing
+Properties and Events</h2>
+<p>The IPC server is bidirectional. Not only can you send commands, but
+mpv will also output JSON responses confirming whether a command
+succeeded or failed. Furthermore, if you keep the connection open, mpv
+streams event notifications such as file loading changes, playback
+interruptions, or end-of-file events, allowing your external application
+to stay perfectly synchronized with the player's internal state.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

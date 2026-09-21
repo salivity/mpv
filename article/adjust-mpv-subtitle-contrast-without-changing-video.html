@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjust mpv Subtitle Contrast Without Changing Video - mpv</title>
+    <meta name="description" content="While mpv does not have a dedicated contrast slider specifically for subtitles like it does for video, you can achieve the exact same effect by modifying subtitle styling. By altering the text color, outline thickness, shadow depth, and background box op">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/adjust-mpv-subtitle-contrast-without-changing-video">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Adjust mpv Subtitle Contrast Without Changing Video - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/adjust-mpv-subtitle-contrast-without-changing-video" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="While mpv does not have a dedicated contrast slider specifically for subtitles like it does for video, you can achieve the exact same effect by modifying subtitle styling. By altering the text color, outline thickness, shadow depth, and background box op" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="adjust-mpv-subtitle-contrast-without-changing-video">Adjust mpv
+Subtitle Contrast Without Changing Video</h1>
+<p>While mpv does not have a dedicated contrast slider specifically for
+subtitles like it does for video, you can achieve the exact same effect
+by modifying subtitle styling. By altering the text color, outline
+thickness, shadow depth, and background box opacity, you can increase or
+decrease the visual contrast of text-based subtitles without altering
+the contrast or color grading of the underlying video.</p>
+<h2 id="text-based-subtitles-srt-vtt-ass">Text-Based Subtitles (SRT,
+VTT, ASS)</h2>
+<p>For standard text-based subtitles, mpv allows you to customize the
+font appearance directly through the command line or via your
+<code>mpv.conf</code> configuration file.</p>
+<p>To maximize subtitle contrast and readability against bright or busy
+video backgrounds, apply the following properties:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Main text color (Format: ARGB or RRGGBB)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-color</span><span class="ot">=</span><span class="st">&quot;#FFFFFFFF&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Border (outline) to separate text from bright backgrounds</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-border-color</span><span class="ot">=</span><span class="st">&quot;#FF000000&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-border-size</span><span class="ot">=</span><span class="fl">3.0</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Shadow for depth and separation</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-shadow-offset</span><span class="ot">=</span><span class="fl">2.0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-shadow-color</span><span class="ot">=</span><span class="st">&quot;#80000000&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: Add a solid or semi-transparent background box</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-back-color</span><span class="ot">=</span><span class="st">&quot;#80000000&quot;</span></span></code></pre></div>
+<h3 id="overriding-embedded-ass-styles">Overriding Embedded ASS
+Styles</h3>
+<p>If you are watching media with styled ASS/SSA subtitles, mpv defaults
+to the styles defined by the subtitle creator. To force your own
+high-contrast styles, add:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-ass-override</span><span class="ot">=</span><span class="st">force</span></span></code></pre></div>
+<p>Setting this to <code>force</code> applies your custom borders,
+colors, and backgrounds to all subtitles, ensuring consistent
+contrast.</p>
+<h2 id="image-based-subtitles-pgs-vobsub">Image-Based Subtitles (PGS,
+VobSub)</h2>
+<p>Bitmap or image-based subtitles, commonly found on Blu-ray (PGS) and
+DVD (VobSub) rips, are pre-rendered graphic overlays rather than text.
+Because they are rendered as images, text styling options like
+<code>sub-border-size</code> or <code>sub-color</code> will not
+apply.</p>
+<p>mpv provides limited options to alter the appearance of image-based
+subtitles independently:</p>
+<ul>
+<li><strong>Grayscale conversion:</strong> Use
+<code>--sub-gray=yes</code> to convert full-color subtitle images to
+grayscale, which can reduce clashing colors.</li>
+<li><strong>General scaling:</strong> Use <code>--sub-scale</code> to
+adjust the size, which may improve legibility against complex
+scenes.</li>
+</ul>
+<p>True contrast adjustments cannot be applied solely to PGS subtitle
+layers without converting them to text formats (such as SRT via OCR
+software) first.</p>
+<h2 id="adjusting-contrast-dynamically">Adjusting Contrast
+Dynamically</h2>
+<p>To tweak subtitle readability on the fly without editing
+configuration files every time, you can map subtitle styling toggles in
+your <code>input.conf</code> file:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Toggle a high-contrast background box</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">b cycle-values sub-back-color &quot;#C0000000&quot; &quot;none&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Increase or decrease outline thickness</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">k add sub-border-size +0.5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">j add sub-border-size -0.5</span></span></code></pre></div>
+<p>These shortcuts allow you to adapt the subtitle visibility instantly
+depending on the scene's brightness without touching the global video
+contrast settings.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

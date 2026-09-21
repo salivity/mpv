@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPV Conditional Profiles by File Extension - mpv</title>
+    <meta name="description" content="Configuring conditional profiles in mpv allows you to automatically apply specific playback settings, video filters, or keybindings depending on the media file type being played. This guide explains how to define conditional profiles in your mpv.conf fil">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/mpv-conditional-profiles-by-file-extension">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MPV Conditional Profiles by File Extension - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/mpv-conditional-profiles-by-file-extension" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Configuring conditional profiles in mpv allows you to automatically apply specific playback settings, video filters, or keybindings depending on the media file type being played. This guide explains how to define conditional profiles in your mpv.conf fil" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="mpv-conditional-profiles-by-file-extension">MPV Conditional
+Profiles by File Extension</h1>
+<p>Configuring conditional profiles in mpv allows you to automatically
+apply specific playback settings, video filters, or keybindings
+depending on the media file type being played. This guide explains how
+to define conditional profiles in your <code>mpv.conf</code> file by
+matching file extensions using mpv's Lua pattern-matching capabilities
+within the <code>profile-cond</code> property.</p>
+<h3 id="locating-the-configuration-file">Locating the Configuration
+File</h3>
+<p>Before adding profiles, ensure you are editing the correct
+<code>mpv.conf</code> file for your operating system:</p>
+<ul>
+<li><strong>Linux / macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%/mpv/mpv.conf</code> (or
+inside the <code>portable_config</code> directory if using a portable
+build)</li>
+</ul>
+<p>If the file does not exist, create a blank text file named
+<code>mpv.conf</code> in that location.</p>
+<h3 id="defining-a-conditional-profile">Defining a Conditional
+Profile</h3>
+<p>In mpv, conditional profiles use the <code>profile-cond</code>
+property. This property evaluates a Lua expression and activates the
+profile automatically whenever the condition evaluates to true.</p>
+<p>To match a file extension, use Lua's pattern-matching function on the
+<code>filename</code> or <code>path</code> property.</p>
+<h4 id="basic-syntax-for-a-single-extension">Basic Syntax for a Single
+Extension</h4>
+<p>Add a named profile block enclosed in brackets, followed by the
+<code>profile-cond</code> condition and the settings you want to
+apply:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[audio-files]</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-cond</span><span class="ot">=</span><span class="st">filename:match(&#39;%.mp3$&#39;) ~= nil</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">volume</span><span class="ot">=</span><span class="dv">80</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">audio-display</span><span class="ot">=</span><span class="kw">no</span></span></code></pre></div>
+<p>In this example:</p>
+<ul>
+<li><code>filename:match('%.mp3$')</code> searches the filename for
+<code>.mp3</code> at the end of the string (where <code>$</code>
+represents the end of the string and <code>%</code> escapes the
+dot).</li>
+<li><code>~= nil</code> ensures the profile activates only when a match
+is found.</li>
+</ul>
+<h4 id="matching-multiple-extensions">Matching Multiple Extensions</h4>
+<p>You can combine multiple file extension checks within a single
+condition using the Lua <code>or</code> operator:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[web-videos]</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-cond</span><span class="ot">=</span><span class="st">filename:match(&#39;%.mp4$&#39;) ~= nil or filename:match(&#39;%.webm$&#39;) ~= nil</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">loop-file</span><span class="ot">=</span><span class="st">inf</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec</span><span class="ot">=</span><span class="st">auto-safe</span></span></code></pre></div>
+<p>Alternatively, you can use Lua character classes to capture
+variations:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[image-viewer]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-cond</span><span class="ot">=</span><span class="st">filename:match(&#39;%.jpe?g$&#39;) ~= nil or filename:match(&#39;%.png$&#39;) ~= nil</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">image-display-duration</span><span class="ot">=</span><span class="dv">5</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">pause</span><span class="ot">=</span><span class="kw">no</span></span></code></pre></div>
+<h3 id="case-insensitive-matching">Case-Insensitive Matching</h3>
+<p>To ensure files with uppercase extensions (like <code>.MKV</code> or
+<code>.MP4</code>) are also matched, convert the filename to lowercase
+using <code>:lower()</code> before matching:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[mkv-settings]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-cond</span><span class="ot">=</span><span class="st">filename:lower():match(&#39;%.mkv$&#39;) ~= nil</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-auto</span><span class="ot">=</span><span class="st">fuzzy</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-visibility</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<h3 id="profile-restoration">Profile Restoration</h3>
+<p>By default, settings modified by a conditional profile might persist
+when moving to the next item in a playlist if the next file does not
+override them. To ensure the previous state is restored when an
+extension condition no longer applies, set the
+<code>profile-restore</code> property at the top of your
+<code>mpv.conf</code>:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-restore</span><span class="ot">=</span><span class="st">copy</span></span></code></pre></div>
+<p>With this setting enabled, mpv reverts any modified values back to
+their defaults when playing a file that does not match the active
+profile's condition.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

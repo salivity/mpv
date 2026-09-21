@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Does the keep-open Option Do in MPV? - mpv</title>
+    <meta name="description" content="When playing a video in the MPV media player, the --keep-open option determines whether the player remains active or automatically closes once the playback reaches the end of the file. By default, MPV terminates and closes its window as soon as a video f">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/what-does-the-keep-open-option-do-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Does the keep-open Option Do in MPV? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/what-does-the-keep-open-option-do-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When playing a video in the MPV media player, the --keep-open option determines whether the player remains active or automatically closes once the playback reaches the end of the file. By default, MPV terminates and closes its window as soon as a video f" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-does-the-keep-open-option-do-in-mpv">What Does the
+keep-open Option Do in MPV?</h1>
+<p>When playing a video in the MPV media player, the
+<code>--keep-open</code> option determines whether the player remains
+active or automatically closes once the playback reaches the end of the
+file. By default, MPV terminates and closes its window as soon as a
+video finishes. Enabling this option overrides that behavior, allowing
+users to keep the player window open on the final frame of the video,
+which is particularly useful for reviewing content, checking video
+properties, or preparing to restart playback.</p>
+<h2 id="how-the-keep-open-option-works">How the Keep-Open Option
+Works</h2>
+<p>The <code>--keep-open</code> configuration accepts a few different
+parameters, allowing you to customize exactly how MPV behaves at the end
+of a file:</p>
+<ul>
+<li><strong><code>yes</code></strong>: The player will pause on the very
+last frame of the video instead of closing. If you are playing a
+playlist, it will only pause at the end of the final video.</li>
+<li><strong><code>always</code></strong>: The player will pause at the
+end of <em>every</em> individual file, even if there are more files
+remaining in the playlist.</li>
+<li><strong><code>no</code></strong>: This is the default setting. The
+player will immediately close the window or move to the next file in the
+playlist when the current video ends.</li>
+</ul>
+<h2 id="benefits-of-using-keep-open">Benefits of Using Keep-Open</h2>
+<p>Keeping the media player open at the end of a video offers several
+practical advantages for everyday viewing and technical workflows:</p>
+<ul>
+<li><strong>Reviewing Content:</strong> It allows you to look at the
+final frame of a video, which is helpful if a clip ends on important
+information, a graphic, or credits.</li>
+<li><strong>Preventing Accidental Closures:</strong> If you are watching
+a series of short clips, it prevents the application from constantly
+shutting down, saving you from having to reopen the software.</li>
+<li><strong>Analyzing Stream Data:</strong> Keeping the window active
+allows you to view on-screen controller (OSC) information or terminal
+output statistics for the video that just finished.</li>
+</ul>
+<h2 id="how-to-enable-keep-open">How to Enable Keep-Open</h2>
+<p>You can utilize this option either on a case-by-case basis via the
+command line or permanently through your configuration file.</p>
+<h3 id="via-command-line">Via Command Line</h3>
+<p>To use this setting for a single viewing session, launch MPV from
+your terminal with the following flag:</p>
+<p><code>mpv --keep-open=yes video.mp4</code></p>
+<h3 id="via-configuration-file">Via Configuration File</h3>
+<p>To make this the permanent default behavior so you do not have to
+type it every time, add the line to your <code>mpv.conf</code> file:</p>
+<p><code>keep-open=yes</code></p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

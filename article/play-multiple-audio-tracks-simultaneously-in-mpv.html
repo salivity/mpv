@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Multiple Audio Tracks Simultaneously in mpv - mpv</title>
+    <meta name="description" content="While mpv does not include an out-of-the-box secondary audio track toggle like it does for secondary subtitles, it is fully capable of playing multiple audio tracks simultaneously for language learning. By leveraging mpv’s integration with FFmpeg’s c">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/play-multiple-audio-tracks-simultaneously-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Play Multiple Audio Tracks Simultaneously in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/play-multiple-audio-tracks-simultaneously-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="While mpv does not include an out-of-the-box secondary audio track toggle like it does for secondary subtitles, it is fully capable of playing multiple audio tracks simultaneously for language learning. By leveraging mpv’s integration with FFmpeg’s c" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="play-multiple-audio-tracks-simultaneously-in-mpv">Play Multiple
+Audio Tracks Simultaneously in mpv</h1>
+<p>While mpv does not include an out-of-the-box secondary audio track
+toggle like it does for secondary subtitles, it is fully capable of
+playing multiple audio tracks simultaneously for language learning. By
+leveraging mpv’s integration with FFmpeg’s complex filter graphs
+(<code>--lavfi-complex</code>), users can mix two or more audio streams
+together, adjust their relative volumes, or route different languages to
+individual ear channels.</p>
+<h3 id="identifying-audio-track-ids">Identifying Audio Track IDs</h3>
+<p>Before combining tracks, you must know their stream IDs. Run mpv in
+your terminal with the target video file to view the track list:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--track-list</span> input_video.mkv</span></code></pre></div>
+<p>Look for the audio entries (marked as <code>Audio --aid=1</code>,
+<code>Audio --aid=2</code>, etc.) and note the IDs corresponding to your
+target language and your native language.</p>
+<h3 id="mixing-two-tracks-concurrently">Mixing Two Tracks
+Concurrently</h3>
+<p>To mix two audio tracks into a single output, use the
+<code>amix</code> filter via the <code>--lavfi-complex</code> argument.
+Replace <code>aid1</code> and <code>aid2</code> with the track IDs you
+found:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> input_video.mkv <span class="at">--lavfi-complex</span><span class="op">=</span><span class="st">&quot;[aid1][aid2]amix=inputs=2[ao]&quot;</span></span></code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>[aid1]</code> and <code>[aid2]</code> represent the chosen
+audio track inputs.</li>
+<li><code>amix=inputs=2</code> combines the two streams into one.</li>
+<li><code>[ao]</code> assigns the mixed stream to mpv's audio
+output.</li>
+</ul>
+<h3 id="adjusting-relative-volume-levels">Adjusting Relative Volume
+Levels</h3>
+<p>For language learners, playing both tracks at full volume can sound
+cluttered. A common approach is to keep the target language prominent
+while lowering the native language to serve as background reference:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> input_video.mkv <span class="at">--lavfi-complex</span><span class="op">=</span><span class="st">&quot;[aid1]volume=1.0[a1];[aid2]volume=0.35[a2];[a1][a2]amix=inputs=2[ao]&quot;</span></span></code></pre></div>
+<p>Here, <code>volume=1.0</code> keeps the target language at 100%,
+while <code>volume=0.35</code> sets the secondary language to 35% before
+mixing.</p>
+<h3 id="splitting-audio-channels-by-ear">Splitting Audio Channels by
+Ear</h3>
+<p>Another effective language learning method is routing one language to
+the left ear and the other to the right ear, allowing the brain to
+isolate speech more easily using headphones:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> input_video.mkv <span class="at">--lavfi-complex</span><span class="op">=</span><span class="st">&quot;[aid1]pan=stereo|c0=c0|c1=0[left];[aid2]pan=stereo|c0=0|c1=c0[right];[left][right]amix=inputs=2[ao]&quot;</span></span></code></pre></div>
+<ul>
+<li>The primary track (<code>aid1</code>) is isolated to the left
+channel (<code>c0</code>).</li>
+<li>The secondary track (<code>aid2</code>) is isolated to the right
+channel (<code>c1</code>).</li>
+</ul>
+<h3 id="automating-with-inputconf">Automating with input.conf</h3>
+<p>Entering long filter commands manually each time is inefficient. You
+can bind dual-audio playback to a shortcut key by adding an entry to
+your <code>input.conf</code> file:</p>
+<pre class="text"><code>CTRL+a set lavfi-complex &quot;[aid1]volume=1.0[a1];[aid2]volume=0.3[a2];[a1][a2]amix=inputs=2[ao]&quot;
+CTRL+A set lavfi-complex &quot;&quot;</code></pre>
+<p>Pressing <code>Ctrl + a</code> activates the dual-track mix, while
+<code>Ctrl + Shift + a</code> clears the filter to return to default
+single-track playback.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Does mpv Support AV1 Hardware Decoding? - mpv</title>
+    <meta name="description" content="Yes, mpv fully supports AV1 hardware decoding on compatible modern graphics cards. However, because mpv prioritizes playback reliability, hardware acceleration is disabled by default. To utilize your graphics card's dedicated decoding hardware for the co">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/does-mpv-support-av-1-hardware-decoding">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Does mpv Support AV1 Hardware Decoding? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/does-mpv-support-av-1-hardware-decoding" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Yes, mpv fully supports AV1 hardware decoding on compatible modern graphics cards. However, because mpv prioritizes playback reliability, hardware acceleration is disabled by default. To utilize your graphics card's dedicated decoding hardware for the co" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="does-mpv-support-av1-hardware-decoding">Does mpv Support AV1
+Hardware Decoding?</h1>
+<p>Yes, mpv fully supports AV1 hardware decoding on compatible modern
+graphics cards. However, because mpv prioritizes playback reliability,
+hardware acceleration is disabled by default. To utilize your graphics
+card's dedicated decoding hardware for the computationally intensive AV1
+codec, you must explicitly enable it via command-line arguments or
+within your mpv configuration file.</p>
+<h3 id="prerequisites-for-av1-hardware-acceleration">Prerequisites for
+AV1 Hardware Acceleration</h3>
+<p>To successfully offload AV1 decoding from your CPU to your GPU in
+mpv, your system must meet specific hardware and software criteria:</p>
+<ul>
+<li><strong>Supported Hardware:</strong> You need a graphics card with a
+dedicated AV1 hardware decoder. This includes NVIDIA GeForce RTX
+30-series (Ampere) or newer, AMD Radeon RX 6000-series (RDNA 2) or
+newer, and Intel Arc (Alchemist) or newer GPUs.</li>
+<li><strong>Up-to-Date Drivers:</strong> Ensure you have the latest
+stable graphics drivers installed for your operating system.</li>
+<li><strong>FFmpeg Integration:</strong> Because mpv relies on FFmpeg as
+its backend backend, your installed version of FFmpeg must be compiled
+with support for the respective hardware acceleration APIs.</li>
+</ul>
+<h3 id="how-to-enable-av1-hardware-decoding">How to Enable AV1 Hardware
+Decoding</h3>
+<p>You can enable hardware decoding temporarily for a single video or
+permanently for all media playback.</p>
+<h4 id="1-on-the-fly-via-command-line">1. On-the-Fly via Command
+Line</h4>
+<p>To open a video file with hardware decoding enabled automatically,
+launch mpv from your terminal or command prompt using the following
+flag:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--hwdec</span><span class="op">=</span>auto <span class="st">&quot;your_av1_video.mkv&quot;</span></span></code></pre></div>
+<p>The <code>auto</code> argument directs mpv to look for the safest,
+whitelisted hardware decoding method available on your operating
+system.</p>
+<h4 id="2-permanent-configuration">2. Permanent Configuration</h4>
+<p>To ensure mpv always attempts to use your graphics card for decoding,
+you can add the setting to your permanent configuration file
+(<code>mpv.conf</code>).</p>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code></li>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+</ul>
+<p>Open the file in a text editor and add this line:</p>
+<pre class="text"><code>hwdec=auto
+</code></pre>
+<h3 id="verifying-active-hardware-acceleration">Verifying Active
+Hardware Acceleration</h3>
+<p>While a video is playing in mpv, you can check whether your graphics
+card is actively decoding the AV1 stream. Press the <strong>i</strong>
+key on your keyboard to bring up the on-screen statistics overlay. Look
+for the <strong>Decoder</strong> entry:</p>
+<ul>
+<li>If it reads <strong>av1 (software)</strong>, the video is being
+handled by your CPU.</li>
+<li>If it displays an API identifier like <strong>av1 (vaapi)</strong>,
+<strong>av1 (nvdec)</strong>, or <strong>av1 (d3d11va)</strong>,
+hardware acceleration is working successfully.</li>
+</ul>
+<p>Alternatively, you can toggle hardware decoding on and off during
+active playback at any time by pressing <strong>Ctrl + h</strong>.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is the mpv deband filter and how to use it? - mpv</title>
+    <meta name="description" content="The deband filter in the mpv media player is a powerful video processing tool designed to eliminate color banding artifacts, which appear as distinct, unnatural steps or "stripes" in smooth color gradients. This article explains what causes color banding">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/what-is-the-mpv-deband-filter-and-how-to-use-it">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What is the mpv deband filter and how to use it? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/what-is-the-mpv-deband-filter-and-how-to-use-it" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The deband filter in the mpv media player is a powerful video processing tool designed to eliminate color banding artifacts, which appear as distinct, unnatural steps or "stripes" in smooth color gradients. This article explains what causes color banding" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-is-the-mpv-deband-filter-and-how-to-use-it">What is the mpv
+deband filter and how to use it?</h1>
+<p>The deband filter in the mpv media player is a powerful video
+processing tool designed to eliminate color banding artifacts, which
+appear as distinct, unnatural steps or "stripes" in smooth color
+gradients. This article explains what causes color banding, how mpv's
+deband filter seamlessly smooths out these visual imperfections, and
+provides the exact configuration commands needed to enable and fine-tune
+the filter for an optimal viewing experience.</p>
+<h2 id="understanding-color-banding">Understanding Color Banding</h2>
+<p>Color banding occurs when a video file lacks sufficient color depth
+(bit depth) to display a smooth transition between shades of a similar
+color, such as a sunset, a clear sky, or a dark, foggy scene. Instead of
+a seamless gradient, you see noticeable bands of color.</p>
+<p>While this artifact is highly common in heavily compressed 8-bit
+videos, it can also happen during video decoding or rendering. The
+deband filter analyzes neighboring pixels and introduces subtle,
+imperceptible noise (dithering) to blend these harsh edges away,
+restoring the appearance of a smooth gradient.</p>
+<h2 id="how-to-enable-debanding-in-mpv">How to Enable Debanding in
+mpv</h2>
+<p>You can enable the deband filter in mpv either temporarily during
+playback using a keyboard shortcut, or permanently by modifying your
+configuration file.</p>
+<h3 id="temporary-activation-keyboard-shortcut">Temporary Activation
+(Keyboard Shortcut)</h3>
+<p>To toggle the deband filter on and off while a video is actively
+playing, press the <strong><code>h</code></strong> key on your
+keyboard.</p>
+<blockquote>
+<p><strong>Note:</strong> If you have custom keybindings configured in
+your <code>input.conf</code> file, this default shortcut may differ. You
+can explicitly map it by adding <code>h cycle deband</code> to your
+<code>input.conf</code> file.</p>
+</blockquote>
+<h3 id="permanent-activation-configuration-file">Permanent Activation
+(Configuration File)</h3>
+<p>To ensure the deband filter is always active whenever you open mpv,
+you need to add the command to your <code>mpv.conf</code> file.</p>
+<ol type="1">
+<li>Locate your <strong><code>mpv.conf</code></strong> file (typically
+found in <code>%APPDATA%/mpv/</code> on Windows or
+<code>~/.config/mpv/</code> on Linux/macOS).</li>
+<li>Open the file in a text editor.</li>
+<li>Add the following line on its own new line:</li>
+</ol>
+<pre class="text"><code>deband=yes
+</code></pre>
+<ol start="4" type="1">
+<li>Save and close the file.</li>
+</ol>
+<h2 id="advanced-deband-configuration">Advanced Deband
+Configuration</h2>
+<p>For users who want to balance video quality and hardware performance,
+mpv allows you to customize the intensity and behavior of the deband
+filter. Below are the primary sub-options you can add to your
+<code>mpv.conf</code> to fine-tune the process:</p>
+<ul>
+<li><strong><code>deband-iterations</code></strong>: Controls the number
+of filtering steps. Higher values catch more banding but utilize more
+GPU power. (Default is 1, recommended maximum is 4).</li>
+<li><strong><code>deband-threshold</code></strong>: Sets the filter
+sensitivity. A higher threshold removes more banding but can
+accidentally blur fine, intentional details in the video texture.
+(Default is 32).</li>
+<li><strong><code>deband-range</code></strong>: Defines the radius from
+which the filter samples neighboring pixels. A larger range is effective
+for wide, sweeping gradients. (Default is 16).</li>
+<li><strong><code>deband-grain</code></strong>: Injects extra dynamic
+noise to mask remaining bands. Setting this too high can make the video
+look excessively grainy. (Default is 48).</li>
+</ul>
+<p>An example of a high-quality, optimized debanding setup in
+<code>mpv.conf</code> looks like this:</p>
+<pre class="text"><code>deband=yes
+deband-iterations=4
+deband-threshold=48
+deband-range=16
+deband-grain=48
+</code></pre></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Crossfade Audio in mpv Playlists - mpv</title>
+    <meta name="description" content="This article explains whether mpv supports crossfading between audio tracks, how the player natively handles transitions, and the available methods to achieve overlapping playback. While mpv does not offer a native, single-command crossfade feature, you">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-crossfade-audio-in-mpv-playlists">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Crossfade Audio in mpv Playlists - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-crossfade-audio-in-mpv-playlists" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains whether mpv supports crossfading between audio tracks, how the player natively handles transitions, and the available methods to achieve overlapping playback. While mpv does not offer a native, single-command crossfade feature, you" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-crossfade-audio-in-mpv-playlists">How to Crossfade Audio
+in mpv Playlists</h1>
+<p>This article explains whether mpv supports crossfading between audio
+tracks, how the player natively handles transitions, and the available
+methods to achieve overlapping playback. While mpv does not offer a
+native, single-command crossfade feature, you can achieve track
+crossfading through specialized user scripts, multi-instance setups, or
+pre-processing filters.</p>
+<h2 id="native-mpv-capabilities-gapless-vs-crossfade">Native mpv
+Capabilities: Gapless vs. Crossfade</h2>
+<p>By default, mpv does not support true audio crossfading, where the
+end of one track fades out while the next track simultaneously fades in
+over it.</p>
+<p>mpv natively supports <strong>gapless audio</strong> playback using
+the <code>--gapless-audio=yes</code> flag (which is enabled by default).
+Gapless playback ensures that consecutive tracks play without pauses,
+clicks, or silence between them. However, gapless playback remains
+strictly sequential; mpv terminates the audio stream of the outgoing
+track before decoding and playing the incoming track.</p>
+<h2 id="workarounds-to-enable-crossfading-in-mpv">Workarounds to Enable
+Crossfading in mpv</h2>
+<p>Because mpv's single-instance architecture only decodes one audio
+file at a time, achieving an actual crossfade requires external methods
+or scripting.</p>
+<h3 id="1-using-lua-scripts-with-multi-instance-control">1. Using Lua
+Scripts with Multi-Instance Control</h3>
+<p>The most common way to crossfade in mpv is by using
+community-developed Lua scripts that leverage mpv’s Inter-Process
+Communication (IPC).</p>
+<ul>
+<li>These scripts run a secondary, hidden instance of mpv in the
+background.</li>
+<li>When the primary track approaches its end, the script launches the
+next track in the secondary instance, gradually raising its volume while
+lowering the volume of the primary instance.</li>
+<li>Once the transition is complete, playback control switches back to
+the primary instance.</li>
+</ul>
+<p>To use this method, search for user-made scripts like
+<code>mpv-crossfade</code> on script repositories such as GitHub and
+place the <code>.lua</code> file into your <code>~~/scripts/</code>
+directory.</p>
+<h3 id="2-pre-mixing-playlists-with-ffmpeg">2. Pre-mixing Playlists with
+FFmpeg</h3>
+<p>If dynamic playback control is not required, you can use FFmpeg (the
+multimedia framework behind mpv) to stitch and crossfade tracks into a
+single continuous file before playback:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-i</span> track1.mp3 <span class="at">-i</span> track2.mp3 <span class="at">-filter_complex</span> acrossfade=d=5:c1=tri:c2=tri output.mp3</span></code></pre></div>
+<p>This command uses the <code>acrossfade</code> audio filter to blend
+two files with a 5-second transition. The resulting file can then be
+played smoothly in mpv.</p>
+<h2 id="better-alternatives-for-crossfading-audio">Better Alternatives
+for Crossfading Audio</h2>
+<p>If automatic, on-the-fly crossfading without custom scripts is
+essential for your workflow, dedicated music players provide this
+functionality natively:</p>
+<ul>
+<li><strong>MPD (Music Player Daemon):</strong> Supports native
+crossfading between playlist items using the <code>crossfade</code>
+configuration setting.</li>
+<li><strong>Clementine / Strawberry:</strong> Full-featured desktop
+music players with built-in fading preferences.</li>
+<li><strong>cmus:</strong> A lightweight terminal-based audio player
+that supports crossfading out of the box.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

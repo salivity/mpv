@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Show Embedded Album Art in mpv - mpv</title>
+    <meta name="description" content="By default, the mpv media player plays audio files without opening a video window, keeping embedded cover images hidden. This guide details how to configure mpv to automatically display embedded album art from MP3, FLAC, and other audio containers, both">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-show-embedded-album-art-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Show Embedded Album Art in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-show-embedded-album-art-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="By default, the mpv media player plays audio files without opening a video window, keeping embedded cover images hidden. This guide details how to configure mpv to automatically display embedded album art from MP3, FLAC, and other audio containers, both" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-show-embedded-album-art-in-mpv">How to Show Embedded
+Album Art in mpv</h1>
+<p>By default, the mpv media player plays audio files without opening a
+video window, keeping embedded cover images hidden. This guide details
+how to configure mpv to automatically display embedded album art from
+MP3, FLAC, and other audio containers, both through command-line
+parameters and by saving the setting permanently inside your
+configuration file.</p>
+<h3 id="understanding-mpv-audio-display-settings">Understanding mpv
+Audio Display Settings</h3>
+<p>The behavior of album art rendering in mpv is controlled by the
+<code>--audio-display</code> option. It supports three distinct
+modes:</p>
+<ul>
+<li><strong><code>attachment</code></strong>: Displays embedded album
+art images (such as ID3 APIC frames in MP3s or Vorbis comments in
+FLACs).</li>
+<li><strong><code>no</code></strong>: Completely disables the video
+window during audio playback.</li>
+<li><strong><code>yes</code></strong>: The default behavior, which
+enables video display if video streams are detected, but may not
+prioritize audio-embedded static images depending on your platform and
+build.</li>
+</ul>
+<p>To force mpv to always parse and show embedded cover art, set this
+option to <code>attachment</code>.</p>
+<hr />
+<h3 id="method-1-using-the-command-line">Method 1: Using the Command
+Line</h3>
+<p>To test the behavior without altering your permanent settings, pass
+the <code>--audio-display=attachment</code> flag when launching mpv:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--audio-display</span><span class="op">=</span>attachment song.mp3</span></code></pre></div>
+<p>For FLAC files containing embedded metadata:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--audio-display</span><span class="op">=</span>attachment album.flac</span></code></pre></div>
+<p>If the window does not appear immediately when audio starts, you can
+add <code>--force-window=yes</code> to ensure the player creates a
+visual window right away:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--audio-display</span><span class="op">=</span>attachment <span class="at">--force-window</span><span class="op">=</span>yes song.mp3</span></code></pre></div>
+<hr />
+<h3 id="method-2-making-the-configuration-permanent">Method 2: Making
+the Configuration Permanent</h3>
+<p>To avoid typing the flag every time you play an audio file, add the
+directive to your <code>mpv.conf</code> file.</p>
+<h4 id="1-locate-or-create-mpvconf">1. Locate or Create
+<code>mpv.conf</code></h4>
+<ul>
+<li><strong>Linux / BSD:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>macOS:</strong> <code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code> (or
+inside the <code>portable_config</code> directory if using a portable
+build)</li>
+</ul>
+<h4 id="2-add-the-configuration-directives">2. Add the Configuration
+Directives</h4>
+<p>Open <code>mpv.conf</code> in any plain text editor and add the
+following lines:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Force the display of embedded album art</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">audio-display</span><span class="ot">=</span><span class="st">attachment</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the display window opens immediately upon playback</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">force-window</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<p>Save the file and restart mpv. Whenever an MP3 or FLAC file with
+embedded cover art is played, mpv will now open a dedicated window
+showing the image.</p>
+<hr />
+<h3 id="optional-handling-external-cover-art-files">Optional: Handling
+External Cover Art Files</h3>
+<p>If some of your music folders use external images (such as
+<code>cover.jpg</code>, <code>folder.png</code>, or
+<code>album.jpg</code>) instead of embedded metadata, you can instruct
+mpv to automatically load them alongside your audio files.</p>
+<p>Add the following to your <code>mpv.conf</code>:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Automatically search for external cover art matching common filenames</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">cover-art-auto</span><span class="ot">=</span><span class="st">fuzzy</span></span></code></pre></div>
+<p>Setting <code>cover-art-auto</code> to <code>fuzzy</code> allows mpv
+to load images in the same directory whose names partially match the
+track or use common naming conventions like <code>cover</code>,
+<code>front</code>, or <code>folder</code>. If set to
+<code>exact</code>, mpv only loads image files that match the exact
+filename of the audio track.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

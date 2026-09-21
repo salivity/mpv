@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPV Video on Second Monitor with Controls - mpv</title>
+    <meta name="description" content="The mpv media player does not natively support a built-in multi-window mode to separate its video rendering onto a secondary monitor while maintaining a dedicated graphic control window on the primary screen. Because mpv uses a minimalist, single-window">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/mpv-video-on-second-monitor-with-controls">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MPV Video on Second Monitor with Controls - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/mpv-video-on-second-monitor-with-controls" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player does not natively support a built-in multi-window mode to separate its video rendering onto a secondary monitor while maintaining a dedicated graphic control window on the primary screen. Because mpv uses a minimalist, single-window" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="mpv-video-on-second-monitor-with-controls">MPV Video on Second
+Monitor with Controls</h1>
+<p>The <code>mpv</code> media player does not natively support a
+built-in multi-window mode to separate its video rendering onto a
+secondary monitor while maintaining a dedicated graphic control window
+on the primary screen. Because <code>mpv</code> uses a minimalist,
+single-window architecture where the On-Screen Controller (OSC) is
+directly composited over the video canvas, moving the player to another
+screen moves the controls along with it. However, users can achieve this
+separation by using command-line arguments alongside terminal controls,
+leveraging its IPC (Inter-Process Communication) interface, or running
+third-party graphical frontends.</p>
+<h3 id="native-configuration-limits">Native Configuration Limits</h3>
+<p>By default, <code>mpv</code> allows you to route fullscreen video
+playback directly to an external monitor using the following
+configuration options or command-line flags:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--fs</span> <span class="at">--fs-screen</span><span class="op">=</span>1 video.mp4</span></code></pre></div>
+<p>Here, <code>--fs</code> forces fullscreen, and
+<code>--fs-screen=1</code> designates the display index (0 is typically
+the primary display, while 1 is the secondary). While this places the
+video on the secondary display, the interactive controls remain layered
+over the video itself as the On-Screen Controller. Interacting with the
+video using mouse clicks or hovering must occur on that secondary
+screen.</p>
+<h3 id="method-1-terminal-control-via-primary-display">Method 1:
+Terminal Control via Primary Display</h3>
+<p>If your goal is to manage playback without obscuring the secondary
+display, you can run <code>mpv</code> directly from a terminal window
+placed on your primary monitor:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--fs</span> <span class="at">--fs-screen</span><span class="op">=</span>1 <span class="at">--no-osc</span> <span class="at">--input-terminal</span><span class="op">=</span>yes video.mp4</span></code></pre></div>
+<ul>
+<li><code>--no-osc</code> completely disables the graphical interface
+overlaid on the video.</li>
+<li><code>--input-terminal=yes</code> keeps terminal interaction active,
+allowing you to use standard <code>mpv</code> keyboard shortcuts (such
+as spacebar for pause, arrow keys for seeking, and
+<code>9</code>/<code>0</code> for volume) inside the terminal on your
+primary display.</li>
+</ul>
+<h3 id="method-2-ipc-socket-and-web-controllers">Method 2: IPC Socket
+and Web Controllers</h3>
+<p>For a graphical control experience on the primary display,
+<code>mpv</code> can expose an IPC socket. This allows external tools or
+browser-based interfaces to drive playback on the secondary display:</p>
+<ol type="1">
+<li>Launch <code>mpv</code> with an IPC server:
+<ul>
+<li><strong>Linux/macOS:</strong>
+<code>mpv --input-ipc-server=/tmp/mpvsocket --fs --fs-screen=1 video.mp4</code></li>
+<li><strong>Windows:</strong>
+<code>mpv --input-ipc-server=\\.\pipe\mpvsocket --fs --fs-screen=1 video.mp4</code></li>
+</ul></li>
+<li>Run an IPC-compatible control client, such as a Python control
+script or an open-source web remote (like
+<code>mpv-web-interface</code>).</li>
+<li>Open the controller or web interface on the primary screen to pause,
+scrub, and change playlists while the video plays clean and
+uninterrupted on the secondary screen.</li>
+</ol>
+<h3 id="method-3-using-a-third-party-frontend">Method 3: Using a
+Third-Party Frontend</h3>
+<p>If you require standard GUI buttons (play, pause, timeline slider) in
+an independent window on your primary display, consider using an
+<code>mpv</code>-based frontend rather than the standalone
+<code>mpv</code> binary:</p>
+<ul>
+<li><strong>SMPlayer:</strong> Uses <code>mpv</code> as its backend
+engine and natively supports floating/detachable control bars that can
+remain on a separate display.</li>
+<li><strong>IINA (macOS):</strong> Built on <code>mpv</code>, supporting
+dedicated mini-players and detached inspector panels that can be
+separated across screens.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

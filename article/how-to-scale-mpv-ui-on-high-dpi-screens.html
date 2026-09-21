@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Scale mpv UI on High-DPI Screens? - mpv</title>
+    <meta name="description" content="Configuring the mpv media player to scale its user interface automatically on high-DPI displays ensures that text, menus, and the On-Screen Controller (OSC) remain legible and proportional. Because mpv relies heavily on configuration files rather than tr">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-scale-mpv-ui-on-high-dpi-screens">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Scale mpv UI on High-DPI Screens? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-scale-mpv-ui-on-high-dpi-screens" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Configuring the mpv media player to scale its user interface automatically on high-DPI displays ensures that text, menus, and the On-Screen Controller (OSC) remain legible and proportional. Because mpv relies heavily on configuration files rather than tr" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-scale-mpv-ui-on-high-dpi-screens">How to Scale mpv UI on
+High-DPI Screens?</h1>
+<p>Configuring the mpv media player to scale its user interface
+automatically on high-DPI displays ensures that text, menus, and the
+On-Screen Controller (OSC) remain legible and proportional. Because mpv
+relies heavily on configuration files rather than traditional graphical
+menus, enabling high-DPI scaling requires adding specific commands to
+your configuration file or adjusting environment variables depending on
+your operating system. This guide covers how to set up automatic scaling
+for mpv using the <code>mpv.conf</code> file, adjust the On-Screen
+Controller size, and troubleshoot common cross-platform scaling issues
+on Windows, macOS, and Linux.</p>
+<h2 id="step-1-enable-high-dpi-scaling-in-the-configuration-file">Step
+1: Enable High-DPI Scaling in the Configuration File</h2>
+<p>By default, mpv attempts to respect system scaling settings, but you
+can explicitly force it to scale the user interface and video output
+correctly by editing your <code>mpv.conf</code> file.</p>
+<ol type="1">
+<li>Locate or create your <code>mpv.conf</code> file:</li>
+</ol>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code></li>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+</ul>
+<ol start="2" type="1">
+<li>Open the file in a text editor and add the following line to ensure
+the window interacts correctly with high-res displays:</li>
+</ol>
+<pre class="text"><code>hidpi-window-scale=yes
+</code></pre>
+<p>This option tells mpv to scale the window size according to the
+backing scale factor of your high-DPI monitor, preventing the player
+from looking microscopic on 4K or 8K screens.</p>
+<h2 id="step-2-scale-the-on-screen-controller-osc">Step 2: Scale the
+On-Screen Controller (OSC)</h2>
+<p>Even with window scaling enabled, the On-Screen Controller (the
+play/pause timeline overlay) might still appear too small. You can
+independently scale the interface elements using OSC script options.</p>
+<p>Add these lines to your <code>mpv.conf</code> to scale the control
+bar:</p>
+<pre class="text"><code>script-opts-append=osc-scalewindow=yes
+script-opts-append=osc-vidscale=no
+</code></pre>
+<ul>
+<li><strong><code>osc-scalewindow=yes</code></strong>: Scales the OSC
+together with the window size, which is ideal for high-DPI setups.</li>
+<li><strong><code>osc-vidscale=no</code></strong>: Prevents the OSC from
+changing size drastically when you resize the window manually, keeping
+the interface consistent.</li>
+</ul>
+<p>Alternatively, if you want to force a specific, static size
+multiplier for the interface overlay, you can use the
+<code>osc-scale</code> parameter:</p>
+<pre class="text"><code>script-opts-append=osc-scale=1.5
+</code></pre>
+<h2 id="step-3-platform-specific-adjustments">Step 3: Platform-Specific
+Adjustments</h2>
+<p>If the configuration file tweaks do not fully resolve the scaling
+issue, your operating system's display server might be overriding
+mpv.</p>
+<h3 id="linux-wayland-and-x11">Linux (Wayland and X11)</h3>
+<p>On Linux desktop environments like GNOME or KDE Plasma, mpv scales
+best natively under Wayland. If you are using X11 or experiencing
+scaling friction, you can force the GUI backend scale by launching mpv
+with specific environment variables.</p>
+<p>For Qt-based wrappers or front-ends of mpv, or to force GDK scaling,
+use:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GDK_SCALE</span><span class="op">=</span>2</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">QT_SCALE_FACTOR</span><span class="op">=</span>2</span></code></pre></div>
+<h3 id="windows">Windows</h3>
+<p>Windows sometimes applies generic application stretching which can
+blur the text inside mpv. To fix this behavior:</p>
+<ol type="1">
+<li>Right-click the <code>mpv.exe</code> executable and select
+<strong>Properties</strong>.</li>
+<li>Navigate to the <strong>Compatibility</strong> tab.</li>
+<li>Click <strong>Change high DPI settings</strong>.</li>
+<li>Check <strong>Override high DPI scaling behavior</strong> and set
+the drop-down menu to <strong>Application</strong>.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

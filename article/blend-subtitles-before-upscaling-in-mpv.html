@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blend Subtitles Before Upscaling in mpv - mpv</title>
+    <meta name="description" content="In the mpv media player, subtitles are rendered at your display's native resolution after the video has already been scaled by default. However, configuring the blend-subtitles setting forces mpv to rasterize and draw subtitles directly onto video frames">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/blend-subtitles-before-upscaling-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blend Subtitles Before Upscaling in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/blend-subtitles-before-upscaling-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the mpv media player, subtitles are rendered at your display's native resolution after the video has already been scaled by default. However, configuring the blend-subtitles setting forces mpv to rasterize and draw subtitles directly onto video frames" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="blend-subtitles-before-upscaling-in-mpv">Blend Subtitles Before
+Upscaling in mpv</h1>
+<p>In the mpv media player, subtitles are rendered at your display's
+native resolution after the video has already been scaled by default.
+However, configuring the <code>blend-subtitles</code> setting forces mpv
+to rasterize and draw subtitles directly onto video frames before any
+upscaling, color conversion, or interpolation occurs. This guide
+explains what the <code>blend-subtitles</code> option does, how to
+enable it in your configuration, and the visual trade-offs involved.</p>
+<h3 id="the-setting-blend-subtitles">The Setting:
+<code>blend-subtitles</code></h3>
+<p>The setting that controls this behavior is
+<code>--blend-subtitles</code>. It accepts three values:</p>
+<ul>
+<li><strong><code>no</code> (default):</strong> Subtitles are rendered
+separately at the final screen resolution after the video stream has
+been processed and upscaled.</li>
+<li><strong><code>yes</code>:</strong> Blends the subtitle layer
+directly into the raw video frame before upscaling, interpolation, and
+color management shaders are applied.</li>
+<li><strong><code>video</code>:</strong> An alias for <code>yes</code>
+that ensures the subtitles are drawn at the video's native source
+resolution.</li>
+</ul>
+<h3 id="how-to-enable-it">How to Enable It</h3>
+<p>To enable subtitle blending via the command line, run:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--blend-subtitles</span><span class="op">=</span>yes video.mkv</span></code></pre></div>
+<p>To make this change permanent for all playback, add the following
+line to your <code>mpv.conf</code> file:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">blend-subtitles</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<h3 id="why-use-blend-subtitlesyes">Why Use
+<code>blend-subtitles=yes</code>?</h3>
+<p>Blending subtitles before upscaling is primarily used to fix visual
+inconsistencies and synchronization issues:</p>
+<ul>
+<li><strong>Eliminating Judder with Interpolation:</strong> When using
+mpv's display synchronization and motion interpolation
+(<code>--interpolation=yes</code>), default subtitles can appear to
+stutter or judder relative to smooth video motion. Blending ensures
+subtitles are interpolated alongside video frames at identical
+timing.</li>
+<li><strong>Uniform Video Processing:</strong> Any custom shaders, color
+management profiles, or post-processing filters applied to the video
+chain will also consistently affect the subtitles.</li>
+</ul>
+<h3 id="trade-offs-to-consider">Trade-offs to Consider</h3>
+<p>Because subtitles are drawn at the video's native resolution rather
+than the display resolution, watching low-resolution content (such as
+480p or 720p) on a high-resolution screen (such as 1440p or 4K) will
+cause text and styling to be scaled up by your video scaler. This can
+result in visibly softer, blurry, or pixelated subtitles compared to the
+crisp text rendered by the default setting.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

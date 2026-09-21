@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a Lua Script to Download Subtitles in MPV - mpv</title>
+    <meta name="description" content="MPV is an extensible, minimalist media player that allows users to automate playback features using Lua scripting. This article demonstrates how to build a custom Lua script that captures the path of the currently playing video, calls an external subtitl">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/write-a-lua-script-to-download-subtitles-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Write a Lua Script to Download Subtitles in MPV - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/write-a-lua-script-to-download-subtitles-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="MPV is an extensible, minimalist media player that allows users to automate playback features using Lua scripting. This article demonstrates how to build a custom Lua script that captures the path of the currently playing video, calls an external subtitl" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="write-a-lua-script-to-download-subtitles-in-mpv">Write a Lua
+Script to Download Subtitles in MPV</h1>
+<p>MPV is an extensible, minimalist media player that allows users to
+automate playback features using Lua scripting. This article
+demonstrates how to build a custom Lua script that captures the path of
+the currently playing video, calls an external subtitle-fetching tool
+through an asynchronous subprocess, and automatically loads the newly
+downloaded subtitle track without restarting playback.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>To download subtitles reliably, your Lua script should delegate
+network requests and subtitle provider APIs to an established
+command-line utility. A common, effective tool for this is
+<strong>Subliminal</strong>, a Python-based CLI that searches multiple
+subtitle providers. Ensure it is installed on your system:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install subliminal</span></code></pre></div>
+<p>Ensure <code>subliminal</code> is available in your system's
+PATH.</p>
+<h3 id="1-locate-the-mpv-scripts-directory">1. Locate the MPV Scripts
+Directory</h3>
+<p>MPV looks for user-defined scripts inside a dedicated directory. If
+this folder does not exist, create it:</p>
+<ul>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/scripts/</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%/mpv/scripts/</code></li>
+</ul>
+<p>Create a new file named <code>fetch_subtitles.lua</code> inside this
+directory.</p>
+<h3 id="2-the-lua-script-implementation">2. The Lua Script
+Implementation</h3>
+<p>Paste the following code into <code>fetch_subtitles.lua</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">mp</span> <span class="op">=</span> <span class="fu">require</span> <span class="st">&#39;mp&#39;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">utils</span> <span class="op">=</span> <span class="fu">require</span> <span class="st">&#39;mp.utils&#39;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">function</span> on_subtitles_fetched<span class="op">(</span><span class="va">success</span><span class="op">,</span> <span class="va">result</span><span class="op">,</span> <span class="fu">error</span><span class="op">)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">result</span> <span class="kw">and</span> <span class="va">result</span><span class="op">.</span><span class="va">status</span> <span class="op">==</span> <span class="dv">0</span> <span class="cf">then</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>osd_message<span class="op">(</span><span class="st">&quot;Subtitles downloaded successfully!&quot;</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- Reload external subtitle files and auto-select the best match</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>commandv<span class="op">(</span><span class="st">&quot;rescan-external-files&quot;</span><span class="op">,</span> <span class="st">&quot;reselect&quot;</span><span class="op">)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>osd_message<span class="op">(</span><span class="st">&quot;Subtitle download failed.&quot;</span><span class="op">,</span> <span class="dv">4</span><span class="op">)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">function</span> fetch_subtitles<span class="op">()</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Retrieve the file path of the current video</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">video_path</span> <span class="op">=</span> <span class="va">mp</span><span class="op">.</span>get_property<span class="op">(</span><span class="st">&quot;path&quot;</span><span class="op">)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Check if the current media is a local file</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="va">video_path</span> <span class="kw">or</span> <span class="va">video_path</span><span class="op">:</span><span class="fu">find</span><span class="op">(</span><span class="st">&quot;^https?://&quot;</span><span class="op">)</span> <span class="cf">then</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>osd_message<span class="op">(</span><span class="st">&quot;Cannot fetch subtitles for non-local media&quot;</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">mp</span><span class="op">.</span>osd_message<span class="op">(</span><span class="st">&quot;Fetching subtitles...&quot;</span><span class="op">,</span> <span class="dv">10</span><span class="op">)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Define the command and arguments (subliminal downloading English subs)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">command</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">name</span> <span class="op">=</span> <span class="st">&quot;subprocess&quot;</span><span class="op">,</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">playback_only</span> <span class="op">=</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="va">capture_stdout</span> <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">capture_stderr</span> <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">args</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;subliminal&quot;</span><span class="op">,</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;download&quot;</span><span class="op">,</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;-l&quot;</span><span class="op">,</span> <span class="st">&quot;en&quot;</span><span class="op">,</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            <span class="va">video_path</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- Execute asynchronously to avoid freezing the player interface</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="va">mp</span><span class="op">.</span>command_native_async<span class="op">(</span><span class="va">command</span><span class="op">,</span> <span class="va">on_subtitles_fetched</span><span class="op">)</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">-- Expose the function to MPV keybindings</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>add_key_binding<span class="op">(</span><span class="st">&quot;Ctrl+S&quot;</span><span class="op">,</span> <span class="st">&quot;download_subs&quot;</span><span class="op">,</span> <span class="va">fetch_subtitles</span><span class="op">)</span></span></code></pre></div>
+<h3 id="3-how-the-script-works">3. How the Script Works</h3>
+<ul>
+<li><strong><code>mp.get_property("path")</code></strong>: Retrieves the
+path of the actively loaded video file.</li>
+<li><strong>Safety Check</strong>: Validates that a file is currently
+playing and ignores web streams (like YouTube links) where local
+subtitle fetching would fail.</li>
+<li><strong><code>mp.command_native_async</code></strong>: Runs the CLI
+tool in the background. Running it asynchronously ensures that video
+playback and the user interface do not freeze while the network request
+is processing.</li>
+<li><strong><code>mp.commandv("rescan-external-files", "reselect")</code></strong>:
+Signals MPV to refresh the directory for new subtitle tracks and select
+the newly added track once the CLI command exits with status
+<code>0</code>.</li>
+<li><strong><code>mp.add_key_binding</code></strong>: Assigns the
+trigger to a keyboard shortcut (<code>Ctrl+S</code>).</li>
+</ul>
+<h3 id="4-customizing-keybindings">4. Customizing Keybindings</h3>
+<p>Instead of hardcoding the shortcut within the Lua script, you can
+expose it as a script binding by replacing the
+<code>mp.add_key_binding</code> line with:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>register_script_binding<span class="op">(</span><span class="va">fetch_subtitles</span><span class="op">,</span> <span class="st">&quot;download_subs&quot;</span><span class="op">)</span></span></code></pre></div>
+<p>Then, assign any custom key inside your <code>input.conf</code>
+file:</p>
+<pre class="text"><code>b script-binding download_subs</code></pre></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

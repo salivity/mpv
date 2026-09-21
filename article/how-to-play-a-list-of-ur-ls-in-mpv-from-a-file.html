@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play a List of URLs in mpv from a File - mpv</title>
+    <meta name="description" content="Playing a sequence of online media files in mpv without manually adding each link is simple using built-in playlist functionality. This guide explains how to use the --playlist command-line argument to load a plain text file containing web links and have">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-play-a-list-of-ur-ls-in-mpv-from-a-file">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Play a List of URLs in mpv from a File - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-play-a-list-of-ur-ls-in-mpv-from-a-file" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Playing a sequence of online media files in mpv without manually adding each link is simple using built-in playlist functionality. This guide explains how to use the --playlist command-line argument to load a plain text file containing web links and have" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-play-a-list-of-urls-in-mpv-from-a-file">How to Play a
+List of URLs in mpv from a File</h1>
+<p>Playing a sequence of online media files in mpv without manually
+adding each link is simple using built-in playlist functionality. This
+guide explains how to use the <code>--playlist</code> command-line
+argument to load a plain text file containing web links and have mpv
+stream and play them sequentially from start to finish.</p>
+<h2 id="the-command-line-argument">The Command Line Argument</h2>
+<p>The command line option used to pass a text file of URLs to mpv is
+<code>--playlist</code>.</p>
+<p>To run it, use the following syntax in your terminal or command
+prompt:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--playlist</span><span class="op">=</span>urls.txt</span></code></pre></div>
+<p>Replace <code>urls.txt</code> with the relative or absolute path to
+your file.</p>
+<h2 id="formatting-the-url-list-file">Formatting the URL List File</h2>
+<p>The text file itself should be a simple plain text file (UTF-8
+encoded) with each URL placed on its own line:</p>
+<pre class="text"><code>https://example.com/video1.mp4
+https://example.com/stream2.m3u8
+https://www.youtube.com/watch?v=dQw4w9WgXcQ</code></pre>
+<p>Blank lines and lines starting with <code>#</code> are treated as
+comments and ignored by mpv.</p>
+<h2 id="useful-additional-arguments">Useful Additional Arguments</h2>
+<p>You can combine <code>--playlist</code> with other mpv flags to
+control playback behavior:</p>
+<ul>
+<li><strong>Loop the playlist:</strong> To continuously repeat the
+entire list once playback finishes, add <code>--loop-playlist</code>:
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--playlist</span><span class="op">=</span>urls.txt <span class="at">--loop-playlist</span><span class="op">=</span>inf</span></code></pre></div></li>
+<li><strong>Shuffle playback:</strong> To play the links in a random
+order rather than sequentially:
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--playlist</span><span class="op">=</span>urls.txt <span class="at">--shuffle</span></span></code></pre></div></li>
+<li><strong>Start from a specific item:</strong> To jump straight to an
+entry (indexes start at 0):
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--playlist</span><span class="op">=</span>urls.txt <span class="at">--playlist-start</span><span class="op">=</span>2</span></code></pre></div></li>
+</ul>
+<h2 id="reading-from-standard-input">Reading from Standard Input</h2>
+<p>If you generate a list of URLs dynamically, you can pass standard
+input to mpv using a hyphen (<code>-</code>):</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> urls.txt <span class="kw">|</span> <span class="ex">mpv</span> <span class="at">--playlist</span><span class="op">=</span>-</span></code></pre></div></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Bind Gamepad Controls in mpv - mpv</title>
+    <meta name="description" content="This guide explains how to configure a gamepad or video game controller to control playback and navigate menus in the mpv media player. By leveraging mpv's native SDL2 game controller integration, you can identify input names, create an input.conf file,">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-bind-gamepad-controls-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Bind Gamepad Controls in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-bind-gamepad-controls-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This guide explains how to configure a gamepad or video game controller to control playback and navigate menus in the mpv media player. By leveraging mpv's native SDL2 game controller integration, you can identify input names, create an input.conf file," />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-bind-gamepad-controls-in-mpv">How to Bind Gamepad
+Controls in mpv</h1>
+<p>This guide explains how to configure a gamepad or video game
+controller to control playback and navigate menus in the mpv media
+player. By leveraging mpv's native SDL2 game controller integration, you
+can identify input names, create an <code>input.conf</code> file, and
+assign buttons and analog axes to media commands like seeking, volume
+control, pausing, and on-screen interface navigation.</p>
+<h3 id="1-locate-or-create-the-inputconf-file">1. Locate or Create the
+<code>input.conf</code> File</h3>
+<p>mpv reads custom controls from an <code>input.conf</code> file inside
+its configuration directory. If this file does not exist, create a plain
+text file named <code>input.conf</code> in the appropriate path for your
+operating system:</p>
+<ul>
+<li><strong>Linux / macOS:</strong>
+<code>~/.config/mpv/input.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\input.conf</code> (or
+inside a <code>portable_config</code> folder in the same directory as
+<code>mpv.exe</code>)</li>
+</ul>
+<h3 id="2-identify-gamepad-button-and-axis-names">2. Identify Gamepad
+Button and Axis Names</h3>
+<p>mpv uses standard SDL gamepad naming conventions. To discover the
+exact names mpv assigns to your controller's inputs, run mpv in
+input-test mode via the terminal or command prompt:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--input-test</span> <span class="at">--force-window</span></span></code></pre></div>
+<p>Press any button or tilt the analog sticks while the test window is
+focused. The console output will display the exact identifier for each
+input (e.g., <code>GAMEPAD_START</code>,
+<code>GAMEPAD_ACTION_DOWN</code>,
+<code>GAMEPAD_LEFT_STICK_X</code>).</p>
+<p>Common input names include:</p>
+<ul>
+<li><strong>D-Pad:</strong> <code>GAMEPAD_DPAD_UP</code>,
+<code>GAMEPAD_DPAD_DOWN</code>, <code>GAMEPAD_DPAD_LEFT</code>,
+<code>GAMEPAD_DPAD_RIGHT</code></li>
+<li><strong>Left Stick:</strong> <code>GAMEPAD_LEFT_STICK_UP</code>,
+<code>GAMEPAD_LEFT_STICK_DOWN</code>,
+<code>GAMEPAD_LEFT_STICK_LEFT</code>,
+<code>GAMEPAD_LEFT_STICK_RIGHT</code></li>
+<li><strong>Face Buttons:</strong> <code>GAMEPAD_ACTION_DOWN</code>
+(A/Cross), <code>GAMEPAD_ACTION_RIGHT</code> (B/Circle),
+<code>GAMEPAD_ACTION_LEFT</code> (X/Square),
+<code>GAMEPAD_ACTION_UP</code> (Y/Triangle)</li>
+<li><strong>Shoulder Buttons:</strong>
+<code>GAMEPAD_LEFT_SHOULDER</code> (LB/L1),
+<code>GAMEPAD_RIGHT_SHOULDER</code> (RB/R1)</li>
+<li><strong>Triggers:</strong> <code>GAMEPAD_LEFT_TRIGGER</code>
+(LT/L2), <code>GAMEPAD_RIGHT_TRIGGER</code> (RT/R2)</li>
+<li><strong>Menu Buttons:</strong> <code>GAMEPAD_START</code>,
+<code>GAMEPAD_BACK</code> (Select/Share)</li>
+</ul>
+<h3 id="3-add-keybindings-to-inputconf">3. Add Keybindings to
+<code>input.conf</code></h3>
+<p>Open your <code>input.conf</code> file in a text editor and define
+actions using the format: <code>[INPUT_NAME] [COMMAND]</code>.</p>
+<h4 id="essential-playback-controls">Essential Playback Controls</h4>
+<pre class="text"><code>GAMEPAD_ACTION_DOWN    cycle pause           # A / Cross: Play/Pause
+GAMEPAD_ACTION_RIGHT   quit                  # B / Circle: Close mpv
+GAMEPAD_ACTION_UP      cycle fullscreen      # Y / Triangle: Toggle Fullscreen
+GAMEPAD_START          cycle pause           # Start: Play/Pause</code></pre>
+<h4 id="seeking-and-volume-control">Seeking and Volume Control</h4>
+<pre class="text"><code>GAMEPAD_DPAD_LEFT      seek -5               # D-Pad Left: Seek back 5 seconds
+GAMEPAD_DPAD_RIGHT     seek 5                # D-Pad Right: Seek forward 5 seconds
+GAMEPAD_DPAD_UP        add volume 2          # D-Pad Up: Raise volume
+GAMEPAD_DPAD_DOWN      add volume -2         # D-Pad Down: Lower volume
+
+GAMEPAD_LEFT_SHOULDER  add chapter -1        # LB: Previous chapter
+GAMEPAD_RIGHT_SHOULDER add chapter 1         # RB: Next chapter
+GAMEPAD_LEFT_TRIGGER   seek -30              # LT: Rewind 30 seconds
+GAMEPAD_RIGHT_TRIGGER  seek 30               # RT: Fast-forward 30 seconds</code></pre>
+<h4 id="navigating-the-interface-osd-and-menus">Navigating the Interface
+(OSD and Menus)</h4>
+<p>To navigate mpv's On-Screen Controller (OSC) or user scripts (such as
+file browsers or playlist menus), map the analog stick or directional
+buttons to standard menu navigation commands:</p>
+<pre class="text"><code>GAMEPAD_LEFT_STICK_UP    script-binding osd/up      # Menu Up
+GAMEPAD_LEFT_STICK_DOWN  script-binding osd/down    # Menu Down
+GAMEPAD_LEFT_STICK_LEFT  script-binding osd/left    # Menu Left
+GAMEPAD_LEFT_STICK_RIGHT script-binding osd/right   # Menu Right
+GAMEPAD_ACTION_DOWN      script-binding osd/select  # Confirm selection
+GAMEPAD_ACTION_RIGHT     script-binding osd/back    # Back / Cancel</code></pre>
+<p>If you only use the default interface without custom menu scripts,
+you can map the stick directly to interface feedback commands:</p>
+<pre class="text"><code>GAMEPAD_LEFT_STICK_UP    show-progress              # Display timeline
+GAMEPAD_BACK             show-text &quot;${playlist}&quot;    # Display playlist on screen</code></pre>
+<h3 id="4-adjust-deadzones-optional">4. Adjust Deadzones (Optional)</h3>
+<p>If your analog sticks trigger actions unintentionally due to drift,
+configure the deadzone setting in your <code>mpv.conf</code> file:</p>
+<pre class="text"><code>input-gamepad-deadzone=0.2</code></pre>
+<p>This sets a 20% deadzone threshold, ensuring that minor analog stick
+movements are ignored until pushed past the specified value. Save both
+configuration files and relaunch mpv to apply your changes.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Clear Recent Files History in mpv? - mpv</title>
+    <meta name="description" content="Managing your privacy and keeping a clean workspace often requires clearing your recent playback history. While the mpv media player is incredibly lightweight and doesn't have a traditional graphical user interface (GUI) settings menu, it does track rece">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-clear-recent-files-history-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Clear Recent Files History in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-clear-recent-files-history-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Managing your privacy and keeping a clean workspace often requires clearing your recent playback history. While the mpv media player is incredibly lightweight and doesn't have a traditional graphical user interface (GUI) settings menu, it does track rece" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-clear-recent-files-history-in-mpv">How to Clear Recent
+Files History in mpv?</h1>
+<p>Managing your privacy and keeping a clean workspace often requires
+clearing your recent playback history. While the <code>mpv</code> media
+player is incredibly lightweight and doesn't have a traditional
+graphical user interface (GUI) settings menu, it does track recently
+opened files depending on your operating system and configuration. This
+guide will show you how to quickly locate and clear the recent files
+list in <code>mpv</code> for Windows, macOS, and Linux, as well as how
+to disable the feature entirely.</p>
+<hr />
+<h3 id="understanding-how-mpv-tracks-history">Understanding How mpv
+Tracks History</h3>
+<p>By default, the core <code>mpv</code> application does not maintain
+an internal playback history file. Instead, recent files are typically
+tracked in one of two ways:</p>
+<ul>
+<li><strong>System-level tracking:</strong> Your operating system's
+desktop environment (like Windows Jump Lists or macOS Recent Items)
+tracks the files <code>mpv</code> opens.</li>
+<li><strong>Script-level tracking:</strong> You are using a popular
+third-party lua script (like <code>stats.lua</code>,
+<code>recent.lua</code>, or <code>history.lua</code>) that logs your
+watch history to a text file.</li>
+</ul>
+<h3 id="clearing-history-on-windows">Clearing History on Windows</h3>
+<p>If you are using Windows, <code>mpv</code> files appear in your Quick
+Access and taskbar Jump Lists.</p>
+<ol type="1">
+<li>Right-click the <strong>mpv</strong> icon on your taskbar.</li>
+<li>Right-click a specific file in the <strong>Recent</strong> list and
+select <strong>Remove from this list</strong>.</li>
+<li>To clear all history, clear your Windows File Explorer history by
+opening <strong>File Explorer Options</strong>, going to the
+<strong>General</strong> tab, and clicking the <strong>Clear</strong>
+button under the Privacy section.</li>
+</ol>
+<h3 id="clearing-history-on-macos">Clearing History on macOS</h3>
+<p>On macOS, the operating system tracks the files handed to the
+application.</p>
+<ol type="1">
+<li>Open the <code>mpv</code> application.</li>
+<li>Click on <strong>File</strong> in the top menu bar.</li>
+<li>Hover over <strong>Open Recent</strong> and select <strong>Clear
+Menu</strong>.</li>
+</ol>
+<h3 id="clearing-history-on-linux">Clearing History on Linux</h3>
+<p>Most Linux distributions running GNOME or KDE track recently used
+files globally. You can clear this through your system settings or by
+deleting the global recent files manager cache:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> ~/.local/share/recently-used.xbel</span></code></pre></div>
+<h3 id="clearing-third-party-script-history">Clearing Third-Party Script
+History</h3>
+<p>If you installed a custom script to log history within
+<code>mpv</code>, your history is stored in a <code>.txt</code> or
+<code>.log</code> file inside your <code>mpv</code> configuration
+directory.</p>
+<ol type="1">
+<li>Navigate to your <code>mpv</code> configuration folder:</li>
+</ol>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\</code></li>
+<li><strong>Linux/macOS:</strong> <code>~/.config/mpv/</code></li>
+</ul>
+<ol start="2" type="1">
+<li>Look for folders named <code>script-opts</code> or files named
+<code>history.log</code>, <code>recent.json</code>, or
+<code>mpv_history.txt</code>.</li>
+<li>Open the file and delete the lines, or delete the file
+entirely.</li>
+</ol>
+<h3 id="how-to-disable-history-tracking-permanently">How to Disable
+History Tracking Permanently</h3>
+<p>If you want to prevent <code>mpv</code> from ever showing up in your
+system's recent documents lists, you can pass a specific flag when
+launching it or add it to your <code>mpv.conf</code> file.</p>
+<p>Add the following line to your <code>mpv.conf</code>:</p>
+<pre class="text"><code># Disable operating system recent documents tracking
+no-taskbar-progress
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> If your history is being generated by a
+script, you will need to open that specific <code>.lua</code> script
+file or its configuration in <code>script-opts</code> and set its
+tracking or logging variable to <code>false</code>.</p>
+</blockquote></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

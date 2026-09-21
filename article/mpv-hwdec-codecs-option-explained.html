@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mpv hwdec-codecs Option Explained - mpv</title>
+    <meta name="description" content="This article explains the function and practical usage of the hwdec-codecs setting in the mpv media player configuration. You will learn how this option controls hardware-accelerated video decoding, why restricting hardware decoding to specific codecs is">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/mpv-hwdec-codecs-option-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="mpv hwdec-codecs Option Explained - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/mpv-hwdec-codecs-option-explained" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the function and practical usage of the hwdec-codecs setting in the mpv media player configuration. You will learn how this option controls hardware-accelerated video decoding, why restricting hardware decoding to specific codecs is" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="mpv-hwdec-codecs-option-explained">mpv hwdec-codecs Option
+Explained</h1>
+<p>This article explains the function and practical usage of the
+<code>hwdec-codecs</code> setting in the mpv media player configuration.
+You will learn how this option controls hardware-accelerated video
+decoding, why restricting hardware decoding to specific codecs is
+useful, and how to properly configure the setting within your
+<code>mpv.conf</code> file.</p>
+<h3 id="what-is-hwdec-codecs">What Is hwdec-codecs?</h3>
+<p>The <code>hwdec-codecs</code> option acts as an allowlist for
+hardware-accelerated video decoding in mpv. While the primary
+<code>hwdec</code> option tells mpv <em>which</em> hardware decoding API
+to use (such as <code>vaapi</code>, <code>nvdec</code>, or
+<code>d3d11va</code>), <code>hwdec-codecs</code> determines <em>which
+video formats</em> are permitted to use that hardware acceleration.</p>
+<p>If a video's codec is included in the <code>hwdec-codecs</code> list,
+mpv attempts to offload decoding to your GPU. If the codec is not on the
+list, mpv bypasses hardware acceleration and falls back to software
+decoding using the CPU, even if <code>hwdec</code> is actively
+enabled.</p>
+<h3 id="default-behavior">Default Behavior</h3>
+<p>By default, mpv restricts hardware acceleration to a safe list of
+modern, widely supported codecs. Depending on the version of mpv, the
+default list typically includes:</p>
+<ul>
+<li><code>h264</code></li>
+<li><code>vc1</code></li>
+<li><code>hevc</code></li>
+<li><code>vp9</code></li>
+<li><code>av1</code></li>
+</ul>
+<p>Because of this default allowlist, older codecs such as MPEG-2 or
+MPEG-4 (DivX/Xvid) generally decode on the CPU unless explicitly
+added.</p>
+<h3 id="why-use-hwdec-codecs">Why Use hwdec-codecs?</h3>
+<p>There are several scenarios where adjusting <code>hwdec-codecs</code>
+is beneficial:</p>
+<ol type="1">
+<li><strong>Avoiding Buggy Driver Implementations:</strong> Some GPU
+drivers claim support for specific formats but exhibit stability issues,
+color corruption, or playback stuttering during hardware playback.
+Limiting <code>hwdec-codecs</code> allows you to disable hardware decode
+for the problematic format while keeping it active for others.</li>
+<li><strong>Handling 10-Bit H.264 (Hi10P):</strong> Most hardware
+decoders do not support 10-bit H.264 (commonly used in anime releases).
+Attempting hardware decode on these files can cause playback failures.
+While mpv usually detects profile incompatibilities automatically,
+restricting codecs ensures safe fallbacks.</li>
+<li><strong>Saving Power on Older Codecs:</strong> Modern CPUs decode
+standard definition or lightweight codecs (like MPEG-2 or standard
+H.264) with negligible CPU utilization. You may choose to reserve GPU
+decoding strictly for demanding formats like 4K HEVC or AV1.</li>
+<li><strong>Enabling All Supported Codecs:</strong> If you want mpv to
+attempt hardware decoding on any video format your GPU supports, you can
+bypass the default whitelist entirely.</li>
+</ol>
+<h3 id="configuration-syntax-and-examples">Configuration Syntax and
+Examples</h3>
+<p>You configure this option either through the command line or inside
+your <code>mpv.conf</code> file.</p>
+<p>To allow hardware decoding only for HEVC and AV1:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec</span><span class="ot">=</span><span class="st">auto-safe</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec-codecs</span><span class="ot">=</span><span class="st">hevc,av1</span></span></code></pre></div>
+<p>To enable hardware decoding for all codecs supported by your
+hardware:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec</span><span class="ot">=</span><span class="st">auto-safe</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec-codecs</span><span class="ot">=</span><span class="st">all</span></span></code></pre></div>
+<p>To use a standard set of modern formats (H.264, HEVC, VP9, and
+AV1):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec</span><span class="ot">=</span><span class="st">auto-safe</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec-codecs</span><span class="ot">=</span><span class="st">h264,hevc,vp9,av1</span></span></code></pre></div>
+<p>Multiple codecs must be separated by commas without spaces. When
+paired with <code>hwdec=auto</code> or <code>hwdec=auto-safe</code>,
+<code>hwdec-codecs</code> gives you granular control over hardware
+resource utilization during playback.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can mpv Play DVD ISO Files Directly? - mpv</title>
+    <meta name="description" content="The mpv media player fully supports playing DVD ISO image files directly without requiring you to unpack or mount them first. Thanks to its underlying integration with FFmpeg and DVD navigation libraries, mpv can read the disc structure, audio tracks, su">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/can-mpv-play-dvd-iso-files-directly">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can mpv Play DVD ISO Files Directly? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/can-mpv-play-dvd-iso-files-directly" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The mpv media player fully supports playing DVD ISO image files directly without requiring you to unpack or mount them first. Thanks to its underlying integration with FFmpeg and DVD navigation libraries, mpv can read the disc structure, audio tracks, su" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="can-mpv-play-dvd-iso-files-directly">Can mpv Play DVD ISO Files
+Directly?</h1>
+<p>The mpv media player fully supports playing DVD ISO image files
+directly without requiring you to unpack or mount them first. Thanks to
+its underlying integration with FFmpeg and DVD navigation libraries, mpv
+can read the disc structure, audio tracks, subtitles, and video streams
+directly from the raw disc image. This guide explains how to open DVD
+ISOs in mpv, how to navigate their menus, and what to do if you
+encounter playback issues.</p>
+<h3 id="how-to-open-a-dvd-iso-in-mpv">How to Open a DVD ISO in mpv</h3>
+<p>Playing a DVD ISO file in mpv is as straightforward as opening any
+standard video file.</p>
+<ul>
+<li><strong>Drag and Drop:</strong> Drag the <code>.iso</code> file
+directly onto an open mpv window.</li>
+<li><strong>Graphical Interface:</strong> Right-click the
+<code>.iso</code> file in your operating system's file manager, select
+<strong>Open With</strong>, and choose <strong>mpv</strong>.</li>
+<li><strong>Command Line:</strong> Run the player from your terminal or
+command prompt by passing the file path:
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> movie.iso</span></code></pre></div></li>
+</ul>
+<p>When opened this way, mpv automatically mounts the filesystem in
+memory and starts playing the main title or the first available title on
+the virtual disc.</p>
+<h3 id="enabling-dvd-menus-and-title-navigation">Enabling DVD Menus and
+Title Navigation</h3>
+<p>By default, opening an ISO directly often bypasses the interactive
+DVD menu to jump straight to the video content. If you want full access
+to the interactive DVD menus, audio selection screens, and chapter
+listings, use the <code>dvdnav://</code> protocol:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> dvdnav:// <span class="at">--dvd-device</span><span class="op">=</span>movie.iso</span></code></pre></div>
+<p>Using <code>dvdnav://</code> allows you to interact with the DVD menu
+using your keyboard. You can navigate menu buttons using the arrow keys
+and activate selections using the <code>Enter</code> key.</p>
+<p>If you prefer skipping menus entirely but want to play a specific
+title from the disc, you can use the standard <code>dvd://</code>
+syntax:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> dvd://2 <span class="at">--dvd-device</span><span class="op">=</span>movie.iso</span></code></pre></div>
+<p><em>(Replace <code>2</code> with the specific title track number you
+wish to play).</em></p>
+<h3 id="technical-requirements-and-dependencies">Technical Requirements
+and Dependencies</h3>
+<p>For mpv to read DVD ISO files, it relies on standard media libraries
+that are included in almost all official mpv builds:</p>
+<ul>
+<li><strong>libdvdread:</strong> Allows the software to read the DVD
+Video structure directly from the ISO format.</li>
+<li><strong>libdvdnav:</strong> Provides support for DVD menu
+navigation, multi-angle scenes, and button interactions.</li>
+</ul>
+<p>If you are using pre-compiled binaries for Windows, macOS (via
+Homebrew), or standard Linux distribution packages (such as Debian,
+Ubuntu, Fedora, or Arch), support for these libraries is enabled by
+default. If you built mpv from source, ensure that
+<code>libdvdread</code> and <code>libdvdnav</code> were installed on
+your system prior to compiling.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

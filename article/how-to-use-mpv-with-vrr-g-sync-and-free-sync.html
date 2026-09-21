@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use mpv with VRR G-Sync and FreeSync - mpv</title>
+    <meta name="description" content="This article provides an overview of how the mpv media player interacts with Variable Refresh Rate (VRR) technologies, such as Nvidia G-Sync and AMD FreeSync. It details the mechanics of VRR playback in mpv, why traditional display-sync options can confl">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-use-mpv-with-vrr-g-sync-and-free-sync">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Use mpv with VRR G-Sync and FreeSync - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-use-mpv-with-vrr-g-sync-and-free-sync" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how the mpv media player interacts with Variable Refresh Rate (VRR) technologies, such as Nvidia G-Sync and AMD FreeSync. It details the mechanics of VRR playback in mpv, why traditional display-sync options can confl" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-use-mpv-with-vrr-g-sync-and-freesync">How to Use mpv with
+VRR G-Sync and FreeSync</h1>
+<p>This article provides an overview of how the mpv media player
+interacts with Variable Refresh Rate (VRR) technologies, such as Nvidia
+G-Sync and AMD FreeSync. It details the mechanics of VRR playback in
+mpv, why traditional display-sync options can conflict with adaptive
+sync, and the exact configuration lines needed to achieve smooth,
+judder-free video playback.</p>
+<h3 id="how-mpv-interacts-with-vrr">How mpv Interacts with VRR</h3>
+<p>Traditional video playback relies on fixed refresh rates. When
+playing a 23.976 fps film on a standard 60 Hz display, players must use
+techniques like 3:2 pulldown or frame resampling to bridge the timing
+mismatch, which often introduces slight stutter or judder.</p>
+<p>VRR alters this dynamic by allowing the graphics card to dictate the
+monitor’s refresh timing frame-by-frame. When configured correctly, mpv
+presents a frame, and the VRR display waits to refresh until that frame
+is delivered. This enables native, judder-free playback of any frame
+rate—such as 23.976, 24, 25, or 50 fps—without manually changing the
+system display resolution or refresh rate.</p>
+<h3 id="essential-mpv-settings-for-vrr">Essential mpv Settings for
+VRR</h3>
+<p>To allow G-Sync or FreeSync to manage timing, you must avoid mpv
+options that attempt to lock video frames to an internal, static display
+clock.</p>
+<ol type="1">
+<li><p><strong>Keep <code>video-sync=audio</code>
+(Default)</strong><br />
+Do not use <code>--video-sync=display-resample</code> or
+<code>--video-sync=display-tempo</code>. These modes assume a fixed
+monitor refresh rate and actively duplicate, drop, or resample
+audio/video to match that fixed interval. This directly conflicts with
+VRR, causing erratic refresh rate fluctuations, flickering, or stutter.
+The default <code>--video-sync=audio</code> allows frames to be
+displayed as soon as they are ready according to the audio
+clock.</p></li>
+<li><p><strong>Ensure Fullscreen Operation</strong><br />
+Most VRR drivers default to operating only in exclusive fullscreen mode.
+While both Nvidia and AMD offer "Windowed and Fullscreen" VRR modes,
+windowed VRR can be inconsistent on desktop environments. Use
+<code>--fullscreen</code> or press <code>f</code> to run mpv in
+fullscreen to guarantee driver engagement.</p></li>
+<li><p><strong>Configure the Presentation Mode</strong><br />
+Depending on your operating system and chosen video output
+(<code>--vo</code>), specific presentation modes yield better VRR
+stability:</p>
+<ul>
+<li><strong>Windows (Direct3D 11):</strong> Using
+<code>--gpu-api=d3d11</code> alongside
+<code>--d3d11-exclusive-fs=yes</code> forces exclusive fullscreen,
+ensuring the D3D11 swapchain correctly signals the G-Sync/FreeSync
+driver.</li>
+<li><strong>Vulkan:</strong> If using <code>--gpu-api=vulkan</code>, set
+<code>--vulkan-present-mode=fifo</code> (or <code>mailbox</code>
+depending on your driver's VRR implementation) to maintain proper pacing
+without tearing.</li>
+</ul></li>
+</ol>
+<h3 id="low-framerate-compensation-lfc">Low Framerate Compensation
+(LFC)</h3>
+<p>Most standard PC monitors have a minimum VRR threshold, typically
+between 40 Hz and 48 Hz. Because standard cinematic content (24 fps)
+falls below this range, your hardware relies on Low Framerate
+Compensation (LFC).</p>
+<p>With LFC, the GPU driver automatically doubles or triples the refresh
+rate (for example, displaying a 24 fps video at 48 Hz or 72 Hz). When
+using mpv with VRR, ensure LFC is supported by your display over the
+connection used (DisplayPort is generally more reliable than HDMI for
+LFC on PC monitors).</p>
+<h3 id="recommended-configuration-file-mpvconf">Recommended
+Configuration File (<code>mpv.conf</code>)</h3>
+<p>Add the following lines to your <code>mpv.conf</code> file to
+optimize the player for VRR environments:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the default audio-based sync</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">video-sync</span><span class="ot">=</span><span class="st">audio</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Start in fullscreen to trigger VRR reliably</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">fullscreen</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># GPU settings (recommended modern setup)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">d3d11</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">d3d11-exclusive-fs</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<p>If you are on Linux using Wayland, VRR is handled through the
+compositor. Ensure adaptive sync is enabled in your desktop
+environment's display settings (such as in KDE Plasma or GNOME) and that
+<code>fullscreen=yes</code> is set in mpv.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play Internet Radio Streams with mpv? - mpv</title>
+    <meta name="description" content="Using mpv, a powerful and lightweight command-line media player, is one of the most efficient ways to listen to internet radio streams without the bloat of a web browser. This article provides a quick guide on how to launch network streams via the termin">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-play-internet-radio-streams-with-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Play Internet Radio Streams with mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-play-internet-radio-streams-with-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Using mpv, a powerful and lightweight command-line media player, is one of the most efficient ways to listen to internet radio streams without the bloat of a web browser. This article provides a quick guide on how to launch network streams via the termin" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-play-internet-radio-streams-with-mpv">How to Play
+Internet Radio Streams with mpv?</h1>
+<p>Using <strong>mpv</strong>, a powerful and lightweight command-line
+media player, is one of the most efficient ways to listen to internet
+radio streams without the bloat of a web browser. This article provides
+a quick guide on how to launch network streams via the terminal, manage
+your favorite stations using a basic playlist file, and utilize key
+keyboard shortcuts to control your playback. Whether you want to stream
+a direct audio URL or organize an entire library of online stations, mpv
+offers a highly customizable, distraction-free audio experience.</p>
+<hr />
+<h3 id="streaming-direct-audio-urls">Streaming Direct Audio URLs</h3>
+<p>The simplest way to listen to an internet radio station in mpv is by
+passing the stream's direct URL into your terminal. mpv automatically
+detects network protocols and begins buffering the audio.</p>
+<p>To play a live stream, open your terminal and run:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> https://example.com/radio-stream.mp3</span></code></pre></div>
+<p>If the stream is running properly, mpv will open a small terminal
+interface displaying the stream's metadata, audio codec, and current
+playback time. To stop the stream at any time, simply press
+<strong>q</strong> on your keyboard.</p>
+<h3 id="creating-a-radio-station-playlist">Creating a Radio Station
+Playlist</h3>
+<p>If you regularly listen to multiple stations, typing out long URLs
+every time is inefficient. You can create a standard <code>.m3u</code>
+playlist file to organize your favorite streams and quickly cycle
+through them.</p>
+<ol type="1">
+<li>Open your preferred text editor and create a file named
+<code>radio.m3u</code>.</li>
+<li>Add your radio station links, one per line. You can optionally add a
+descriptive name above each link using the <code>#EXTINF</code>
+tag:</li>
+</ol>
+<pre class="text"><code>#EXTM3U
+#EXTINF:-1,Classic Rock Radio
+http://streaming.example.com/rock.mp3
+#EXTINF:-1,Jazz Smooth Station
+http://streaming.example.com/jazz.aac
+</code></pre>
+<ol start="3" type="1">
+<li>Save the file and run it with mpv:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> radio.m3u</span></code></pre></div>
+<h3 id="useful-controls-for-radio-streaming">Useful Controls for Radio
+Streaming</h3>
+<p>When listening to internet radio in mpv, you do not need a visual
+user interface. You can control everything directly from your keyboard
+using these essential shortcuts:</p>
+<ul>
+<li><strong>q</strong>: Quit and close the stream.</li>
+<li><strong>9</strong> and <strong>0</strong>: Decrease or increase the
+volume.</li>
+<li><strong>m</strong>: Mute or unmute the audio.</li>
+<li><strong>&gt;</strong> and <strong>&lt;</strong>: Skip to the next or
+previous radio station (if you are using an <code>.m3u</code>
+playlist).</li>
+<li><strong>p</strong> or <strong>Space</strong>: Pause or resume the
+stream (note: pausing a live stream will buffer the broadcast, and
+resuming will usually pick up from the live point or wherever the cache
+allows).</li>
+</ul>
+<h3 id="running-mpv-in-audio-only-mode">Running mpv in Audio-Only
+Mode</h3>
+<p>By default, mpv might open a blank video window when playing an audio
+stream if the stream includes album art or placeholder visuals. You can
+force mpv to run strictly inside your terminal without spawning a
+separate graphical window by adding the <code>--no-video</code>
+flag:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--no-video</span> https://example.com/radio-stream.mp3</span></code></pre></div>
+<p>If you prefer this behavior permanently, you can add
+<code>no-video=yes</code> to your global mpv configuration file
+(typically located at <code>~/.config/mpv/mpv.conf</code>).</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

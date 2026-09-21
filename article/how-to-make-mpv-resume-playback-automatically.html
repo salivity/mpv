@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to make mpv resume playback automatically? - mpv</title>
+    <meta name="description" content="This article provides a straightforward guide on how to configure the mpv media player to automatically save your playback position and resume videos exactly where you left off. You will learn how to enable this feature globally using a configuration fil">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-make-mpv-resume-playback-automatically">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to make mpv resume playback automatically? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-make-mpv-resume-playback-automatically" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a straightforward guide on how to configure the mpv media player to automatically save your playback position and resume videos exactly where you left off. You will learn how to enable this feature globally using a configuration fil" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-make-mpv-resume-playback-automatically">How to make mpv
+resume playback automatically?</h1>
+<p>This article provides a straightforward guide on how to configure the
+mpv media player to automatically save your playback position and resume
+videos exactly where you left off. You will learn how to enable this
+feature globally using a configuration file, how to use a manual
+keyboard shortcut for one-off saves, and how to manage the saved state
+files on your system.</p>
+<h2 id="the-global-solution-edit-the-configuration-file">The Global
+Solution: Edit the Configuration File</h2>
+<p>The most efficient way to ensure mpv always remembers your position
+is by adding a single line to your permanent configuration file
+(<code>mpv.conf</code>).</p>
+<h3 id="1-locate-your-configuration-folder">1. Locate your configuration
+folder</h3>
+<p>Depending on your operating system, the <code>mpv.conf</code> file is
+stored in different directories. If the file or folder does not exist,
+you can simply create them.</p>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\</code> (e.g.,
+<code>C:\Users\YourUsername\AppData\Roaming\mpv\</code>)</li>
+<li><strong>Linux/macOS:</strong> <code>~/.config/mpv/</code></li>
+</ul>
+<h3 id="2-add-the-resume-command">2. Add the resume command</h3>
+<p>Open your <code>mpv.conf</code> file in a standard text editor (like
+Notepad, VS Code, or Nano) and add the following line:</p>
+<pre class="text"><code>save-position-on-quit=yes
+</code></pre>
+<p>Save and close the file. From now on, whenever you close a video, mpv
+will automatically remember your timestamp and resume from that exact
+spot the next time you open the file.</p>
+<h2 id="the-manual-solution-use-a-keyboard-shortcut">The Manual
+Solution: Use a Keyboard Shortcut</h2>
+<p>If you do not want mpv to remember your position for <em>every</em>
+single file, you can choose to save your position manually on a
+case-by-case basis.</p>
+<ul>
+<li>When watching a video, press <strong>Shift + Q</strong> (capital
+<code>Q</code>) to quit.</li>
+</ul>
+<p>This shortcut tells mpv to save your current playback position and
+immediately close the player. If you close the player using the standard
+<code>q</code> key or by clicking the "X" button, the position will not
+be saved.</p>
+<h2 id="how-mpv-stores-playback-data">How mpv Stores Playback Data</h2>
+<p>When you save your position, mpv does not modify your actual video
+file. Instead, it creates a small text file containing the timestamp and
+volume settings inside a dedicated folder named
+<code>watch_later</code>.</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>%APPDATA%\mpv\watch_later\</code></li>
+<li><strong>Linux/macOS:</strong>
+<code>~/.local/state/mpv/watch_later</code></li>
+</ul>
+<p>If you ever want mpv to forget your progress and start a video from
+the beginning, you can simply go into this folder and delete the files
+inside it.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

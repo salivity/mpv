@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Make MPV Window Transparent - mpv</title>
+    <meta name="description" content="You can make the mpv media player window transparent so that only the video content is visible. By disabling window borders, turning off the on-screen controller, and configuring background alpha values, mpv can eliminate all user interface elements and">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-make-mpv-window-transparent">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Make MPV Window Transparent - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-make-mpv-window-transparent" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="You can make the mpv media player window transparent so that only the video content is visible. By disabling window borders, turning off the on-screen controller, and configuring background alpha values, mpv can eliminate all user interface elements and" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-make-mpv-window-transparent">How to Make MPV Window
+Transparent</h1>
+<p>You can make the mpv media player window transparent so that only the
+video content is visible. By disabling window borders, turning off the
+on-screen controller, and configuring background alpha values, mpv can
+eliminate all user interface elements and render black bars or
+alpha-channel video transparently against your desktop.</p>
+<h3 id="1-remove-window-borders-and-ui-elements">1. Remove Window
+Borders and UI Elements</h3>
+<p>To ensure no window chrome or default controls appear around your
+video, launch mpv with options that disable the title bar and default
+interface:</p>
+<ul>
+<li><code>--no-border</code>: Disables the operating system window frame
+and title bar.</li>
+<li><code>--no-osc</code>: Disables the default on-screen controller bar
+that appears when moving the mouse.</li>
+<li><code>--no-osd-bar</code>: Disables the seek and volume progress bar
+overlays.</li>
+</ul>
+<h3 id="2-enable-transparency-for-letterboxing-and-backgrounds">2.
+Enable Transparency for Letterboxing and Backgrounds</h3>
+<p>By default, mpv fills empty space around non-matching aspect ratios
+with black bars. You can force the player background to be fully
+transparent using the background color setting:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--background-color=</span><span class="st">&#39;#00000000&#39;</span></span></code></pre></div>
+<p>The eight-digit hex code represents <code>#RRGGBBAA</code>. Setting
+the alpha component (<code>AA</code>) to <code>00</code> makes all
+unused window space 100% transparent, provided your operating system has
+desktop composition enabled (such as Desktop Window Manager on Windows
+or a compositor like Picom/Wayland on Linux).</p>
+<h3 id="3-handle-transparent-video-formats-alpha-channels">3. Handle
+Transparent Video Formats (Alpha Channels)</h3>
+<p>If your video file natively contains an alpha channel (such as a WebM
+with VP8/VP9 transparency or ProRes 4444), you must tell mpv how to
+handle the alpha layer:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--alpha=blend</span></span></code></pre></div>
+<p>This ensures the video's transparent regions display the desktop
+underneath rather than a solid black fill.</p>
+<h3 id="4-complete-configuration-file-mpvconf">4. Complete Configuration
+File (<code>mpv.conf</code>)</h3>
+<p>To apply these settings permanently without entering them in the
+terminal each time, add the following lines to your
+<code>mpv.conf</code> file:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove window borders and UI</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">no-border</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">no-osc</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">no-osd-bar</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Enable transparency</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">alpha</span><span class="ot">=</span><span class="st">blend</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">background-color</span><span class="ot">=</span><span class="st">&#39;#00000000&#39;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep window on top (optional, useful for floating transparent video)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">ontop</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<p>Once saved, any video launched with mpv will display strictly the
+video frame floating seamlessly over your other desktop
+applications.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

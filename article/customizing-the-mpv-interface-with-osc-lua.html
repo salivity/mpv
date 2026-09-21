@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizing the mpv Interface with osc.lua - mpv</title>
+    <meta name="description" content="The osc.lua script is the core Lua script responsible for generating and managing the default On Screen Controller (OSC) in the mpv media player. By reading user preferences, tracking playback states, and rendering graphical controls like the seekbar, vo">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/customizing-the-mpv-interface-with-osc-lua">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Customizing the mpv Interface with osc.lua - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/customizing-the-mpv-interface-with-osc-lua" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The osc.lua script is the core Lua script responsible for generating and managing the default On Screen Controller (OSC) in the mpv media player. By reading user preferences, tracking playback states, and rendering graphical controls like the seekbar, vo" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="customizing-the-mpv-interface-with-osclua">Customizing the mpv
+Interface with osc.lua</h1>
+<p>The <code>osc.lua</code> script is the core Lua script responsible
+for generating and managing the default On Screen Controller (OSC) in
+the mpv media player. By reading user preferences, tracking playback
+states, and rendering graphical controls like the seekbar, volume
+slider, and playback buttons, <code>osc.lua</code> defines how users
+interact visually with mpv. This article explains the exact role of
+<code>osc.lua</code>, how it interfaces with mpv’s configuration system,
+and how users can modify it to completely overhaul their graphical user
+interface.</p>
+<h3 id="the-role-of-osclua-in-mpv">The Role of osc.lua in mpv</h3>
+<p>By default, mpv is designed to be a minimal, keyboard-driven media
+player with no traditional window chrome or static control panels. To
+provide basic mouse-driven navigation, mpv embeds a built-in Lua script
+named <code>osc.lua</code>.</p>
+<p>Whenever the mouse moves over the player window, <code>osc.lua</code>
+activates and renders an interactive overlay using the Advanced
+SubStation Alpha (ASS) subtitle format. It dynamically displays:</p>
+<ul>
+<li>The seek bar and chapter markers.</li>
+<li>Playback controls (play, pause, skip, playlist navigation).</li>
+<li>Audio track, subtitle track, and video track selectors.</li>
+<li>Window management icons (minimize, maximize, close).</li>
+<li>Playback metadata, such as current timestamp, remaining time, and
+media title.</li>
+</ul>
+<h3 id="configuration-vs-direct-script-modification">Configuration vs.
+Direct Script Modification</h3>
+<p>Customizing the OSC typically happens at two distinct levels: simple
+configuration and complete script replacement.</p>
+<h4 id="1-configuration-via-oscconf">1. Configuration via
+<code>osc.conf</code></h4>
+<p>For standard adjustments, users do not need to modify
+<code>osc.lua</code> directly. mpv allows users to pass options to the
+script using a configuration file located at
+<code>~~/script-opts/osc.conf</code>. Through this file, you can modify
+built-in properties such as:</p>
+<ul>
+<li><strong>Layouts</strong>: Switching between pre-programmed layouts
+such as <code>bottombar</code>, <code>topbar</code>, <code>box</code>,
+or <code>slim</code>.</li>
+<li><strong>Timers</strong>: Adjusting <code>fadeduration</code>,
+<code>hidetimeout</code>, and <code>showwindowed</code> properties to
+control when the interface appears and fades away.</li>
+<li><strong>Scaling</strong>: Modifying <code>scalewindowed</code> and
+<code>scalefullscreen</code> to scale the controller dynamically based
+on display resolution.</li>
+</ul>
+<h4 id="2-advanced-customization-via-custom-osclua">2. Advanced
+Customization via Custom <code>osc.lua</code></h4>
+<p>When predefined layouts and basic styling are insufficient,
+<code>osc.lua</code> can be extracted, rewritten, and loaded as a custom
+user script.</p>
+<p>To override the built-in controller:</p>
+<ol type="1">
+<li>Disable the internal OSC by adding <code>osc=no</code> to the main
+<code>mpv.conf</code> file.</li>
+<li>Obtain a copy of the stock <code>osc.lua</code> from the official
+mpv source repository.</li>
+<li>Place the modified script into the mpv <code>scripts/</code>
+directory (for example, <code>~/.config/mpv/scripts/osc.lua</code> on
+Linux or <code>%APPDATA%/mpv/scripts/osc.lua</code> on Windows).</li>
+</ol>
+<h3 id="what-you-can-modify-in-osclua">What You Can Modify in
+osc.lua</h3>
+<p>Because <code>osc.lua</code> is an uncompiled Lua script running
+through mpv’s internal Lua 5.1 / LuaJIT interpreter, modifying the file
+offers unrestricted control over the interface:</p>
+<ul>
+<li><strong>Visual Design and Geometry</strong>: The script uses ASS
+vector drawings and formatting tags (such as <code>\pos</code>,
+<code>\an</code>, <code>\bord</code>, and <code>\1c</code>) to draw the
+interface. Modifying these strings lets you alter colors, corner radii,
+borders, transparency, and button shapes.</li>
+<li><strong>Layout Structures</strong>: You can reposition existing UI
+elements, eliminate components you do not use (such as window title bars
+or chapter ticks), or create entirely new layout algorithms that respond
+to window resizing.</li>
+<li><strong>Custom Interactive Controls</strong>: By tapping into the
+<code>mp</code> scripting API, you can add custom buttons to execute
+arbitrary mpv commands, run shell commands, load shaders, or trigger
+other user-installed scripts.</li>
+<li><strong>Event Handling and Logic</strong>: The script dictates how
+elements react to specific mouse behaviors, such as hover states,
+mouse-wheel scrolling for volume or seeking, and right-click secondary
+actions.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

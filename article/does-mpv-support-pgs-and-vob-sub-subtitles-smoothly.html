@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Does mpv Support PGS and VobSub Subtitles Smoothly? - mpv</title>
+    <meta name="description" content="The open-source media player mpv decodes and displays bitmap-based subtitles—including DVD VobSub and Blu-ray PGS formats—seamlessly and efficiently. Because mpv utilizes FFmpeg's robust decoding libraries combined with its own hardware-accelerated r">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/does-mpv-support-pgs-and-vob-sub-subtitles-smoothly">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Does mpv Support PGS and VobSub Subtitles Smoothly? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/does-mpv-support-pgs-and-vob-sub-subtitles-smoothly" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The open-source media player mpv decodes and displays bitmap-based subtitles—including DVD VobSub and Blu-ray PGS formats—seamlessly and efficiently. Because mpv utilizes FFmpeg's robust decoding libraries combined with its own hardware-accelerated r" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="does-mpv-support-pgs-and-vobsub-subtitles-smoothly">Does mpv
+Support PGS and VobSub Subtitles Smoothly?</h1>
+<p>The open-source media player mpv decodes and displays bitmap-based
+subtitles—including DVD VobSub and Blu-ray PGS formats—seamlessly and
+efficiently. Because mpv utilizes FFmpeg's robust decoding libraries
+combined with its own hardware-accelerated rendering pipeline, bitmap
+subtitles are drawn directly onto video frames with virtually no impact
+on system performance. This article explains how mpv processes bitmap
+subtitle formats, addresses scaling behavior, and highlights the best
+settings for optimal display and smooth playback.</p>
+<h3 id="native-decoding-architecture">Native Decoding Architecture</h3>
+<p>Unlike text-based subtitle formats like SRT or complex vector-styled
+ASS files, bitmap subtitles consist of pre-rendered image overlays
+paired with presentation timestamps. mpv relies on FFmpeg's
+<code>libavcodec</code> to parse these bitstreams:</p>
+<ul>
+<li><strong>PGS (Presentation Graphic Stream):</strong> Standardized on
+Blu-ray media, PGS files contain high-resolution image cues (often
+1080p).</li>
+<li><strong>VobSub (IDX/SUB):</strong> Standardized on DVD media, VobSub
+files consist of low-resolution indexed-color bitmaps (usually 480p or
+576p).</li>
+</ul>
+<p>Because the images are already rasterized, the CPU does not need to
+compute font shaping, layout, or vector curves. Decoding simply requires
+uncompressing the image data and transferring it as an image texture
+into the video renderer.</p>
+<h3 id="smoothness-and-rendering-pipeline">Smoothness and Rendering
+Pipeline</h3>
+<p>mpv handles subtitle presentation through its modern video output
+drivers, primarily <code>--vo=gpu</code> and <code>--vo=gpu-next</code>.
+When a bitmap subtitle frame is decoded, mpv creates a texture that is
+blended directly with the video frame during the GPU compositing
+phase.</p>
+<p>This hardware-composited approach ensures:</p>
+<ul>
+<li><strong>Zero Dropped Frames:</strong> Rendering bitmap overlays
+consumes negligible GPU memory and processing power, avoiding the
+micro-stutters sometimes seen with heavy ASS script rendering.</li>
+<li><strong>Accurate Sync:</strong> Subtitle display times are tied to
+mpv’s internal video clock, preventing desync even when using
+display-sync options like
+<code>--video-sync=display-resample</code>.</li>
+<li><strong>Hardware Decoding Compatibility:</strong> Whether using
+<code>--hwdec=auto</code>, <code>nvdec</code>, or <code>vaapi</code>,
+bitmap subtitle decoding occurs independently on the CPU/GPU without
+breaking hardware-accelerated video decoding.</li>
+</ul>
+<h3 id="scaling-and-visual-quality">Scaling and Visual Quality</h3>
+<p>Because bitmap subtitles have a fixed pixel resolution, displaying
+them on modern high-resolution screens (such as 4K monitors) requires
+upscaling:</p>
+<ol type="1">
+<li><strong>Blurriness vs. Aliasing:</strong> Scaling
+standard-definition VobSub files to a high-resolution display can
+produce soft or jagged edges. mpv applies bilinear scaling by default to
+smooth out pixelation.</li>
+<li><strong>Bitmap Upscaling Control:</strong> Using the flag
+<code>--sub-bitmap-upscale=yes</code> instructs mpv to upscale bitmap
+subtitles to the window/screen resolution before rendering, which
+generally yields cleaner compositing results at higher display
+resolutions.</li>
+<li><strong>Blur Filters:</strong> mpv includes
+<code>--sub-gauss=&lt;0.0-3.0&gt;</code> to apply a slight Gaussian
+blur, which can soften the pixelated artifacts inherent to old DVD
+VobSub rips.</li>
+</ol>
+<h3 id="recommended-settings-for-smooth-playback">Recommended Settings
+for Smooth Playback</h3>
+<p>To ensure the best possible performance and presentation when playing
+media with PGS or VobSub streams, consider adding the following
+directives to your <code>mpv.conf</code> file:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use modern GPU-based rendering</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">vo</span><span class="ot">=</span><span class="st">gpu-next</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">gpu-api</span><span class="ot">=</span><span class="st">auto</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">hwdec</span><span class="ot">=</span><span class="st">auto-safe</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize bitmap subtitle scaling</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-bitmap-upscale</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">sub-fix-timing</span><span class="ot">=</span><span class="kw">yes</span></span></code></pre></div>
+<p>mpv requires no external codecs or specialized plugins to render
+bitmap subtitles, making it one of the most reliable media players for
+viewing high-bitrate DVD and Blu-ray rips without frame drops or timing
+errors.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

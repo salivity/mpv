@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exact Seeking vs Keyframe Seeking in MPV Explained - mpv</title>
+    <meta name="description" content="This article breaks down the technical and practical differences between exact seeking and keyframe seeking in the mpv media player. It explores how modern video compression affects media navigation, compares the speed and precision of both methods, expl">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/exact-seeking-vs-keyframe-seeking-in-mpv-explained">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Exact Seeking vs Keyframe Seeking in MPV Explained - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/exact-seeking-vs-keyframe-seeking-in-mpv-explained" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article breaks down the technical and practical differences between exact seeking and keyframe seeking in the mpv media player. It explores how modern video compression affects media navigation, compares the speed and precision of both methods, expl" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="exact-seeking-vs-keyframe-seeking-in-mpv-explained">Exact
+Seeking vs Keyframe Seeking in MPV Explained</h1>
+<p>This article breaks down the technical and practical differences
+between exact seeking and keyframe seeking in the mpv media player. It
+explores how modern video compression affects media navigation, compares
+the speed and precision of both methods, explains mpv's default
+behaviors, and helps you determine which mode best fits your viewing or
+editing workflow.</p>
+<h3 id="understanding-modern-video-compression">Understanding Modern
+Video Compression</h3>
+<p>To understand seeking modes, you must understand how modern video
+formats (such as H.264, H.265, and VP9) store data. Videos are not
+merely sequences of complete pictures; they consist of Groups of
+Pictures (GOP) featuring different frame types:</p>
+<ul>
+<li><strong>Intra-frames (I-frames / Keyframes):</strong> Complete,
+self-contained images that can be rendered independently.</li>
+<li><strong>Predicted frames (P-frames and B-frames):</strong>
+Incomplete frames that only store the changes between neighboring frames
+to save space.</li>
+</ul>
+<p>Because of this structure, a player cannot instantly display a random
+P-frame or B-frame in the middle of a video without first decoding the
+keyframe that precedes it.</p>
+<h3 id="keyframe-seeking-fast-seeking">Keyframe Seeking (Fast
+Seeking)</h3>
+<p>Keyframe seeking instructs mpv to jump directly to the nearest
+keyframe relative to your target timestamp.</p>
+<ul>
+<li><strong>How it works:</strong> When you jump forward or backward,
+mpv finds the closest complete keyframe and starts playback immediately
+from that point.</li>
+<li><strong>Speed:</strong> Instantaneous. The video decoder does not
+need to process intermediate frames, resulting in zero playback stutter
+or lag.</li>
+<li><strong>Precision:</strong> Low. Because keyframes are often placed
+several seconds apart (typically every 1 to 10 seconds depending on
+encoding settings), playback will not start at your exact requested
+second. It will snap to whenever the encoder placed the nearest
+I-frame.</li>
+<li><strong>Resource Usage:</strong> Minimal CPU and GPU overhead.</li>
+</ul>
+<h3 id="exact-seeking">Exact Seeking</h3>
+<p>Exact seeking forces mpv to navigate to the precise timestamp or
+frame requested, regardless of where the keyframes are located.</p>
+<ul>
+<li><strong>How it works:</strong> When an exact seek is requested, mpv
+jumps backward to the nearest preceding keyframe, silently decodes all
+subsequent P-frames and B-frames in the background, and displays the
+exact target frame requested.</li>
+<li><strong>Speed:</strong> Slower. There may be a perceptible delay or
+brief freeze while the player decodes the required chain of frames
+before resuming visible playback. This delay is more pronounced on weak
+hardware or with high-bitrate 4K/8K media.</li>
+<li><strong>Precision:</strong> Absolute. You land on the precise second
+or frame you requested.</li>
+<li><strong>Resource Usage:</strong> Higher CPU/GPU decoding demand
+during navigation.</li>
+</ul>
+<h3 id="mpv-keybindings-and-configuration">MPV Keybindings and
+Configuration</h3>
+<p>By default, mpv balances both behaviors depending on the key
+binding:</p>
+<ul>
+<li><strong>Standard Arrow Keys (<code>LEFT</code>/<code>RIGHT</code>,
+<code>UP</code>/<code>DOWN</code>):</strong> Typically mapped to
+keyframe seeking for fast, responsive scrubbing through media.</li>
+<li><strong>Shift + Arrow Keys:</strong> Often mapped by default to
+exact seeking, allowing users to make precise, small-step adjustments
+when needed.</li>
+</ul>
+<p>You can explicitly control this behavior in your
+<code>input.conf</code> file using mpv's command syntax:</p>
+<pre class="text"><code># Exact seek: jumps precisely 5 seconds forward
+RIGHT seek 5 exact
+
+# Keyframe seek: jumps roughly 5 seconds forward to the nearest I-frame
+UP seek 5 keyframes</code></pre>
+<h3 id="when-to-use-each-mode">When to Use Each Mode</h3>
+<ul>
+<li><strong>Choose Keyframe Seeking</strong> for casual video playback,
+skipping intro sequences, jumping through long movies, or browsing media
+on low-powered devices.</li>
+<li><strong>Choose Exact Seeking</strong> for video editing,
+frame-by-frame analysis, audio/subtitle synchronization, educational
+study, or transcribing dialog where exact timing is critical.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

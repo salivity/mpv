@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Change mpv Subtitle Alignment and Margins? - mpv</title>
+    <meta name="description" content="This article provides a comprehensive guide on dynamically adjusting subtitle alignment and margins in the mpv media player. You will learn the essential keyboard shortcuts, custom input configuration mappings, and advanced scripting methods to control y">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-change-mpv-subtitle-alignment-and-margins">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Change mpv Subtitle Alignment and Margins? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-change-mpv-subtitle-alignment-and-margins" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive guide on dynamically adjusting subtitle alignment and margins in the mpv media player. You will learn the essential keyboard shortcuts, custom input configuration mappings, and advanced scripting methods to control y" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-change-mpv-subtitle-alignment-and-margins">How to Change
+mpv Subtitle Alignment and Margins?</h1>
+<p>This article provides a comprehensive guide on dynamically adjusting
+subtitle alignment and margins in the mpv media player. You will learn
+the essential keyboard shortcuts, custom input configuration mappings,
+and advanced scripting methods to control your subtitle layout on the
+fly. Whether you need to quickly shift text out of the way or
+permanently adjust vertical margins for ultrawide viewing, these
+techniques will give you precise control over your media playback
+experience.</p>
+<h3 id="default-shortcuts-for-subtitle-adjustments">Default Shortcuts
+for Subtitle Adjustments</h3>
+<p>Out of the box, mpv includes built-in keyboard shortcuts that allow
+you to adjust the vertical position of your subtitles during playback.
+These commands alter the subtitle margins dynamically without requiring
+you to restart the player or edit configuration files.</p>
+<ul>
+<li>**<code>Ctrl</code> + <code>j**</code>: Shift subtitles down
+(increases the top margin).</li>
+<li>**<code>Ctrl</code> + <code>k**</code>: Shift subtitles up
+(decreases the top margin / increases the bottom margin).</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> These default shortcuts primarily shift the
+text up and down along the vertical axis. If you need to change
+horizontal alignment or make complex margin adjustments, you will need
+to map custom commands.</p>
+</blockquote>
+<h3 id="customizing-alignment-via-inputconf">Customizing Alignment via
+input.conf</h3>
+<p>To unlock full control over alignment (left, center, right, top,
+bottom) and precise margin adjustments, you can map custom keys in your
+<code>input.conf</code> file. This file is typically located in your mpv
+configuration directory (<code>~/.config/mpv/</code> on Linux/macOS or
+<code>%APPDATA%/mpv/</code> on Windows).</p>
+<p>You can use the <code>sub-align-x</code> and <code>sub-align-y</code>
+properties to change alignment, and <code>sub-margin-y</code> or
+<code>sub-margin-x</code> to alter the padding dynamically.</p>
+<pre class="text"><code># Change horizontal alignment dynamically
+H cycle-values sub-align-x &quot;left&quot; &quot;center&quot; &quot;right&quot;
+
+# Change vertical alignment dynamically
+V cycle-values sub-align-y &quot;top&quot; &quot;center&quot; &quot;bottom&quot;
+
+# Fine-tune vertical margins with arrow keys (Shift + Alt)
+Shift+Alt+UP add sub-margin-y +5
+Shift+Alt+DOWN add sub-margin-y -5
+</code></pre>
+<p>In this setup, pressing <strong><code>H</code></strong> or
+<strong><code>V</code></strong> will cycle through the respective
+alignment positions, while **<code>Shift</code> + <code>Alt</code> +
+<code>Up/Down Arrow**</code> will expand or contract the vertical
+margins by 5 pixels per press.</p>
+<h3 id="handling-hardcoded-or-advanced-subtitles-assssa">Handling
+Hardcoded or Advanced Subtitles (ASS/SSA)</h3>
+<p>Standard subtitle formats like SRT respond perfectly to alignment and
+margin commands. However, advanced subtitle formats like ASS/SSA often
+come with hardcoded positions, fonts, and styles embedded by the
+typesetter.</p>
+<p>If your dynamic alignment and margin commands are not working, you
+can force mpv to override the embedded styles by using the
+<code>sub-ass-override</code> property.</p>
+<pre class="text"><code># Toggle overriding advanced subtitle styles
+Shift+O cycle-values sub-ass-override &quot;force&quot; &quot;yes&quot;
+</code></pre>
+<p>Setting <code>sub-ass-override</code> to <code>force</code> strips
+the subtitle file of its custom positioning, allowing your dynamic
+margins, custom fonts, and alignment settings to take effect
+instantly.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

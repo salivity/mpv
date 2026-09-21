@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mpv Interpolation vs TV Motion Smoothing - mpv</title>
+    <meta name="description" content="While both technologies aim to eliminate motion judder on modern digital displays, they rely on fundamentally different technical approaches. Traditional television motion smoothing uses motion-compensated frame interpolation (MEMC) to predict object tra">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/mpv-interpolation-vs-tv-motion-smoothing">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="mpv Interpolation vs TV Motion Smoothing - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/mpv-interpolation-vs-tv-motion-smoothing" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="While both technologies aim to eliminate motion judder on modern digital displays, they rely on fundamentally different technical approaches. Traditional television motion smoothing uses motion-compensated frame interpolation (MEMC) to predict object tra" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="mpv-interpolation-vs-tv-motion-smoothing">mpv Interpolation vs
+TV Motion Smoothing</h1>
+<p>While both technologies aim to eliminate motion judder on modern
+digital displays, they rely on fundamentally different technical
+approaches. Traditional television motion smoothing uses
+motion-compensated frame interpolation (MEMC) to predict object
+trajectories and generate entirely new intermediate frames, which often
+introduces noticeable artifacts and creates the unnatural "soap opera
+effect." In contrast, the open-source media player mpv uses temporal
+resampling to align existing video frames with your display's native
+refresh rate, eliminating timing mismatch judder while preserving the
+video's original cinematic motion cadence.</p>
+<h3 id="how-traditional-tv-motion-smoothing-memc-works">How Traditional
+TV Motion Smoothing (MEMC) Works</h3>
+<p>Most televisions equipped with motion smoothing use Motion
+Estimation, Motion Compensation (MEMC) hardware. This process involves
+analyzing two consecutive frames, calculating the movement vectors of
+objects across the screen, and rendering synthetic in-between
+frames.</p>
+<p>If a movie shot at 24 frames per second (fps) is displayed on a 120Hz
+panel, an MEMC algorithm manufactures multiple artificial frames to
+transition an object smoothly from Point A to Point B. While this
+results in hyper-fluid motion, it comes with significant drawbacks:</p>
+<ul>
+<li><strong>The Soap Opera Effect:</strong> High-motion fluidity strips
+away the visual characteristics of 24fps cinema, making cinematic
+productions look like live television or raw digital video.</li>
+<li><strong>Interpolation Artifacts:</strong> Complex motion—such as
+rain, fast-moving particles, overlapping objects, or transparent
+elements—frequently confuses motion vectors, generating visible
+distortions, haloing, and tearing around edges.</li>
+<li><strong>Input Latency:</strong> Calculating vector fields requires
+deep buffering and heavy processing, introducing noticeable input lag
+that makes it impractical for interactive media.</li>
+</ul>
+<h3 id="how-mpv-handles-video-interpolation">How mpv Handles Video
+Interpolation</h3>
+<p>The <code>mpv</code> media player approaches the problem as a display
+synchronization and temporal resampling issue rather than a
+frame-generation task. Built around the <code>--interpolation</code> and
+<code>--video-sync=display-resample</code> flags, mpv addresses the
+judder caused by uneven frame distribution, such as the standard 3:2
+pulldown required to display 24fps content on a standard 60Hz
+monitor.</p>
+<p>Instead of guessing where pixels are moving and generating new
+frames, mpv blends overlapping source frames across the timeline based
+on the precise refresh intervals of the display. It treats the video
+track as a continuous signal over time and applies a linear or
+non-linear filter (configured via the <code>--tscale</code> option, such
+as <code>oversample</code>, <code>mitchell</code>, or
+<code>bicubic</code>) to sample the original frames onto the display
+refresh cycles.</p>
+<p>Key characteristics of mpv's method include:</p>
+<ul>
+<li><strong>Preservation of Cadence:</strong> Because it does not
+extrapolate intermediate positions, the original 24fps motion
+characteristics remain intact. The footage does not look like
+high-frame-rate video.</li>
+<li><strong>No Vector Glitches:</strong> Without motion estimation, mpv
+cannot produce the tearing, ghosting, or halo artifacts typical of TV
+processors.</li>
+<li><strong>Controlled Blurring Instead of Fake Sharpness:</strong> If
+an original frame does not align perfectly with a screen refresh cycle,
+mpv smoothly blends the adjacent frames based on the chosen temporal
+filter. This can introduce slight motion softness in specific
+configurations, but it avoids jarring visual errors.</li>
+</ul>
+<h3 id="the-fundamental-difference">The Fundamental Difference</h3>
+<p>The distinction comes down to <strong>frame synthesis</strong> versus
+<strong>temporal distribution</strong>.</p>
+<p>Traditional televisions alter the temporal resolution of the content
+itself by inventing frames that never existed in the source file. The
+mpv interpolation engine simply ensures that the frames that <em>do</em>
+exist are presented at mathematically uniform time intervals across the
+monitor’s refresh cycles. Televisions prioritize hyper-smoothness at the
+expense of creative intent and image accuracy, whereas mpv prioritizes
+timing accuracy and the preservation of the source material.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

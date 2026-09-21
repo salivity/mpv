@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Switch mpv Audio Profile on Headphone Plug-In - mpv</title>
+    <meta name="description" content="You can configure mpv to apply a specific audio profile automatically when headphones are plugged in by combining mpv's conditional profile engine with device name detection. While mpv does not directly monitor hardware ports, your operating system updat">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/auto-switch-mpv-audio-profile-on-headphone-plug-in">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Auto-Switch mpv Audio Profile on Headphone Plug-In - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/auto-switch-mpv-audio-profile-on-headphone-plug-in" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="You can configure mpv to apply a specific audio profile automatically when headphones are plugged in by combining mpv's conditional profile engine with device name detection. While mpv does not directly monitor hardware ports, your operating system updat" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="auto-switch-mpv-audio-profile-on-headphone-plug-in">Auto-Switch
+mpv Audio Profile on Headphone Plug-In</h1>
+<p>You can configure mpv to apply a specific audio profile automatically
+when headphones are plugged in by combining mpv's conditional profile
+engine with device name detection. While mpv does not directly monitor
+hardware ports, your operating system updates the active audio device
+upon headphone insertion. By setting up a conditional profile in your
+configuration file—or using a lightweight Lua script—mpv can detect this
+audio output change and immediately trigger custom audio filters, volume
+levels, or equalizer presets.</p>
+<h3 id="step-1-identify-your-headphone-device-name">Step 1: Identify
+Your Headphone Device Name</h3>
+<p>Before writing a rule, determine what mpv names your headphone
+device. Run the following command in your terminal or command
+prompt:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--audio-device</span><span class="op">=</span>help</span></code></pre></div>
+<p>Plug in your headphones and run the command to see the list of active
+output devices. Note the unique string identifying your headphones (for
+example, <code>wasapi/{...}</code> on Windows or an
+ALSA/PulseAudio/PipeWire sink name like <code>alsa/default</code> or
+<code>pulse/...headphone...</code> on Linux).</p>
+<h3 id="step-2-configure-conditional-profiles-in-mpvconf">Step 2:
+Configure Conditional Profiles in <code>mpv.conf</code></h3>
+<p>mpv features built-in conditional profiles using Lua syntax via the
+<code>profile-cond</code> property. Open your <code>mpv.conf</code> file
+(located in <code>~/.config/mpv/</code> on Linux/macOS or
+<code>%APPDATA%/mpv/</code> on Windows) and define a custom profile.</p>
+<p>Add your headphone settings along with a condition that matches the
+audio device name:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the headphone profile</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">[headphones]</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-desc</span><span class="ot">=</span><span class="st">&quot;Headphone Optimizations&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Condition: triggers when the active audio-device string contains &#39;headphone&#39;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">profile-cond</span><span class="ot">=</span><span class="st">string.find(audio_device or &quot;&quot;, &quot;headphone&quot;) ~= nil</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example settings for headphones:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply crossfeed filter (Bauer stereophonic-to-binaural)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="dt">af</span><span class="ot">=</span><span class="st">lavfi=[bs2b=profile=cmoy]</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a safe volume limit</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dt">volume-max</span><span class="ot">=</span><span class="dv">100</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="dt">volume</span><span class="ot">=</span><span class="dv">70</span></span></code></pre></div>
+<p>If your operating system does not include the word "headphone" in the
+device string, replace <code>"headphone"</code> with the exact name or
+substring found in Step 1.</p>
+<h3 id="step-3-handling-dynamic-hotplugging-via-lua">Step 3: Handling
+Dynamic Hotplugging via Lua</h3>
+<p>When headphones are plugged in during playback, some operating
+systems switch the system-wide default sink automatically, while mpv
+continues using its initialized device unless configured to watch for
+updates.</p>
+<p>If the conditional profile does not toggle automatically during live
+playback, you can use a small Lua script to force mpv to re-evaluate the
+active device.</p>
+<p>Create a file named <code>auto-headphones.lua</code> in your mpv
+<code>scripts</code> directory (<code>~/.config/mpv/scripts/</code> or
+<code>%APPDATA%/mpv/scripts/</code>):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>observe_property<span class="op">(</span><span class="st">&quot;audio-device&quot;</span><span class="op">,</span> <span class="st">&quot;string&quot;</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span><span class="op">,</span> <span class="va">val</span><span class="op">)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">val</span> <span class="kw">and</span> <span class="fu">string.find</span><span class="op">(</span><span class="fu">string.lower</span><span class="op">(</span><span class="va">val</span><span class="op">),</span> <span class="st">&quot;headphone&quot;</span><span class="op">)</span> <span class="cf">then</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>commandv<span class="op">(</span><span class="st">&quot;apply-profile&quot;</span><span class="op">,</span> <span class="st">&quot;headphones&quot;</span><span class="op">)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- Restore default settings when unplugged</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>commandv<span class="op">(</span><span class="st">&quot;apply-profile&quot;</span><span class="op">,</span> <span class="st">&quot;default-audio&quot;</span><span class="op">)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code></pre></div>
+<p>Pair this with a corresponding fallback profile in
+<code>mpv.conf</code>:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[default-audio]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">af</span><span class="ot">=</span><span class="st">&quot;&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">volume</span><span class="ot">=</span><span class="dv">100</span></span></code></pre></div>
+<p>With this configuration, mpv actively listens to audio device
+transitions and switches processing profiles the moment headphones are
+connected or disconnected.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

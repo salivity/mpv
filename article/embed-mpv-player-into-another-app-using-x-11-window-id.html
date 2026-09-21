@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed mpv Player into Another App Using X11 Window ID - mpv</title>
+    <meta name="description" content="Yes, you can embed the mpv player window directly into another application using an X11 Window ID (WID). mpv natively provides the --wid command-line flag and a corresponding property in its client library (libmpv), allowing developers to redirect video">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/embed-mpv-player-into-another-app-using-x-11-window-id">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Embed mpv Player into Another App Using X11 Window ID - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/embed-mpv-player-into-another-app-using-x-11-window-id" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Yes, you can embed the mpv player window directly into another application using an X11 Window ID (WID). mpv natively provides the --wid command-line flag and a corresponding property in its client library (libmpv), allowing developers to redirect video" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="embed-mpv-player-into-another-app-using-x11-window-id">Embed mpv
+Player into Another App Using X11 Window ID</h1>
+<p>Yes, you can embed the mpv player window directly into another
+application using an X11 Window ID (WID). mpv natively provides the
+<code>--wid</code> command-line flag and a corresponding property in its
+client library (<code>libmpv</code>), allowing developers to redirect
+video output into a specific container widget provided by another
+process or GUI toolkit such as Qt, GTK, Tkinter, or raw Xlib.</p>
+<h3 id="how-to-embed-mpv-using---wid">How to Embed mpv Using
+<code>--wid</code></h3>
+<p>When running the standalone <code>mpv</code> binary as a subprocess,
+you pass the target window's numeric X11 ID to the <code>--wid</code>
+parameter:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--wid</span><span class="op">=&lt;</span>WINDOW_ID<span class="op">&gt;</span> /path/to/video.mp4</span></code></pre></div>
+<p>In this setup, mpv treats the specified window as its parent window,
+rendering its video output and default controls within the boundaries of
+that container rather than creating a new top-level desktop window.</p>
+<h3 id="getting-the-x11-window-id-in-different-frameworks">Getting the
+X11 Window ID in Different Frameworks</h3>
+<p>To supply the correct identifier to mpv, retrieve the native X11
+handle from your GUI container:</p>
+<ul>
+<li><strong>Qt (C++ / PyQt / PySide):</strong> Obtain the ID from a
+<code>QWidget</code> using the <code>winId()</code> method (e.g.,
+<code>int(widget.winId())</code>).</li>
+<li><strong>GTK (C / PyGObject):</strong> Retrieve the XID from the
+underlying GDK window using
+<code>gdk_x11_window_get_xid(gtk_widget_get_window(widget))</code> after
+the widget is realized.</li>
+<li><strong>Python (Tkinter):</strong> Access the window handle via the
+widget’s <code>winfo_id()</code> method (e.g.,
+<code>frame.winfo_id()</code>).</li>
+<li><strong>Command Line Testing:</strong> Find an existing window's ID
+interactively using utilities like <code>xdotool</code> or
+<code>xwininfo -root -tree</code>.</li>
+</ul>
+<h3 id="embedding-via-libmpv-recommended-for-complex-apps">Embedding via
+<code>libmpv</code> (Recommended for Complex Apps)</h3>
+<p>If you are developing an application with direct library integration
+rather than launching an external process, you can set the
+<code>wid</code> property through <code>libmpv</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int64_t</span> wid <span class="op">=</span> your_x11_window_id<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mpv_set_option<span class="op">(</span>mpv_handle<span class="op">,</span> <span class="st">&quot;wid&quot;</span><span class="op">,</span> MPV_FORMAT_INT64<span class="op">,</span> <span class="op">&amp;</span>wid<span class="op">);</span></span></code></pre></div>
+<p>This must be configured before initializing the player context
+(<code>mpv_initialize</code>) or before the video display output is
+created.</p>
+<h3 id="technical-considerations">Technical Considerations</h3>
+<ul>
+<li><strong>Input Handling:</strong> By default, embedding mpv directs
+keyboard and mouse events to the video surface. If you want the parent
+application to manage inputs instead, pass
+<code>--input-default-bindings=no</code> and
+<code>--input-vo-keyboard=no</code>.</li>
+<li><strong>Resizing:</strong> The parent window is responsible for
+managing geometry. When the parent widget resizes, mpv automatically
+adjusts the video scale to fill the new container dimensions.</li>
+<li><strong>Wayland Compatibility:</strong> The <code>--wid</code>
+method is specific to X11. Under native Wayland sessions, this mechanism
+relies on XWayland. For pure Wayland applications, use
+<code>libmpv</code>'s render API (<code>mpv_render_context</code>) with
+OpenGL or Vulkan rather than window ID reparenting.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

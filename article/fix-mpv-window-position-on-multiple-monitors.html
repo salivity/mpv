@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix mpv Window Position on Multiple Monitors - mpv</title>
+    <meta name="description" content="By default, mpv does not automatically persist its window coordinates when closed, often causing it to reopen on your primary display rather than your preferred monitor in a multi-display setup. This article explains how to resolve the issue using built-">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/fix-mpv-window-position-on-multiple-monitors">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fix mpv Window Position on Multiple Monitors - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/fix-mpv-window-position-on-multiple-monitors" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="By default, mpv does not automatically persist its window coordinates when closed, often causing it to reopen on your primary display rather than your preferred monitor in a multi-display setup. This article explains how to resolve the issue using built-" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="fix-mpv-window-position-on-multiple-monitors">Fix mpv Window
+Position on Multiple Monitors</h1>
+<p>By default, mpv does not automatically persist its window coordinates
+when closed, often causing it to reopen on your primary display rather
+than your preferred monitor in a multi-display setup. This article
+explains how to resolve the issue using built-in options in your
+<code>mpv.conf</code> configuration file, such as the
+<code>screen</code> and <code>geometry</code> parameters, as well as how
+to use a lightweight Lua script to automatically save and restore your
+exact window position on exit.</p>
+<hr />
+<h3 id="locate-your-mpvconf-file">Locate Your <code>mpv.conf</code>
+File</h3>
+<p>Before applying any fixes, open your mpv configuration directory:</p>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code> (or
+inside the <code>portable_config</code> folder if using a portable
+build)</li>
+<li><strong>Linux / macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+</ul>
+<p>If the <code>mpv.conf</code> file does not exist, create it as a
+plain text file.</p>
+<hr />
+<h3 id="method-1-target-a-specific-monitor-by-index">Method 1: Target a
+Specific Monitor by Index</h3>
+<p>If you consistently want mpv to open or fullscreen on a specific
+screen, you can assign the monitor directly in your configuration
+file.</p>
+<ol type="1">
+<li>Open <code>mpv.conf</code>.</li>
+<li>Add the following lines:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify which monitor to launch mpv on (0 is typically the primary display, 1 is secondary)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">screen</span><span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># If launching in fullscreen, specify the target display</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">fs-screen</span><span class="ot">=</span><span class="dv">1</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Save the file. Change the number (<code>0</code>, <code>1</code>,
+<code>2</code>, etc.) depending on which display you want mpv to
+target.</li>
+</ol>
+<hr />
+<h3 id="method-2-lock-window-position-across-virtual-desktops">Method 2:
+Lock Window Position Across Virtual Desktops</h3>
+<p>In a multi-monitor desktop arrangement, secondary monitors exist at
+specific coordinate offsets relative to the primary display. You can
+define exact starting coordinates using the <code>geometry</code>
+setting.</p>
+<ol type="1">
+<li>Determine your monitor layout coordinates (for example, if your
+primary monitor is 1920x1080 and your secondary monitor sits to the
+right, the secondary monitor starts at X-coordinate
+<code>+1920</code>).</li>
+<li>Add the <code>geometry</code> property to
+<code>mpv.conf</code>:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Syntax: &lt;width&gt;x&lt;height&gt;+&lt;x-offset&gt;+&lt;y-offset&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Position window on a 1080p monitor placed to the right of the primary display</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">geometry</span><span class="ot">=</span><span class="st">+1920+0</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Save the file. mpv will now default to those exact multi-monitor
+coordinates whenever a window is initialized.</li>
+</ol>
+<hr />
+<h3
+id="method-3-automatically-save-and-restore-dynamic-window-positions">Method
+3: Automatically Save and Restore Dynamic Window Positions</h3>
+<p>If you frequently move mpv between monitors and need it to
+dynamically remember where it was closed, you must use a Lua script, as
+mpv does not save window geometry by default.</p>
+<ol type="1">
+<li>Navigate to your mpv configuration directory.</li>
+<li>Inside, open or create a folder named <code>scripts</code>.</li>
+<li>Create a new file named <code>remember-geometry.lua</code> inside
+the <code>scripts</code> folder.</li>
+<li>Add the following code:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">utils</span> <span class="op">=</span> <span class="fu">require</span> <span class="st">&#39;mp.utils&#39;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">function</span> save_geometry<span class="op">()</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">geo</span> <span class="op">=</span> <span class="va">mp</span><span class="op">.</span>get_property<span class="op">(</span><span class="st">&quot;geometry&quot;</span><span class="op">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">screen</span> <span class="op">=</span> <span class="va">mp</span><span class="op">.</span>get_property<span class="op">(</span><span class="st">&quot;screen&quot;</span><span class="op">)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> <span class="va">width</span><span class="op">,</span> <span class="va">height</span><span class="op">,</span> <span class="va">x</span><span class="op">,</span> <span class="va">y</span> <span class="op">=</span> <span class="va">mp</span><span class="op">.</span>get_property_number<span class="op">(</span><span class="st">&quot;window-width&quot;</span><span class="op">),</span> <span class="va">mp</span><span class="op">.</span>get_property_number<span class="op">(</span><span class="st">&quot;window-height&quot;</span><span class="op">),</span> <span class="va">mp</span><span class="op">.</span>get_property_number<span class="op">(</span><span class="st">&quot;window-x&quot;</span><span class="op">),</span> <span class="va">mp</span><span class="op">.</span>get_property_number<span class="op">(</span><span class="st">&quot;window-y&quot;</span><span class="op">)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">x</span> <span class="kw">and</span> <span class="va">y</span> <span class="kw">and</span> <span class="va">width</span> <span class="kw">and</span> <span class="va">height</span> <span class="cf">then</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">local</span> <span class="va">state_path</span> <span class="op">=</span> <span class="va">utils</span><span class="op">.</span>split_path<span class="op">(</span><span class="va">mp</span><span class="op">.</span>find_config_file<span class="op">(</span><span class="st">&quot;mpv.conf&quot;</span><span class="op">))</span> <span class="op">..</span> <span class="st">&quot;last_geometry.conf&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">local</span> <span class="va">file</span> <span class="op">=</span> <span class="fu">io.open</span><span class="op">(</span><span class="va">state_path</span><span class="op">,</span> <span class="st">&quot;w&quot;</span><span class="op">)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">file</span> <span class="cf">then</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="va">file</span><span class="op">:</span><span class="fu">write</span><span class="op">(</span><span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;geometry=%dx%d+%d+%d</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="va">width</span><span class="op">,</span> <span class="va">height</span><span class="op">,</span> <span class="va">x</span><span class="op">,</span> <span class="va">y</span><span class="op">))</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            <span class="va">file</span><span class="op">:</span><span class="fu">close</span><span class="op">()</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>register_event<span class="op">(</span><span class="st">&quot;shutdown&quot;</span><span class="op">,</span> <span class="va">save_geometry</span><span class="op">)</span></span></code></pre></div>
+<ol start="5" type="1">
+<li>In your <code>mpv.conf</code>, include the auto-generated config
+file at the top:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">include</span><span class="ot">=</span><span class="st">~~/last_geometry.conf</span></span></code></pre></div>
+<p>Once configured, the script writes the current window dimensions and
+coordinate offsets upon closing, allowing mpv to reload into the
+identical position and monitor on its next launch.</p></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

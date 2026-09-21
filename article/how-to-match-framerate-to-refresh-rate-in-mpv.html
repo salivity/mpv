@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Match Framerate to Refresh Rate in mpv - mpv</title>
+    <meta name="description" content="This guide explains how to configure mpv to synchronize video framerates with your monitor's refresh rate to eliminate frame pacing judder. By adding display synchronization options to your configuration file, you can achieve smooth playback through audi">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-match-framerate-to-refresh-rate-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Match Framerate to Refresh Rate in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-match-framerate-to-refresh-rate-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This guide explains how to configure mpv to synchronize video framerates with your monitor's refresh rate to eliminate frame pacing judder. By adding display synchronization options to your configuration file, you can achieve smooth playback through audi" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-match-framerate-to-refresh-rate-in-mpv">How to Match
+Framerate to Refresh Rate in mpv</h1>
+<p>This guide explains how to configure mpv to synchronize video
+framerates with your monitor's refresh rate to eliminate frame pacing
+judder. By adding display synchronization options to your configuration
+file, you can achieve smooth playback through audio resampling or frame
+interpolation. The following instructions walk you through locating your
+configuration file, setting the required options, and verifying that the
+synchronization is functioning properly.</p>
+<h3 id="1-locate-or-create-your-mpvconf-file">1. Locate or Create your
+mpv.conf File</h3>
+<p>mpv reads user settings from a text file named <code>mpv.conf</code>.
+Open or create this file in the appropriate directory for your operating
+system:</p>
+<ul>
+<li><strong>Linux and macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code> (or
+inside a <code>portable_config</code> folder located in the same
+directory as <code>mpv.exe</code>)</li>
+</ul>
+<h3 id="2-configure-video-sync-options">2. Configure video-sync
+Options</h3>
+<p>To match video timing directly to your display, open
+<code>mpv.conf</code> in a text editor and add the following lines:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match video timing to display refresh rate by resampling audio</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">video-sync</span><span class="ot">=</span><span class="st">display-resample</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: Enable interpolation to eliminate judder caused by mismatched rates</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">interpolation</span><span class="ot">=</span><span class="kw">yes</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">tscale</span><span class="ot">=</span><span class="st">oversample</span></span></code></pre></div>
+<h4 id="how-these-options-work">How These Options Work:</h4>
+<ul>
+<li><strong><code>video-sync=display-resample</code></strong>: Adjusts
+the video timing to align precisely with your monitor's vertical refresh
+cycles. Audio speed is imperceptibly sped up or slowed down (drift) to
+prevent audio/video desynchronization without dropping frames.</li>
+<li><strong><code>interpolation=yes</code></strong>: Blends or
+blends-between frames when the video framerate does not evenly divide
+into your monitor's refresh rate (for example, playing 24 fps content on
+a 60 Hz display).</li>
+<li><strong><code>tscale=oversample</code></strong>: The algorithm used
+for interpolation. <code>oversample</code> is lightweight and
+artifact-free, though options like <code>mitchell</code> or
+<code>bicubic</code> can also be used depending on hardware
+performance.</li>
+</ul>
+<h3 id="3-alternative-sync-modes">3. Alternative Sync Modes</h3>
+<p>If you prefer not to resample audio, mpv supports alternate
+synchronization modes:</p>
+<ul>
+<li><strong><code>video-sync=display-vdrop</code></strong>: Drops or
+repeats entire video frames to maintain alignment with the display
+refresh rate without modifying the audio stream.</li>
+<li><strong><code>video-sync=display-adrop</code></strong>: Drops or
+duplicates audio samples to keep up with video synced to the
+display.</li>
+</ul>
+<p>For the vast majority of systems, <code>display-resample</code> is
+the recommended option for jitter-free viewing.</p>
+<h3 id="4-running-via-command-line">4. Running via Command Line</h3>
+<p>If you want to test the setting without modifying your configuration
+file permanently, pass the arguments directly via terminal or command
+prompt:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--video-sync</span><span class="op">=</span>display-resample <span class="at">--interpolation</span><span class="op">=</span>yes <span class="at">--tscale</span><span class="op">=</span>oversample video.mp4</span></code></pre></div>
+<h3 id="5-verify-the-synchronization">5. Verify the Synchronization</h3>
+<p>While a video is playing, press <strong>Shift + I</strong> (capital
+<code>I</code>) to open mpv's on-screen statistics display. Press
+<strong>2</strong> to switch to the timing graph page.</p>
+<ul>
+<li>Look for the <strong>Mistimed</strong> and <strong>Delayed</strong>
+counters; they should remain near zero.</li>
+<li>Check the <strong>A/V Sync</strong> value; it should remain
+stable.</li>
+<li>Check <strong>Display Sync</strong> status; it should indicate
+active display timing synchronization.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

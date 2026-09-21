@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to show playback time and duration in mpv terminal? - mpv</title>
+    <meta name="description" content="Customizing the terminal status line in mpv allows you to view the exact playback time and total file duration directly from your command-line interface. By modifying the terminal string format using the --term-status-msg option, you can completely overw">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-show-playback-time-and-duration-in-mpv-terminal">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to show playback time and duration in mpv terminal? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-show-playback-time-and-duration-in-mpv-terminal" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Customizing the terminal status line in mpv allows you to view the exact playback time and total file duration directly from your command-line interface. By modifying the terminal string format using the --term-status-msg option, you can completely overw" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-show-playback-time-and-duration-in-mpv-terminal">How to
+show playback time and duration in mpv terminal?</h1>
+<p>Customizing the terminal status line in mpv allows you to view the
+exact playback time and total file duration directly from your
+command-line interface. By modifying the terminal string format using
+the <code>--term-status-msg</code> option, you can completely overwrite
+the default status readout to show real-time progress, time elapsed, and
+total length. This article covers how to configure this layout
+temporarily for a single session or permanently across all media
+playback.</p>
+<h3 id="using-command-line-flags">Using Command-Line Flags</h3>
+<p>To test or apply custom terminal output styles for a single file, use
+the <code>--term-status-msg</code> property when running the media
+player from your terminal emulator.</p>
+<p>The properties <code>${playback-time}</code> and
+<code>${duration}</code> represent the current timestamp and total track
+duration, respectively. Execute the following command in your
+terminal:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--term-status-msg</span><span class="op">=</span><span class="st">&quot;Time: </span><span class="va">${playback</span><span class="op">-</span>time<span class="va">}</span><span class="st"> / </span><span class="va">${duration}</span><span class="st">&quot;</span> video.mp4</span></code></pre></div>
+<p>This updates your active terminal line dynamically while the media
+streams, showing the formatted playback track time against the length of
+the container.</p>
+<h3 id="configuring-permanent-terminal-status-displays">Configuring
+Permanent Terminal Status Displays</h3>
+<p>To avoid passing the command-line flag every time you open a media
+stream, you can save this configuration to your local configuration
+files.</p>
+<ol type="1">
+<li>Open your <code>mpv.conf</code> file using a standard text editor.
+Depending on your operating system environment, this file is typically
+located at:</li>
+</ol>
+<ul>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code> or
+inside your portable installation directory.</li>
+</ul>
+<ol start="2" type="1">
+<li>Append the status message definition directly into the configuration
+text file:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom terminal status display</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">term-status-msg</span><span class="ot">=</span><span class="st">&quot;Playback: ${playback-time} / ${duration}&quot;</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Save the changes and close the document.</li>
+</ol>
+<h3 id="expanding-your-terminal-status-property-layouts">Expanding Your
+Terminal Status Property Layouts</h3>
+<p>The configuration engine supports additional properties if you want
+more telemetry information on your command line alongside basic time
+indicators.</p>
+<p>The table below outlines common string parameters that can be
+integrated into your custom status configuration syntax:</p>
+<table>
+<thead>
+<tr>
+<th>Property String</th>
+<th>Variable Output Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${playback-time}</code></td>
+<td>Current playback position format (HH:MM:SS)</td>
+</tr>
+<tr>
+<td><code>${duration}</code></td>
+<td>Total video or audio asset length</td>
+</tr>
+<tr>
+<td><code>${percent-pos}%</code></td>
+<td>Progress tracking calculated in percentages</td>
+</tr>
+<tr>
+<td><code>${playtime-remaining}</code></td>
+<td>Time countdown left until the media completes</td>
+</tr>
+</tbody>
+</table></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

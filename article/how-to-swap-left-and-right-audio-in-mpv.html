@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Swap Left and Right Audio in mpv - mpv</title>
+    <meta name="description" content="mpv allows users to swap the left and right stereo audio channels directly during playback without restarting the media player. By using mpv's built-in audio filter engine with the pan filter, you can dynamically reverse stereo channels using the in-play">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-swap-left-and-right-audio-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Swap Left and Right Audio in mpv - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-swap-left-and-right-audio-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="mpv allows users to swap the left and right stereo audio channels directly during playback without restarting the media player. By using mpv's built-in audio filter engine with the pan filter, you can dynamically reverse stereo channels using the in-play" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-swap-left-and-right-audio-in-mpv">How to Swap Left and
+Right Audio in mpv</h1>
+<p>mpv allows users to swap the left and right stereo audio channels
+directly during playback without restarting the media player. By using
+mpv's built-in audio filter engine with the <code>pan</code> filter, you
+can dynamically reverse stereo channels using the in-player console, a
+custom keyboard shortcut, or command-line flags.</p>
+<h3 id="swapping-channels-using-the-mpv-console">Swapping Channels Using
+the mpv Console</h3>
+<p>You can swap audio channels during playback via mpv’s interactive
+console:</p>
+<ol type="1">
+<li>Press the backtick key (<code>`</code>) or <code>~</code> while a
+video or audio file is playing to open the on-screen console.</li>
+<li>Type the following command and press <strong>Enter</strong>:
+<pre><code>af toggle &quot;pan=stereo|c0=c1|c1=c0&quot;</code></pre></li>
+<li>Pressing <strong>Enter</strong> applies the filter immediately.
+Entering the same command again toggles the filter off, returning the
+audio to normal.</li>
+</ol>
+<h3 id="setting-up-a-keyboard-shortcut">Setting Up a Keyboard
+Shortcut</h3>
+<p>To switch channels frequently, bind the command to a key in your
+<code>input.conf</code> file:</p>
+<ol type="1">
+<li>Locate or create <code>input.conf</code> in your mpv configuration
+directory:
+<ul>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/input.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%/mpv/input.conf</code> (or
+inside the <code>portable_config</code> folder)</li>
+</ul></li>
+<li>Add a keybinding line, for example using <code>Ctrl+x</code>:
+<pre><code>Ctrl+x af toggle &quot;pan=stereo|c0=c1|c1=c0&quot;</code></pre></li>
+<li>Save the file. Pressing <strong>Ctrl+x</strong> will now toggle the
+left and right channels during playback.</li>
+</ol>
+<h3 id="how-the-filter-works">How the Filter Works</h3>
+<p>The filter string <code>pan=stereo|c0=c1|c1=c0</code> works by
+remapping the audio channels:</p>
+<ul>
+<li><code>stereo</code>: Sets the output layout to standard 2-channel
+stereo.</li>
+<li><code>c0=c1</code>: Maps output channel 0 (Left) to input channel 1
+(Right).</li>
+<li><code>c1=c0</code>: Maps output channel 1 (Right) to input channel 0
+(Left).</li>
+<li><code>af toggle</code>: Adds the filter if absent, or removes it if
+already active.</li>
+</ul>
+<h3 id="launching-mpv-with-swapped-channels">Launching mpv with Swapped
+Channels</h3>
+<p>If you want to start mpv with swapped channels from the terminal,
+pass the filter as a startup argument:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mpv</span> <span class="at">--af</span><span class="op">=</span><span class="st">&quot;pan=stereo|c0=c1|c1=c0&quot;</span> <span class="st">&quot;filename.mkv&quot;</span></span></code></pre></div></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

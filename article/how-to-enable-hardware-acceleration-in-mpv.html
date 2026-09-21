@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Enable Hardware Acceleration in mpv? - mpv</title>
+    <meta name="description" content="This article provides a straightforward guide on how to enable hardware acceleration in the mpv media player to lower CPU utilization and ensure smoother video playback. It covers the necessary configuration file edits, the specific video decoding API op">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-enable-hardware-acceleration-in-mpv">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Enable Hardware Acceleration in mpv? - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-enable-hardware-acceleration-in-mpv" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a straightforward guide on how to enable hardware acceleration in the mpv media player to lower CPU utilization and ensure smoother video playback. It covers the necessary configuration file edits, the specific video decoding API op" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-enable-hardware-acceleration-in-mpv">How to Enable
+Hardware Acceleration in mpv?</h1>
+<p>This article provides a straightforward guide on how to enable
+hardware acceleration in the mpv media player to lower CPU utilization
+and ensure smoother video playback. It covers the necessary
+configuration file edits, the specific video decoding API options
+available for different operating systems, and how to verify that
+hardware acceleration is active during playback.</p>
+<h2 id="understanding-mpv-hardware-acceleration">Understanding mpv
+Hardware Acceleration</h2>
+<p>By default, mpv may rely on software decoding, which uses your CPU to
+process video frames. For high-resolution files like 4K or HEVC, this
+can lead to high CPU usage, stuttering, and increased power consumption.
+Enabling hardware acceleration offloads this processing to your
+dedicated or integrated Graphics Processing Unit (GPU), resulting in
+cooler system temperatures and seamless playback.</p>
+<h2 id="step-by-step-configuration">Step-by-Step Configuration</h2>
+<p>To permanently enable hardware acceleration, you need to add a
+specific command to your <code>mpv.conf</code> configuration file.</p>
+<h3 id="1-locate-or-create-your-mpvconf-file">1. Locate or Create your
+<code>mpv.conf</code> File</h3>
+<p>The location of the configuration file depends on your operating
+system:</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>C:\Users\Username\AppData\Roaming\mpv\mpv.conf</code> (or inside a
+folder named <code>portable_config</code> in your mpv installation
+directory if using a portable version).</li>
+<li><strong>Linux:</strong> <code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>macOS:</strong> <code>~/.config/mpv/mpv.conf</code></li>
+</ul>
+<p>If the file does not exist, create a blank text file and name it
+<code>mpv.conf</code>.</p>
+<h3 id="2-add-the-hardware-decoding-command">2. Add the Hardware
+Decoding Command</h3>
+<p>Open the <code>mpv.conf</code> file in a text editor and add the
+following line for a safe, auto-detecting setup:</p>
+<pre class="text"><code>hwdec=auto-safe
+</code></pre>
+<p>The <code>auto-safe</code> option tells mpv to automatically select
+the best hardware decoding method available for your system that is
+known to be stable. If you want mpv to try any available hardware
+decoder, including experimental ones, you can use:</p>
+<pre class="text"><code>hwdec=auto
+</code></pre>
+<h3 id="3-advanced-platform-specific-options">3. Advanced
+Platform-Specific Options</h3>
+<p>If <code>auto-safe</code> does not deliver the desired results, you
+can manually specify the API tailored to your hardware:</p>
+<ul>
+<li><strong>Windows (NVIDIA/AMD/Intel):</strong>
+<code>hwdec=d3d11va</code> (Recommended for modern Windows setups) or
+<code>hwdec=nvdec</code> (Exclusive to NVIDIA cards).</li>
+<li><strong>Linux (Intel/AMD):</strong> <code>hwdec=vaapi</code></li>
+<li><strong>Linux (NVIDIA):</strong> <code>hwdec=nvdec</code> or
+<code>hwdec=vdpau</code></li>
+<li><strong>macOS:</strong> <code>hwdec=videotoolbox</code></li>
+</ul>
+<p>Replace <code>auto-safe</code> with your chosen API in the
+<code>mpv.conf</code> file, save it, and restart mpv.</p>
+<h2 id="how-to-verify-hardware-acceleration-is-working">How to Verify
+Hardware Acceleration is Working</h2>
+<p>To ensure that mpv is successfully using your GPU instead of your
+CPU, follow these steps during video playback:</p>
+<ul>
+<li>Open a video in mpv.</li>
+<li>Press <strong>Shift + I</strong> on your keyboard to bring up the
+stats overlay.</li>
+<li>Look at the first page of statistics for the
+<strong>Decoder</strong> line.</li>
+<li>If hardware acceleration is working, it will display the video
+format followed by the hardware API in parentheses (for example:
+<code>h264 (d3d11va-copy)</code> or <code>hevc (nvdec)</code>). If it
+says <code>software</code>, hardware acceleration is not active.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

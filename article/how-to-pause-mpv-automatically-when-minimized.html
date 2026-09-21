@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Pause mpv Automatically When Minimized - mpv</title>
+    <meta name="description" content="You can easily configure the mpv media player to pause playback automatically when its window is minimized by using a lightweight Lua script. While mpv does not have a single toggle in its default configuration file for this behavior, its internal script">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-pause-mpv-automatically-when-minimized">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Pause mpv Automatically When Minimized - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-pause-mpv-automatically-when-minimized" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="You can easily configure the mpv media player to pause playback automatically when its window is minimized by using a lightweight Lua script. While mpv does not have a single toggle in its default configuration file for this behavior, its internal script" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-pause-mpv-automatically-when-minimized">How to Pause mpv
+Automatically When Minimized</h1>
+<p>You can easily configure the mpv media player to pause playback
+automatically when its window is minimized by using a lightweight Lua
+script. While mpv does not have a single toggle in its default
+configuration file for this behavior, its internal scripting engine can
+track window states and trigger actions immediately. Below is a
+straightforward guide on setting up the script across Windows, macOS,
+and Linux systems.</p>
+<h2 id="step-1-locate-the-scripts-directory">Step 1: Locate the Scripts
+Directory</h2>
+<p>mpv looks for custom Lua scripts in a designated <code>scripts</code>
+subfolder inside your primary mpv configuration directory. Navigate to
+the path corresponding to your operating system:</p>
+<ul>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\scripts\</code>
+(typically
+<code>C:\Users\&lt;YourUsername&gt;\AppData\Roaming\mpv\scripts\</code>)</li>
+<li><strong>Linux:</strong> <code>~/.config/mpv/scripts/</code></li>
+<li><strong>macOS:</strong> <code>~/.config/mpv/scripts/</code></li>
+</ul>
+<p><em>Note: If the <code>scripts</code> folder does not exist, create
+it manually inside your main <code>mpv</code> directory.</em></p>
+<h2 id="step-2-create-the-lua-script">Step 2: Create the Lua Script</h2>
+<p>Inside the <code>scripts</code> folder, create a new text file and
+name it <code>auto-pause-minimize.lua</code>.</p>
+<p>Open the file in any text editor and paste the following code:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">was_paused</span> <span class="op">=</span> <span class="kw">false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>observe_property<span class="op">(</span><span class="st">&quot;window-minimized&quot;</span><span class="op">,</span> <span class="st">&quot;bool&quot;</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span><span class="op">,</span> <span class="va">minimized</span><span class="op">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">minimized</span> <span class="cf">then</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">was_paused</span> <span class="op">=</span> <span class="va">mp</span><span class="op">.</span>get_property_bool<span class="op">(</span><span class="st">&quot;pause&quot;</span><span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">was_paused</span> <span class="cf">then</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            <span class="va">mp</span><span class="op">.</span>set_property_bool<span class="op">(</span><span class="st">&quot;pause&quot;</span><span class="op">,</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">was_paused</span> <span class="cf">then</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="va">mp</span><span class="op">.</span>set_property_bool<span class="op">(</span><span class="st">&quot;pause&quot;</span><span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code></pre></div>
+<h3 id="how-the-script-works">How the Script Works</h3>
+<ul>
+<li><strong>Detects Minimize Events:</strong> The
+<code>window-minimized</code> property monitors the state of the mpv
+window.</li>
+<li><strong>Smart Resume:</strong> The script checks whether the video
+was already paused before minimization. If you paused it manually, it
+stays paused when restored. If it was playing, it pauses upon
+minimization and resumes automatically when unminimized.</li>
+</ul>
+<p>If you prefer the video to stay paused even after you restore the
+window, replace the code with this simpler snippet:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">mp</span><span class="op">.</span>observe_property<span class="op">(</span><span class="st">&quot;window-minimized&quot;</span><span class="op">,</span> <span class="st">&quot;bool&quot;</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span><span class="op">,</span> <span class="va">minimized</span><span class="op">)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">minimized</span> <span class="cf">then</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">mp</span><span class="op">.</span>set_property_bool<span class="op">(</span><span class="st">&quot;pause&quot;</span><span class="op">,</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span><span class="op">)</span></span></code></pre></div>
+<h2 id="step-3-save-and-test">Step 3: Save and Test</h2>
+<ol type="1">
+<li>Save the <code>.lua</code> file and close the editor.</li>
+<li>Launch mpv and open any video file.</li>
+<li>Minimize the window to verify that playback pauses instantly.</li>
+</ol>
+<h2 id="platform-compatibility-notes">Platform Compatibility Notes</h2>
+<ul>
+<li><strong>Windows:</strong> Fully supported natively through standard
+window hooks.</li>
+<li><strong>Linux (X11):</strong> Works automatically with most desktop
+environments and window managers.</li>
+<li><strong>Linux (Wayland):</strong> Depending on your compositor
+(e.g., GNOME or KDE), the <code>window-minimized</code> property might
+not be reported reliably due to Wayland's security isolation. If this
+occurs, you may need to run mpv via XWayland by adding <code>x11</code>
+to your <code>gpu-context</code> settings.</li>
+</ul></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Mute MPV with a Global Hotkey - mpv</title>
+    <meta name="description" content="Controlling mpv when its window is minimized or unfocused requires bridging your operating system's global shortcut manager with mpv's built-in Inter-Process Communication (IPC) server. By enabling the IPC server in mpv's configuration file, mpv listens">
+    <link rel="canonical" href="https://salivity.github.io/mpv/article/how-to-mute-mpv-with-a-global-hotkey">
+    <link rel="search" type="application/opensearchdescription+xml" title="mpv" href="/mpv/opensearch.xml">
+    <link rel="icon" href="/mpv/favicon.ico">
+    <link rel="stylesheet" href="/mpv/css/style.css">
+    <link media="print" rel="stylesheet" href="/mpv/css/print.css">
+    <script src="/mpv/js/fuse.min.js"></script>
+    <script src="/mpv/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Mute MPV with a Global Hotkey - mpv" />
+    <meta property="og:url" content="https://salivity.github.io/mpv/article/how-to-mute-mpv-with-a-global-hotkey" />
+    <meta property="og:image" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/mpv/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Controlling mpv when its window is minimized or unfocused requires bridging your operating system's global shortcut manager with mpv's built-in Inter-Process Communication (IPC) server. By enabling the IPC server in mpv's configuration file, mpv listens" />
+    <link rel="manifest" href="/mpv/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/mpv/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>mpv</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/mpv/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-mute-mpv-with-a-global-hotkey">How to Mute MPV with a
+Global Hotkey</h1>
+<p>Controlling mpv when its window is minimized or unfocused requires
+bridging your operating system's global shortcut manager with mpv's
+built-in Inter-Process Communication (IPC) server. By enabling the IPC
+server in mpv's configuration file, mpv listens for JSON-formatted
+commands through a local socket or named pipe. This guide walks you
+through enabling IPC in mpv and assigning a system-wide hotkey to toggle
+mute on both Linux and Windows.</p>
+<h2 id="step-1-enable-ipc-in-mpv">Step 1: Enable IPC in MPV</h2>
+<p>To allow external scripts to send commands to mpv, you must tell mpv
+to create an IPC server upon startup.</p>
+<ol type="1">
+<li><p>Locate or create your <code>mpv.conf</code> file:</p>
+<ul>
+<li><strong>Linux/macOS:</strong>
+<code>~/.config/mpv/mpv.conf</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\mpv\mpv.conf</code></li>
+</ul></li>
+<li><p>Add the appropriate IPC socket configuration line:</p>
+<p><strong>For Linux/macOS:</strong></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">input-ipc-server</span><span class="ot">=</span><span class="st">/tmp/mpvsocket</span></span></code></pre></div>
+<p><strong>For Windows:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ini"><code class="sourceCode ini"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">input-ipc-server</span><span class="ot">=</span><span class="st">\\.\pipe\mpvsocket</span></span></code></pre></div></li>
+<li><p>Save and close the file.</p></li>
+</ol>
+<hr />
+<h2 id="step-2-set-up-global-hotkeys-on-linux">Step 2: Set Up Global
+Hotkeys on Linux</h2>
+<p>On Linux, you can interact with unix domain sockets using
+<code>socat</code>.</p>
+<h3 id="1-install-socat">1. Install <code>socat</code></h3>
+<p>Ensure <code>socat</code> is installed on your distribution:</p>
+<ul>
+<li><strong>Ubuntu/Debian:</strong>
+<code>sudo apt install socat</code></li>
+<li><strong>Arch Linux:</strong> <code>sudo pacman -S socat</code></li>
+<li><strong>Fedora:</strong> <code>sudo dnf install socat</code></li>
+</ul>
+<h3 id="2-create-the-mute-command">2. Create the Mute Command</h3>
+<p>The command to cycle the mute state in mpv is:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;{ &quot;command&quot;: [&quot;cycle&quot;, &quot;mute&quot;] }&#39;</span> <span class="kw">|</span> <span class="ex">socat</span> <span class="at">-</span> /tmp/mpvsocket</span></code></pre></div>
+<h3 id="3-bind-the-command-to-a-hotkey">3. Bind the Command to a
+Hotkey</h3>
+<ul>
+<li><strong>GNOME:</strong> Open <strong>Settings</strong> &gt;
+<strong>Keyboard</strong> &gt; <strong>View and Customize
+Shortcuts</strong> &gt; <strong>Custom Shortcuts</strong>. Add a new
+shortcut, paste the <code>socat</code> command above into the
+<strong>Command</strong> field, and assign your desired key
+combination.</li>
+<li><strong>KDE Plasma:</strong> Open <strong>System Settings</strong>
+&gt; <strong>Shortcuts</strong> &gt; <strong>Custom Shortcuts</strong>.
+Add a new Global Shortcut &gt; Command/URL, set the action to the
+<code>socat</code> command, and assign a trigger.</li>
+<li><strong>i3/Sway:</strong> Add the following line to your config
+file:
+<pre><code>bindsym $mod+m exec echo &#39;{ &quot;command&quot;: [&quot;cycle&quot;, &quot;mute&quot;] }&#39; | socat - /tmp/mpvsocket</code></pre></li>
+</ul>
+<hr />
+<h2 id="step-3-set-up-global-hotkeys-on-windows">Step 3: Set Up Global
+Hotkeys on Windows</h2>
+<p>On Windows, AutoHotkey (AHK) is the most reliable tool for sending
+data to mpv's named pipe without bringing the window into focus.</p>
+<h3 id="1-install-autohotkey">1. Install AutoHotkey</h3>
+<p>Download and install <a
+href="https://www.autohotkey.com/">AutoHotkey</a> (v1.1 or v2).</p>
+<h3 id="2-create-an-autohotkey-script">2. Create an AutoHotkey
+Script</h3>
+<p>Create a new file named <code>mpv_mute.ahk</code> and paste the
+following script (compatible with AutoHotkey v1.1):</p>
+<pre class="autohotkey"><code>; Win+M to toggle mute in MPV
+#m::
+pipe := FileOpen(&quot;\\.\pipe\mpvsocket&quot;, &quot;w&quot;)
+if (IsObject(pipe)) {
+    pipe.Write(&#39;{ &quot;command&quot;: [&quot;cycle&quot;, &quot;mute&quot;] }`n&#39;)
+    pipe.Close()
+}
+return</code></pre>
+<p><em>(Note: <code>#m</code> represents the
+<code>Windows Key + M</code> combination. You can replace
+<code>#m</code> with any combination, such as <code>^!m</code> for
+<code>Ctrl + Alt + M</code>.)</em></p>
+<h3 id="3-run-the-script">3. Run the Script</h3>
+<ol type="1">
+<li>Double-click <code>mpv_mute.ahk</code> to launch it.</li>
+<li>Place a shortcut to this <code>.ahk</code> file in your Windows
+Startup folder (<code>shell:startup</code> in the Run dialog) to have it
+run automatically upon login.</li>
+</ol>
+<hr />
+<h2 id="step-4-verification">Step 4: Verification</h2>
+<ol type="1">
+<li>Launch any audio or video file with mpv.</li>
+<li>Focus on another application (such as a web browser or text
+editor).</li>
+<li>Press your configured hotkey. The audio will toggle between muted
+and unmuted instantly, confirming that mpv is accepting global commands
+regardless of window focus.</li>
+</ol></article>
+        <div id="comments-container"></div>
+        <script>
+            const utterancesScript = document.createElement('script');
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/mpv'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/mpv/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/mpv/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>
